@@ -1,0 +1,30 @@
+project:
+  type: website
+
+website:
+  title: "taxodist"
+  site-url: "https://rodrigosqrt3.github.io/taxodist-site"
+  navbar:
+    background: "#2D5016"
+    search: true
+    left:
+      - href: index.qmd
+        text: Home
+      - text: Articles
+        href: articles.qmd
+      - text: Changelog
+        href: news.qmd
+    right:
+      - icon: github
+        href: https://github.com/rodrigosqrt3/taxodist
+        aria-label: GitHub
+
+format:
+  html:
+    theme:
+      light: flatly
+      dark: darkly
+    css: styles.css
+    toc: true
+    toc-title: "Contents"
+    code-copy: true

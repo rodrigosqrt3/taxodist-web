@@ -1,0 +1,71 @@
+---
+title: "taxodist"
+subtitle: "Taxonomic Distance and Phylogenetic Lineage Computation"
+---
+
+<!-- Badges -->
+<p align="left">
+  <a href="https://cran.r-project.org/package=taxodist">
+    <img src="https://www.r-pkg.org/badges/version/taxodist" alt="CRAN status">
+  </a>
+  <a href="https://pypi.org/project/taxodist/">
+    <img src="https://badge.fury.io/py/taxodist.svg" alt="PyPI Version">
+  </a>
+</p>
+
+## Overview
+
+**`taxodist`** provides a unified computational framework in R and Python for calculating phylogenetic distances between any two taxa. It leverages the deeply resolved hierarchical lineage data from [The Taxonomicon](http://taxonomicon.taxonomy.nl), a comprehensive curated classification of all life based on *Systema Naturae 2000*.
+
+Given two taxon names, the package retrieves their full lineages, identifies the most recent common ancestor (MRCA), and computes a dissimilarity index based on lineage depth:
+
+$$
+d(A, B) = \frac{1}{\text{depth}(\text{MRCA}(A,B))}
+$$
+
+The deeper the shared ancestor, the smaller (closer to zero) the distance. This tree-metric ensures that taxa diverging at the same node are always equidistant from any third taxon, regardless of downstream lineage depth differences.
+
+## Key Features
+
+* **Phylogenetic Computation:** Pairwise taxonomic distances, MRCA identification, and precise taxonomic path tracing.
+* **Multivariate Ecology:** Native generation of symmetric distance matrices ready for hierarchical clustering (`taxo_cluster`), Principal Coordinate Analysis (`taxo_ordinate`), and direct integration with `vegan` (R) or `scipy` (Python).
+* **Robust Data Retrieval:** Built-in session-level caching to minimize network overhead, automatic homonym disambiguation via strict numeric IDs, and graceful fallback handling for upstream server timeouts.
+
+## Quick Start
+
+The API is strictly equivalent across supported languages, ensuring full reproducibility in multi-language bioinformatics workflows.
+
+::: {.panel-tabset}
+
+### R
+
+```r
+# Install from CRAN
+install.packages("taxodist")
+
+library(taxodist)
+
+# Compute pairwise distance
+taxo_distance("Tyrannosaurus", "Velociraptor")
+
+# Generate a distance matrix
+theropods <- c("Tyrannosaurus", "Velociraptor", "Spinosaurus", "Carnotaurus")
+mat <- distance_matrix(theropods)
+```
+
+### Python
+
+```python
+# Install from PyPI
+pip install taxodist
+
+import taxodist as td
+
+# Compute pairwise distance
+td.taxo_distance("Tyrannosaurus", "Velociraptor")
+
+# Generate a distance matrix
+theropods = ["Tyrannosaurus", "Velociraptor", "Spinosaurus", "Carnotaurus"]
+mat = td.distance_matrix(theropods)
+```
+:::
