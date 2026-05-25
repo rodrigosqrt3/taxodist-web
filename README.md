@@ -5,7 +5,7 @@ This site is currently under construction.
 This repository hosts the documentation website for the `taxodist` package,
 available for both R and Python.
 
-Website: https://rodrigosqrt3.github.io/taxodist-site
+Website: [https://rodrigosqrt3.github.io/taxodist-site](https://rodrigosqrt3.github.io/taxodist-web/)
 
 ## What is taxodist?
 
