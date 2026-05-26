@@ -1,0 +1,76 @@
+/* ── Variables ────────────────────────────────────────────────── */
+:root {
+  --bg:      #faf6ee;
+  --border:  #5c3d1e;
+  --branch:  #8b5e3c;
+  --tip:     #b8865a;
+  --ink:     #3d2510;
+  --muted:   #6b4c30;
+  --rule:    #d9c9b0;
+  --card-bg: #f3ede0;
+  --code-bg: #ede5d0;
+}
+
+/* ── Base ─────────────────────────────────────────────────────── */
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+}
+
+/* ── Navbar ───────────────────────────────────────────────────── */
+.navbar {
+  background-color: var(--border) !important;
+  border-bottom: 1px solid var(--branch);
+}
+.navbar-brand,
+.navbar .nav-link {
+  color: #faf6ee !important;
+}
+.navbar .nav-link:hover {
+  color: var(--rule) !important;
+}
+
+/* ── TOC ──────────────────────────────────────────────────────── */
+#TOC .nav-link {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+#TOC .nav-link:hover,
+#TOC .nav-link.active {
+  color: var(--border);
+}
+#TOC .nav-link.active {
+  border-left: 2px solid var(--branch);
+  padding-left: 0.5rem;
+}
+
+/* ── Links ────────────────────────────────────────────────────── */
+a { color: var(--border); }
+a:hover { color: var(--ink); }
+
+/* ── Code ─────────────────────────────────────────────────────── */
+pre, code {
+  background-color: var(--code-bg);
+  color: var(--ink);
+}
+
+/* ── Headings ─────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--ink);
+}
+
+/* ── Tabset ───────────────────────────────────────────────────── */
+.panel-tabset .nav-tabs {
+  border-bottom: 1px solid var(--rule);
+}
+.panel-tabset .nav-tabs .nav-link {
+  color: var(--muted);
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+}
+.panel-tabset .nav-tabs .nav-link.active {
+  color: var(--border);
+  border-bottom: 2px solid var(--border);
+  background: transparent;
+}

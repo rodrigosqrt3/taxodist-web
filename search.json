@@ -1,0 +1,58 @@
+[
+  {
+    "objectID": "index.html#overview",
+    "href": "index.html#overview",
+    "title": "taxodist",
+    "section": "Overview",
+    "text": "Overview\ntaxodist provides a unified computational framework in R and Python for calculating phylogenetic distances between any two taxa. It leverages the deeply resolved hierarchical lineage data from The Taxonomicon, a comprehensive curated classification of all life based on Systema Naturae 2000.\nGiven two taxon names, the package retrieves their full lineages, identifies the most recent common ancestor (MRCA), and computes a dissimilarity index based on lineage depth:\n\\[\nd(A, B) = \\frac{1}{\\text{depth}(\\text{MRCA}(A,B))}\n\\]\nThe deeper the shared ancestor, the smaller (closer to zero) the distance. This tree-metric ensures that taxa diverging at the same node are always equidistant from any third taxon, regardless of downstream lineage depth differences."
+  },
+  {
+    "objectID": "index.html#key-features",
+    "href": "index.html#key-features",
+    "title": "taxodist",
+    "section": "Key Features",
+    "text": "Key Features\n\nPhylogenetic Computation: Pairwise taxonomic distances, MRCA identification, and precise taxonomic path tracing.\nMultivariate Ecology: Native generation of symmetric distance matrices ready for hierarchical clustering (taxo_cluster), Principal Coordinate Analysis (taxo_ordinate), and direct integration with vegan (R) or scipy (Python).\nRobust Data Retrieval: Built-in session-level caching to minimize network overhead, automatic homonym disambiguation via strict numeric IDs, and graceful fallback handling for upstream server timeouts."
+  },
+  {
+    "objectID": "index.html#quick-start",
+    "href": "index.html#quick-start",
+    "title": "taxodist",
+    "section": "Quick Start",
+    "text": "Quick Start\nThe API is strictly equivalent across supported languages, ensuring full reproducibility in multi-language bioinformatics workflows.\n\nRPython\n\n\n# Install from CRAN\ninstall.packages(\"taxodist\")\n\nlibrary(taxodist)\n\n# Compute pairwise distance\ntaxo_distance(\"Tyrannosaurus\", \"Velociraptor\")\n\n# Generate a distance matrix\ntheropods &lt;- c(\"Tyrannosaurus\", \"Velociraptor\", \"Spinosaurus\", \"Carnotaurus\")\nmat &lt;- distance_matrix(theropods)\n\n\n# Install from PyPI\npip install taxodist\n\nimport taxodist as td\n\n# Compute pairwise distance\ntd.taxo_distance(\"Tyrannosaurus\", \"Velociraptor\")\n\n# Generate a distance matrix\ntheropods = [\"Tyrannosaurus\", \"Velociraptor\", \"Spinosaurus\", \"Carnotaurus\"]\nmat = td.distance_matrix(theropods)"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "Articles.html",
+    "href": "Articles.html",
+    "title": "Articles",
+    "section": "",
+    "text": "Coming soon."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "taxodist",
+    "section": "",
+    "text": "An R and Python package for computing phylogenetic distances between any two taxa.\n    Given two taxon names, taxodist retrieves their full hierarchical lineages from\n    The Taxonomicon and computes a dissimilarity index based on the depth of their\n    most recent common ancestor.\n  \n  \n    \n      \n    \n    \n      \n    \n  \n  \n    Get started\n    Reference\n    GitHub\nOverview"
+  },
+  {
+    "objectID": "news.html",
+    "href": "news.html",
+    "title": "Changelog",
+    "section": "",
+    "text": "Coming soon."
+  },
+  {
+    "objectID": "index.html#installation-and-basic-usage",
+    "href": "index.html#installation-and-basic-usage",
+    "title": "taxodist",
+    "section": "Installation and basic usage",
+    "text": "Installation and basic usage\n\nRPython\n\n\ninstall.packages(\"taxodist\")\nlibrary(taxodist)\n\n# Pairwise distance\ntaxo_distance(\"Tyrannosaurus\", \"Velociraptor\")\n#&gt; Distance : 0.01538   MRCA: Tyrannoraptora (depth 65)\n\ntaxo_distance(\"Tyrannosaurus\", \"Homo\")\n#&gt; Distance : 0.02778   MRCA: Amniota (depth 36)\n\ntaxo_distance(\"Tyrannosaurus\", \"Quercus\")\n#&gt; Distance : 0.25000   MRCA: discaria (depth 4)\n\n# Distance matrix and clustering\ntaxa &lt;- c(\"Tyrannosaurus\", \"Velociraptor\", \"Triceratops\",\n          \"Homo sapiens\", \"Panthera leo\", \"Quercus robur\")\nmat &lt;- distance_matrix(taxa)\ncl  &lt;- taxo_cluster(taxa)\nplot(cl)\n\n\npip install taxodist\nimport taxodist as td\n\n# Pairwise distance\ntd.taxo_distance(\"Tyrannosaurus\", \"Velociraptor\")\n# distance: 0.01538   mrca: Tyrannoraptora (depth 65)\n\ntd.taxo_distance(\"Tyrannosaurus\", \"Homo\")\n# distance: 0.02778   mrca: Amniota (depth 36)\n\n# Distance matrix and clustering\ntaxa = [\"Tyrannosaurus\", \"Velociraptor\", \"Triceratops\",\n        \"Homo sapiens\", \"Panthera leo\", \"Quercus robur\"]\nmat = td.distance_matrix(taxa)\ncl  = td.taxo_cluster(taxa)\ncl.plot()\n\n\n\nFunctions\nAPI reference\n\n\n  \n    Distance computation\n    \n      taxo_distance()Pairwise distance between two taxa\n      distance_matrix()Full symmetric distance matrix for a set of taxa\n      focal_distances()Distances from one focal taxon to a community\n      closest_relative()Nearest taxon among a set of candidates\n      mrca()Most recent common ancestor of two taxa\n    \n  \n  \n    Lineage and exploration\n    \n      get_lineage()Full lineage by taxon name\n      get_lineage_by_id()Full lineage by Taxonomicon numeric ID\n      get_taxonomicon_id()Resolve taxon name to numeric ID\n      taxo_search()Search Taxonomicon; handles homonyms\n      compare_lineages()Side-by-side lineage comparison at the MRCA\n      shared_clades()Shared lineage trunk between two taxa\n      taxo_path()Node-by-node path from taxon A to taxon B\n      lineage_depth()Number of nodes in a taxon's lineage\n      is_member()Test whether a taxon belongs to a clade\n      filter_clade()Retain only taxa belonging to a given clade\n      check_coverage()Verify which taxa are present in Taxonomicon\n    \n  \n  \n    Multivariate analysis\n    \n      taxo_cluster()Hierarchical clustering (UPGMA)\n      taxo_ordinate()Principal coordinate analysis (PCoA)\n      taxo_heatmap()Distance heatmap with marginal dendrograms\n    \n  \n  \n    Cache management\n    \n      clear_cache()Remove all entries from the session cache\n      save_cache()Serialise the cache to an .rds file\n      load_cache()Restore a previously saved cache from disk\n      cache_info()Report cache contents and memory use\n    \n  \n\n\n\n  Full reference\n\n\n\n  Data source and citation\n  \n    All lineage data is sourced from The Taxonomicon,\n    based on Systema Naturae 2000 (Brands, S.J., 1989 onwards).\n    Please cite this resource in any published work that uses taxodist.\n  \n  \n    Brands, S.J. (1989 onwards). Systema Naturae 2000. Amsterdam, The Netherlands.\n    Retrieved from The Taxonomicon, http://taxonomicon.taxonomy.nl."
+  }
+]

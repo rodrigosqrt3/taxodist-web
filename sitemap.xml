@@ -1,8 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://rodrigosqrt3.github.io/taxodist-site/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
+    <loc>https://rodrigosqrt3.github.io/taxodist/index.html</loc>
+    <lastmod>2026-05-25T19:47:20.175Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rodrigosqrt3.github.io/taxodist/about.html</loc>
+    <lastmod>2026-05-13T14:56:34.253Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rodrigosqrt3.github.io/taxodist/Articles.html</loc>
+    <lastmod>2026-05-25T19:47:10.062Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rodrigosqrt3.github.io/taxodist-site/index.html</loc>
+    <lastmod>2026-05-26T17:12:57.750Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rodrigosqrt3.github.io/taxodist-site/Articles.html</loc>
+    <lastmod>2026-05-26T17:12:47.322Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rodrigosqrt3.github.io/taxodist-site/news.html</loc>
+    <lastmod>2026-05-26T17:12:51.642Z</lastmod>
   </url>
 </urlset>
