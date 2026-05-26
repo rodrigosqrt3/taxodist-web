@@ -277,8 +277,8 @@ format:
 <nav class="site-nav">
   <a href="index.html" class="nav-brand">taxodist</a>
   <div class="nav-links">
-    <a href="articles/getting-started.html">Get Started</a>
-    <a href="articles/statistical-applications.html">Statistical Applications</a>
+    <a href="getting-started.html">Get Started</a>
+    <a href="statistical-applications.html">Statistical Applications</a>
     <a href="reference.html">Reference</a>
     <a href="https://github.com/rodrigosqrt3/taxodist" class="nav-github">GitHub ↗</a>
   </div>
