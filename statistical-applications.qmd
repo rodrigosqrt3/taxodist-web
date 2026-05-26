@@ -1,0 +1,391 @@
+---
+title: "Statistical Applications of taxodist"
+format:
+  html:
+    include-in-header:
+      text: |
+        <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+        <meta name="description" content="Use taxodist distance matrices with vegan and ape for taxonomic diversity, Mantel tests, PERMANOVA, and phylogenetic tree visualisation.">
+---
+
+```{=html}
+<style>
+  :root {
+    --bg:      #faf6ee;
+    --border:  #5c3d1e;
+    --branch:  #8b5e3c;
+    --tip:     #b8865a;
+    --ink:     #3d2510;
+    --muted:   #6b4c30;
+    --rule:    #d9c9b0;
+    --card-bg: #f3ede0;
+    --code-bg: #ede5d0;
+  }
+
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); }
+
+  .site-nav {
+    display: flex; align-items: center; gap: 2rem;
+    padding: 1rem 0; border-bottom: 1px solid var(--rule); margin-bottom: 3rem;
+  }
+  .nav-brand {
+    font-family: 'DM Serif Display', serif; font-size: 1.15rem;
+    color: var(--ink); text-decoration: none; font-weight: 400; flex-shrink: 0;
+  }
+  .nav-brand:hover { color: var(--border); text-decoration: none; }
+  .nav-links { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+  .nav-links a { font-size: 0.85rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--ink); text-decoration: none; }
+  .nav-github { margin-left: auto; color: var(--border) !important; }
+  .nav-active { color: var(--ink) !important; border-bottom: 1px solid var(--ink); }
+  .nav-toggle { display: none; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--ink); }
+  @media (max-width: 600px) {
+    .nav-toggle { display: block; margin-left: auto; }
+    .nav-links { display: none; width: 100%; flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1rem 0; }
+    .nav-links.open { display: flex; }
+    .nav-github { margin-left: 0 !important; }
+  }
+
+  .page-header {
+    padding: 3rem 0 2.5rem; border-bottom: 1px solid var(--rule); margin-bottom: 3rem; max-width: 680px;
+  }
+  .page-header .eyebrow {
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--branch); margin-bottom: 0.5rem;
+  }
+  .page-header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    color: var(--ink); margin: 0 0 0.75rem; font-weight: 400;
+  }
+  .page-header p { font-size: 1rem; color: var(--muted); margin: 0; line-height: 1.7; font-weight: 300; }
+
+  .prose { max-width: 720px; }
+  .prose h2 {
+    font-family: 'DM Serif Display', serif; font-size: 1.5rem;
+    color: var(--ink); font-weight: 400; margin: 3rem 0 1rem;
+    padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule);
+  }
+  .prose h3 { font-size: 1rem; font-weight: 600; color: var(--ink); margin: 2rem 0 0.75rem; }
+  .prose p { color: var(--muted); line-height: 1.75; margin: 0 0 1rem; font-size: 0.95rem; }
+  .prose code {
+    font-family: 'DM Mono', monospace; font-size: 0.82rem;
+    background: var(--code-bg); color: var(--border);
+    padding: 0.15em 0.4em; border-radius: 2px;
+  }
+  .prose a { color: var(--border); }
+  .prose a:hover { color: var(--ink); }
+  .prose ul { color: var(--muted); font-size: 0.95rem; line-height: 1.75; padding-left: 1.25rem; margin: 0 0 1rem; }
+  .prose blockquote {
+    border-left: 3px solid var(--branch); margin: 0 0 1rem;
+    padding: 0.5rem 1.25rem;
+    background: var(--card-bg); border-radius: 0 4px 4px 0;
+  }
+  .prose blockquote p { margin: 0; font-size: 0.88rem; }
+
+  .callout {
+    background: var(--card-bg); border: 1px solid var(--rule);
+    border-left: 3px solid var(--branch); border-radius: 4px;
+    padding: 1.25rem 1.5rem; margin: 1.5rem 0;
+  }
+  .callout p { margin: 0; font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+  .callout strong { color: var(--ink); }
+
+  /* Index table for methods */
+  .method-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0 2rem;
+  }
+  .method-card {
+    background: var(--card-bg); border: 1px solid var(--rule); border-radius: 4px; padding: 1.25rem 1.5rem;
+  }
+  .method-card h4 { font-size: 0.85rem; font-weight: 600; color: var(--ink); margin: 0 0 0.4rem; }
+  .method-card p { font-size: 0.82rem; color: var(--muted); margin: 0; line-height: 1.55; }
+  @media (max-width: 600px) { .method-grid { grid-template-columns: 1fr; } }
+
+  .article-nav {
+    display: flex; justify-content: space-between; margin-top: 4rem;
+    padding-top: 2rem; border-top: 1px solid var(--rule);
+  }
+  .article-nav a {
+    font-size: 0.85rem; font-weight: 500; color: var(--border);
+    text-decoration: none; display: flex; align-items: center; gap: 0.4rem;
+  }
+  .article-nav a:hover { color: var(--ink); text-decoration: none; }
+</style>
+
+<nav class="site-nav">
+  <a href="../index.html" class="nav-brand">taxodist</a>
+  <div class="nav-links">
+    <a href="getting-started.html">Get Started</a>
+    <a href="statistical-applications.html" class="nav-active">Statistical Applications</a>
+    <a href="../reference.html">Reference</a>
+    <a href="https://github.com/rodrigosqrt3/taxodist" class="nav-github">GitHub ↗</a>
+  </div>
+  <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+</nav>
+
+<div class="page-header">
+  <div class="eyebrow">Article</div>
+  <h1>Statistical Applications</h1>
+  <p>Use the taxodist distance matrix with <code>vegan</code> and <code>ape</code> for taxonomic diversity indices, Mantel tests, PERMANOVA, and phylogenetic tree visualisation.</p>
+</div>
+
+<div class="prose">
+```
+
+The `taxodist` distance matrix is a standard `dist` object and integrates
+directly with the R ecosystem for multivariate analysis. All examples use a set
+of threatened mammals from Brazil spanning five broad taxonomic groups.
+
+```{=html}
+<div class="method-grid">
+  <div class="method-card"><h4>Phylogenetic tree</h4><p>Convert a taxo_cluster result to a <code>phylo</code> object for publication-quality plots with <code>ape</code>.</p></div>
+  <div class="method-card"><h4>Taxonomic diversity</h4><p>Clarke &amp; Warwick indices via <code>vegan::taxondive()</code> — Delta, Delta*, Delta+, Lambda+.</p></div>
+  <div class="method-card"><h4>Mantel test</h4><p>Test correlation between taxonomic distance and geographic or trait distance matrices.</p></div>
+  <div class="method-card"><h4>PERMANOVA</h4><p>Test whether taxonomic groups occupy distinct regions of distance space with <code>vegan::adonis2()</code>.</p></div>
+</div>
+```
+
+---
+
+## Example dataset: threatened mammals of Brazil
+
+```r
+taxa_brazil <- c(
+  "Priodontes", "Myrmecophaga", "Chrysocyon", "Tapirus", "Didelphis",
+  "Leontopithecus", "Brachyteles",
+  "Panthera", "Pteronura", "Puma",
+  "Sotalia", "Pontoporia",
+  "Trichechus", "Mazama", "Blastocerus"
+)
+```
+
+The dataset covers xenarthrans (`Priodontes`, `Myrmecophaga`), a marsupial
+(`Didelphis`), ungulates (`Tapirus`, `Mazama`, `Blastocerus`), primates
+(`Leontopithecus`, `Brachyteles`), carnivores (`Chrysocyon`, `Panthera`,
+`Pteronura`, `Puma`), cetaceans (`Sotalia`, `Pontoporia`), and a sirenian
+(`Trichechus`).
+
+```r
+library(taxodist)
+mat <- distance_matrix(taxa_brazil)
+print(mat)
+#>                Priodontes Myrmecophaga Chrysocyon    Tapirus  Didelphis
+#> Myrmecophaga   0.01639344
+#> Chrysocyon     0.01694915   0.01694915
+#> Tapirus        0.01694915   0.01694915 0.01587302
+#> Didelphis      0.01754386   0.01754386 0.01754386 0.01754386
+#> Leontopithecus 0.01694915   0.01694915 0.01666667 0.01666667 0.01754386
+#> ...
+```
+
+`Didelphis` shows the largest distances to all other taxa (0.01754),
+consistent with the early divergence of marsupials from placental mammals.
+Carnivores (`Panthera`, `Pteronura`, `Puma`) show smaller distances among
+themselves, reflecting a more recent common ancestor within Carnivora.
+
+```{=html}
+<div class="callout">
+  <p><strong>Caching:</strong> Lineages are cached after the first retrieval, so subsequent analyses on the same taxa are instantaneous. Run <code>save_cache()</code> at the end of a session and <code>load_cache()</code> at the start of the next to persist the cache across sessions.</p>
+</div>
+```
+
+---
+
+## Phylogenetic tree with `ape`
+
+`taxo_cluster()` performs hierarchical clustering on the distance matrix and
+returns an object that `ape` can convert directly to a `phylo` tree.
+
+```r
+library(ape)
+
+cl   <- taxo_cluster(taxa_brazil)
+tree <- ape::as.phylo(cl$hclust)
+
+plot(tree,
+     main      = "Threatened Mammals of Brazil",
+     cex       = 0.85,
+     tip.color = "gray20")
+```
+
+The `phylo` object is fully compatible with all `ape` tree manipulation and
+plotting functions, including `nodelabels()`, `edgelabels()`, and export to
+Newick format:
+
+```r
+ape::write.tree(tree, file = "taxa_brazil.nwk")
+```
+
+---
+
+## Taxonomic diversity with `vegan`
+
+### Clarke and Warwick indices (`taxondive`)
+
+`vegan::taxondive()` computes a family of taxonomic diversity indices from a
+community matrix and a taxonomic distance matrix. These indices capture not just
+species richness but how distantly related the species in a community are — a
+community of closely related species scores lower than one spanning multiple
+orders with the same richness.
+
+```r
+set.seed(123)
+library(vegan)
+
+comm <- matrix(c(
+  1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,   # xenarthrans + marsupial
+  0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,   # primates + carnivores
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1    # cetaceans + sirenian + ungulates
+), nrow = 3, byrow = TRUE)
+
+colnames(comm) <- taxa_brazil
+rownames(comm) <- c("community_A", "community_B", "community_C")
+
+vegan::taxondive(comm, mat)
+#>             Species    Delta   Delta*   Lambda+   Delta+
+#> community_A       3 0.01716  0.01716  2.94e-07  0.01716
+#> community_B       5 0.01591  0.01591  8.83e-07  0.01591
+#> community_C       5 0.01575  0.01575  1.18e-06  0.01575
+```
+
+The key indices are:
+
+- **Delta** (Δ): mean taxonomic distance between all pairs of species in the community.
+- **Delta\*** (Δ\*): mean pairwise distance excluding self-comparisons; comparable across community sizes.
+- **Delta+** (Δ+): mean pairwise distance weighted by abundances. For presence-absence data this equals Δ\*.
+- **Lambda+** (Λ+): variance in taxonomic distances, measuring how evenly a community spans the taxonomic tree.
+
+`community_A`, dominated by xenarthrans and a marsupial, scores the highest
+Δ (0.01716), reflecting deeper divergences among its members. `community_B`
+(primates and carnivores) scores the lowest (0.01591), as its members share
+more recent common ancestors within Placentalia.
+
+---
+
+## Mantel test with `vegan`
+
+The Mantel test assesses the correlation between two distance matrices by
+permutation. A typical application is testing whether taxonomic distance
+correlates with geographic distance — a signature of phylogeographic structure.
+
+```r
+set.seed(42)
+coords <- matrix(rnorm(30), ncol = 2)
+rownames(coords) <- taxa_brazil
+geo_dist <- dist(coords)
+
+vegan::mantel(mat, geo_dist)
+#> Mantel statistic r: -0.0569
+#>       Significance: 0.653
+```
+
+For non-normal distance distributions, Spearman is more robust:
+
+```r
+vegan::mantel(mat, geo_dist, method = "spearman", permutations = 9999)
+#> Mantel statistic r: -0.07405
+#>       Significance: 0.672
+```
+
+```{=html}
+<div class="callout">
+  <p><strong>Note:</strong> The non-significant result here is expected — coordinates are random. In practice, replace <code>coords</code> with observed latitude/longitude values from your study area.</p>
+</div>
+```
+
+---
+
+## PERMANOVA with `vegan`
+
+PERMANOVA tests whether groups of taxa differ significantly in taxonomic
+distance space. It partitions total variance in the distance matrix into
+within-group and between-group components and assesses significance by
+permutation, with no assumption of multivariate normality.
+
+```r
+groups <- c(
+  "xenarthra", "xenarthra", "carnivore", "ungulate",  "marsupial",
+  "primate",   "primate",
+  "carnivore", "carnivore", "carnivore",
+  "cetacean",  "cetacean",
+  "sirenian",  "ungulate",  "ungulate"
+)
+
+vegan::adonis2(mat ~ groups)
+#>          Df  SumOfSqs      R2      F Pr(>F)
+#> Model     6 0.00100049 0.52646 1.4823  0.001 ***
+#> Residual  8 0.00089992 0.47354
+#> Total    14 0.00190041 1.00000
+```
+
+The taxonomic grouping explains 52.6% of the total variance in the distance
+matrix (R² = 0.526, p = 0.001), confirming that the broad mammalian orders
+occupy distinct regions of taxonomic distance space — consistent with their
+deep evolutionary divergences.
+
+For pairwise comparisons after a significant PERMANOVA, see
+`pairwise.adonis2()` in the `pairwiseAdonis` package.
+
+---
+
+## A complete workflow
+
+```r
+library(taxodist)
+library(vegan)
+library(ape)
+
+# 1. Define taxa
+taxa_brazil <- c(
+  "Priodontes", "Myrmecophaga", "Chrysocyon", "Tapirus", "Didelphis",
+  "Leontopithecus", "Brachyteles", "Panthera", "Pteronura", "Puma",
+  "Sotalia", "Pontoporia", "Trichechus", "Mazama", "Blastocerus"
+)
+
+# 2. Compute distance matrix
+mat <- distance_matrix(taxa_brazil)
+
+# 3. Phylogenetic tree
+cl   <- taxo_cluster(taxa_brazil)
+tree <- ape::as.phylo(cl$hclust)
+plot(tree, main = "Threatened Mammals of Brazil", cex = 0.85)
+
+# 4. PCoA ordination
+ord <- taxo_ordinate(mat)
+plot(ord, main = "PCoA: Taxonomic Distance Space")
+
+# 5. PERMANOVA
+groups <- c(
+  "xenarthra", "xenarthra", "carnivore", "ungulate", "marsupial",
+  "primate", "primate", "carnivore", "carnivore", "carnivore",
+  "cetacean", "cetacean", "sirenian", "ungulate", "ungulate"
+)
+vegan::adonis2(mat ~ groups)
+```
+
+---
+
+## References
+
+Anderson, M.J. (2001). A new method for non-parametric multivariate analysis
+of variance. *Austral Ecology*, 26, 32–46.
+
+Clarke, K.R. and Warwick, R.M. (1998). A taxonomic distinctness index and its
+statistical properties. *Journal of Applied Ecology*, 35, 523–531.
+
+Clarke, K.R. and Warwick, R.M. (2001). A further biodiversity index applicable
+to species lists: variation in taxonomic distinctness. *Marine Ecology Progress
+Series*, 216, 265–278.
+
+Brands, S.J. (1989 onwards). *Systema Naturae 2000*. Amsterdam, The Netherlands.
+Retrieved from The Taxonomicon, <http://taxonomicon.taxonomy.nl>.
+
+```{=html}
+</div>
+
+<div class="article-nav">
+  <a href="getting-started.html">← Get Started</a>
+  <a href="../reference.html">Reference →</a>
+</div>
+```
