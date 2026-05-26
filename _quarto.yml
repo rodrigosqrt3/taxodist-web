@@ -5,7 +5,7 @@ website:
   title: "taxodist"
   site-url: "https://rodrigosqrt3.github.io/taxodist-site"
   navbar:
-    background: "#2D5016"
+    background: "#5c3d1e"
     search: true
     left:
       - href: index.qmd
