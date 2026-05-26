@@ -95,6 +95,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=DM+Mono:wght@400;500&amp;family=DM+Sans:wght@300;400;500&amp;display=swap" rel="stylesheet">
+<meta name="description" content="taxodist is an R and Python package for computing taxonomic distances between any two taxa using The Taxonomicon database.">
 
 
 <link rel="stylesheet" href="styles.css">
@@ -192,6 +193,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 
   body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); }
+
+  /* Nav */
+  .site-nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem 0 1rem;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 3rem;
+  }
+  .nav-brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.15rem;
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    flex-shrink: 0;
+  }
+  .nav-brand:hover { color: var(--border); text-decoration: none; }
+  .nav-links { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+  .nav-links a {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--ink); text-decoration: none; }
+  .nav-github { margin-left: auto; color: var(--border) !important; }
+  .nav-toggle { display: none; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--ink); }
+  @media (max-width: 600px) {
+    .nav-toggle { display: block; margin-left: auto; }
+    .nav-links { display: none; width: 100%; flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1rem 0; }
+    .nav-links.open { display: flex; }
+    .nav-github { margin-left: 0 !important; }
+  }
 
   /* Hero */
   .hero {
@@ -403,6 +441,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     .app-callout { grid-template-columns: 1fr; }
   }
 </style>
+
+<!-- NAVBAR -->
+<nav class="site-nav">
+  <a href="index.html" class="nav-brand">taxodist</a>
+  <div class="nav-links">
+    <a href="articles/getting-started.html">Get Started</a>
+    <a href="articles/statistical-applications.html">Statistical Applications</a>
+    <a href="reference.html">Reference</a>
+    <a href="https://github.com/rodrigosqrt3/taxodist" class="nav-github">GitHub ↗</a>
+  </div>
+  <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+</nav>
 
 <div class="hero">
   <h1>taxodist</h1>

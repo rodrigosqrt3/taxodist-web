@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>taxodist - Statistical Applications of taxodist</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=DM+Mono:wght@400;500&amp;family=DM+Sans:wght@300;400;500&amp;display=swap" rel="stylesheet">
+<meta name="description" content="Use taxodist distance matrices with vegan and ape for taxonomic diversity, Mantel tests, PERMANOVA, and phylogenetic tree visualisation.">
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">taxodist</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./articles.qmd" rel="" target="">
+ <span class="menu-text">Articles</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./news.html" rel="" target="">
+ <span class="menu-text">Changelog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/rodrigosqrt3/taxodist" rel="" target=""><i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#example-dataset-threatened-mammals-of-brazil" id="toc-example-dataset-threatened-mammals-of-brazil" class="nav-link active" data-scroll-target="#example-dataset-threatened-mammals-of-brazil">Example dataset: threatened mammals of Brazil</a></li>
+  <li><a href="#phylogenetic-tree-with-ape" id="toc-phylogenetic-tree-with-ape" class="nav-link" data-scroll-target="#phylogenetic-tree-with-ape">Phylogenetic tree with <code>ape</code></a></li>
+  <li><a href="#taxonomic-diversity-with-vegan" id="toc-taxonomic-diversity-with-vegan" class="nav-link" data-scroll-target="#taxonomic-diversity-with-vegan">Taxonomic diversity with <code>vegan</code></a>
+  <ul class="collapse">
+  <li><a href="#clarke-and-warwick-indices-taxondive" id="toc-clarke-and-warwick-indices-taxondive" class="nav-link" data-scroll-target="#clarke-and-warwick-indices-taxondive">Clarke and Warwick indices (<code>taxondive</code>)</a></li>
+  </ul></li>
+  <li><a href="#mantel-test-with-vegan" id="toc-mantel-test-with-vegan" class="nav-link" data-scroll-target="#mantel-test-with-vegan">Mantel test with <code>vegan</code></a></li>
+  <li><a href="#permanova-with-vegan" id="toc-permanova-with-vegan" class="nav-link" data-scroll-target="#permanova-with-vegan">PERMANOVA with <code>vegan</code></a></li>
+  <li><a href="#a-complete-workflow" id="toc-a-complete-workflow" class="nav-link" data-scroll-target="#a-complete-workflow">A complete workflow</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Statistical Applications of taxodist</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+
+<style>
+  :root {
+    --bg:      #faf6ee;
+    --border:  #5c3d1e;
+    --branch:  #8b5e3c;
+    --tip:     #b8865a;
+    --ink:     #3d2510;
+    --muted:   #6b4c30;
+    --rule:    #d9c9b0;
+    --card-bg: #f3ede0;
+    --code-bg: #ede5d0;
+  }
+
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); }
+
+  .site-nav {
+    display: flex; align-items: center; gap: 2rem;
+    padding: 1rem 0; border-bottom: 1px solid var(--rule); margin-bottom: 3rem;
+  }
+  .nav-brand {
+    font-family: 'DM Serif Display', serif; font-size: 1.15rem;
+    color: var(--ink); text-decoration: none; font-weight: 400; flex-shrink: 0;
+  }
+  .nav-brand:hover { color: var(--border); text-decoration: none; }
+  .nav-links { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+  .nav-links a { font-size: 0.85rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--ink); text-decoration: none; }
+  .nav-github { margin-left: auto; color: var(--border) !important; }
+  .nav-active { color: var(--ink) !important; border-bottom: 1px solid var(--ink); }
+  .nav-toggle { display: none; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--ink); }
+  @media (max-width: 600px) {
+    .nav-toggle { display: block; margin-left: auto; }
+    .nav-links { display: none; width: 100%; flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1rem 0; }
+    .nav-links.open { display: flex; }
+    .nav-github { margin-left: 0 !important; }
+  }
+
+  .page-header {
+    padding: 3rem 0 2.5rem; border-bottom: 1px solid var(--rule); margin-bottom: 3rem; max-width: 680px;
+  }
+  .page-header .eyebrow {
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--branch); margin-bottom: 0.5rem;
+  }
+  .page-header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    color: var(--ink); margin: 0 0 0.75rem; font-weight: 400;
+  }
+  .page-header p { font-size: 1rem; color: var(--muted); margin: 0; line-height: 1.7; font-weight: 300; }
+
+  .prose { max-width: 720px; }
+  .prose h2 {
+    font-family: 'DM Serif Display', serif; font-size: 1.5rem;
+    color: var(--ink); font-weight: 400; margin: 3rem 0 1rem;
+    padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule);
+  }
+  .prose h3 { font-size: 1rem; font-weight: 600; color: var(--ink); margin: 2rem 0 0.75rem; }
+  .prose p { color: var(--muted); line-height: 1.75; margin: 0 0 1rem; font-size: 0.95rem; }
+  .prose code {
+    font-family: 'DM Mono', monospace; font-size: 0.82rem;
+    background: var(--code-bg); color: var(--border);
+    padding: 0.15em 0.4em; border-radius: 2px;
+  }
+  .prose a { color: var(--border); }
+  .prose a:hover { color: var(--ink); }
+  .prose ul { color: var(--muted); font-size: 0.95rem; line-height: 1.75; padding-left: 1.25rem; margin: 0 0 1rem; }
+  .prose blockquote {
+    border-left: 3px solid var(--branch); margin: 0 0 1rem;
+    padding: 0.5rem 1.25rem;
+    background: var(--card-bg); border-radius: 0 4px 4px 0;
+  }
+  .prose blockquote p { margin: 0; font-size: 0.88rem; }
+
+  .callout {
+    background: var(--card-bg); border: 1px solid var(--rule);
+    border-left: 3px solid var(--branch); border-radius: 4px;
+    padding: 1.25rem 1.5rem; margin: 1.5rem 0;
+  }
+  .callout p { margin: 0; font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+  .callout strong { color: var(--ink); }
+
+  /* Index table for methods */
+  .method-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0 2rem;
+  }
+  .method-card {
+    background: var(--card-bg); border: 1px solid var(--rule); border-radius: 4px; padding: 1.25rem 1.5rem;
+  }
+  .method-card h4 { font-size: 0.85rem; font-weight: 600; color: var(--ink); margin: 0 0 0.4rem; }
+  .method-card p { font-size: 0.82rem; color: var(--muted); margin: 0; line-height: 1.55; }
+  @media (max-width: 600px) { .method-grid { grid-template-columns: 1fr; } }
+
+  .article-nav {
+    display: flex; justify-content: space-between; margin-top: 4rem;
+    padding-top: 2rem; border-top: 1px solid var(--rule);
+  }
+  .article-nav a {
+    font-size: 0.85rem; font-weight: 500; color: var(--border);
+    text-decoration: none; display: flex; align-items: center; gap: 0.4rem;
+  }
+  .article-nav a:hover { color: var(--ink); text-decoration: none; }
+</style>
+
+<nav class="site-nav">
+  <a href="../index.html" class="nav-brand">taxodist</a>
+  <div class="nav-links">
+    <a href="getting-started.html">Get Started</a>
+    <a href="statistical-applications.html" class="nav-active">Statistical Applications</a>
+    <a href="../reference.html">Reference</a>
+    <a href="https://github.com/rodrigosqrt3/taxodist" class="nav-github">GitHub ↗</a>
+  </div>
+  <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+</nav>
+
+<div class="page-header">
+  <div class="eyebrow">Article</div>
+  <h1>Statistical Applications</h1>
+  <p>Use the taxodist distance matrix with <code>vegan</code> and <code>ape</code> for taxonomic diversity indices, Mantel tests, PERMANOVA, and phylogenetic tree visualisation.</p>
+</div>
+
+<div class="prose">
+<p>The <code>taxodist</code> distance matrix is a standard <code>dist</code> object and integrates directly with the R ecosystem for multivariate analysis. All examples use a set of threatened mammals from Brazil spanning five broad taxonomic groups.</p>
+<div class="method-grid">
+  <div class="method-card"><h4 class="anchored">Phylogenetic tree</h4><p>Convert a taxo_cluster result to a <code>phylo</code> object for publication-quality plots with <code>ape</code>.</p></div>
+  <div class="method-card"><h4 class="anchored">Taxonomic diversity</h4><p>Clarke &amp; Warwick indices via <code>vegan::taxondive()</code> — Delta, Delta*, Delta+, Lambda+.</p></div>
+  <div class="method-card"><h4 class="anchored">Mantel test</h4><p>Test correlation between taxonomic distance and geographic or trait distance matrices.</p></div>
+  <div class="method-card"><h4 class="anchored">PERMANOVA</h4><p>Test whether taxonomic groups occupy distinct regions of distance space with <code>vegan::adonis2()</code>.</p></div>
+</div>
+<hr>
+<section id="example-dataset-threatened-mammals-of-brazil" class="level2">
+<h2 class="anchored" data-anchor-id="example-dataset-threatened-mammals-of-brazil">Example dataset: threatened mammals of Brazil</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>taxa_brazil <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Priodontes"</span>, <span class="st">"Myrmecophaga"</span>, <span class="st">"Chrysocyon"</span>, <span class="st">"Tapirus"</span>, <span class="st">"Didelphis"</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Leontopithecus"</span>, <span class="st">"Brachyteles"</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Panthera"</span>, <span class="st">"Pteronura"</span>, <span class="st">"Puma"</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Sotalia"</span>, <span class="st">"Pontoporia"</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Trichechus"</span>, <span class="st">"Mazama"</span>, <span class="st">"Blastocerus"</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The dataset covers xenarthrans (<code>Priodontes</code>, <code>Myrmecophaga</code>), a marsupial (<code>Didelphis</code>), ungulates (<code>Tapirus</code>, <code>Mazama</code>, <code>Blastocerus</code>), primates (<code>Leontopithecus</code>, <code>Brachyteles</code>), carnivores (<code>Chrysocyon</code>, <code>Panthera</code>, <code>Pteronura</code>, <code>Puma</code>), cetaceans (<code>Sotalia</code>, <code>Pontoporia</code>), and a sirenian (<code>Trichechus</code>).</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(taxodist)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">distance_matrix</span>(taxa_brazil)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mat)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                Priodontes Myrmecophaga Chrysocyon    Tapirus  Didelphis</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Myrmecophaga   0.01639344</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Chrysocyon     0.01694915   0.01694915</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Tapirus        0.01694915   0.01694915 0.01587302</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Didelphis      0.01754386   0.01754386 0.01754386 0.01754386</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Leontopithecus 0.01694915   0.01694915 0.01666667 0.01666667 0.01754386</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>Didelphis</code> shows the largest distances to all other taxa (0.01754), consistent with the early divergence of marsupials from placental mammals. Carnivores (<code>Panthera</code>, <code>Pteronura</code>, <code>Puma</code>) show smaller distances among themselves, reflecting a more recent common ancestor within Carnivora.</p>
+<div class="callout">
+  <p><strong>Caching:</strong> Lineages are cached after the first retrieval, so subsequent analyses on the same taxa are instantaneous. Run <code>save_cache()</code> at the end of a session and <code>load_cache()</code> at the start of the next to persist the cache across sessions.</p>
+</div>
+<hr>
+</section>
+<section id="phylogenetic-tree-with-ape" class="level2">
+<h2 class="anchored" data-anchor-id="phylogenetic-tree-with-ape">Phylogenetic tree with <code>ape</code></h2>
+<p><code>taxo_cluster()</code> performs hierarchical clustering on the distance matrix and returns an object that <code>ape</code> can convert directly to a <code>phylo</code> tree.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ape)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>cl   <span class="ot">&lt;-</span> <span class="fu">taxo_cluster</span>(taxa_brazil)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">as.phylo</span>(cl<span class="sc">$</span>hclust)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tree,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">main      =</span> <span class="st">"Threatened Mammals of Brazil"</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">cex       =</span> <span class="fl">0.85</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">tip.color =</span> <span class="st">"gray20"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>phylo</code> object is fully compatible with all <code>ape</code> tree manipulation and plotting functions, including <code>nodelabels()</code>, <code>edgelabels()</code>, and export to Newick format:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ape<span class="sc">::</span><span class="fu">write.tree</span>(tree, <span class="at">file =</span> <span class="st">"taxa_brazil.nwk"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+<section id="taxonomic-diversity-with-vegan" class="level2">
+<h2 class="anchored" data-anchor-id="taxonomic-diversity-with-vegan">Taxonomic diversity with <code>vegan</code></h2>
+<section id="clarke-and-warwick-indices-taxondive" class="level3">
+<h3 class="anchored" data-anchor-id="clarke-and-warwick-indices-taxondive">Clarke and Warwick indices (<code>taxondive</code>)</h3>
+<p><code>vegan::taxondive()</code> computes a family of taxonomic diversity indices from a community matrix and a taxonomic distance matrix. These indices capture not just species richness but how distantly related the species in a community are — a community of closely related species scores lower than one spanning multiple orders with the same richness.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>comm <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>,   <span class="co"># xenarthrans + marsupial</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>,   <span class="co"># primates + carnivores</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>    <span class="co"># cetaceans + sirenian + ungulates</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>), <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(comm) <span class="ot">&lt;-</span> taxa_brazil</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(comm) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"community_A"</span>, <span class="st">"community_B"</span>, <span class="st">"community_C"</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>vegan<span class="sc">::</span><span class="fu">taxondive</span>(comm, mat)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             Species    Delta   Delta*   Lambda+   Delta+</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; community_A       3 0.01716  0.01716  2.94e-07  0.01716</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; community_B       5 0.01591  0.01591  8.83e-07  0.01591</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; community_C       5 0.01575  0.01575  1.18e-06  0.01575</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The key indices are:</p>
+<ul>
+<li><strong>Delta</strong> (Δ): mean taxonomic distance between all pairs of species in the community.</li>
+<li><strong>Delta*</strong> (Δ*): mean pairwise distance excluding self-comparisons; comparable across community sizes.</li>
+<li><strong>Delta+</strong> (Δ+): mean pairwise distance weighted by abundances. For presence-absence data this equals Δ*.</li>
+<li><strong>Lambda+</strong> (Λ+): variance in taxonomic distances, measuring how evenly a community spans the taxonomic tree.</li>
+</ul>
+<p><code>community_A</code>, dominated by xenarthrans and a marsupial, scores the highest Δ (0.01716), reflecting deeper divergences among its members. <code>community_B</code> (primates and carnivores) scores the lowest (0.01591), as its members share more recent common ancestors within Placentalia.</p>
+<hr>
+</section>
+</section>
+<section id="mantel-test-with-vegan" class="level2">
+<h2 class="anchored" data-anchor-id="mantel-test-with-vegan">Mantel test with <code>vegan</code></h2>
+<p>The Mantel test assesses the correlation between two distance matrices by permutation. A typical application is testing whether taxonomic distance correlates with geographic distance — a signature of phylogeographic structure.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">30</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(coords) <span class="ot">&lt;-</span> taxa_brazil</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>geo_dist <span class="ot">&lt;-</span> <span class="fu">dist</span>(coords)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>vegan<span class="sc">::</span><span class="fu">mantel</span>(mat, geo_dist)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Mantel statistic r: -0.0569</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       Significance: 0.653</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For non-normal distance distributions, Spearman is more robust:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>vegan<span class="sc">::</span><span class="fu">mantel</span>(mat, geo_dist, <span class="at">method =</span> <span class="st">"spearman"</span>, <span class="at">permutations =</span> <span class="dv">9999</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Mantel statistic r: -0.07405</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       Significance: 0.672</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout">
+  <p><strong>Note:</strong> The non-significant result here is expected — coordinates are random. In practice, replace <code>coords</code> with observed latitude/longitude values from your study area.</p>
+</div>
+<hr>
+</section>
+<section id="permanova-with-vegan" class="level2">
+<h2 class="anchored" data-anchor-id="permanova-with-vegan">PERMANOVA with <code>vegan</code></h2>
+<p>PERMANOVA tests whether groups of taxa differ significantly in taxonomic distance space. It partitions total variance in the distance matrix into within-group and between-group components and assesses significance by permutation, with no assumption of multivariate normality.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>groups <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"xenarthra"</span>, <span class="st">"xenarthra"</span>, <span class="st">"carnivore"</span>, <span class="st">"ungulate"</span>,  <span class="st">"marsupial"</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"primate"</span>,   <span class="st">"primate"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"carnivore"</span>, <span class="st">"carnivore"</span>, <span class="st">"carnivore"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"cetacean"</span>,  <span class="st">"cetacean"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"sirenian"</span>,  <span class="st">"ungulate"</span>,  <span class="st">"ungulate"</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>vegan<span class="sc">::</span><span class="fu">adonis2</span>(mat <span class="sc">~</span> groups)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          Df  SumOfSqs      R2      F Pr(&gt;F)</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model     6 0.00100049 0.52646 1.4823  0.001 ***</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual  8 0.00089992 0.47354</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Total    14 0.00190041 1.00000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The taxonomic grouping explains 52.6% of the total variance in the distance matrix (R² = 0.526, p = 0.001), confirming that the broad mammalian orders occupy distinct regions of taxonomic distance space — consistent with their deep evolutionary divergences.</p>
+<p>For pairwise comparisons after a significant PERMANOVA, see <code>pairwise.adonis2()</code> in the <code>pairwiseAdonis</code> package.</p>
+<hr>
+</section>
+<section id="a-complete-workflow" class="level2">
+<h2 class="anchored" data-anchor-id="a-complete-workflow">A complete workflow</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(taxodist)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ape)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Define taxa</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>taxa_brazil <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Priodontes"</span>, <span class="st">"Myrmecophaga"</span>, <span class="st">"Chrysocyon"</span>, <span class="st">"Tapirus"</span>, <span class="st">"Didelphis"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Leontopithecus"</span>, <span class="st">"Brachyteles"</span>, <span class="st">"Panthera"</span>, <span class="st">"Pteronura"</span>, <span class="st">"Puma"</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Sotalia"</span>, <span class="st">"Pontoporia"</span>, <span class="st">"Trichechus"</span>, <span class="st">"Mazama"</span>, <span class="st">"Blastocerus"</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Compute distance matrix</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">distance_matrix</span>(taxa_brazil)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Phylogenetic tree</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>cl   <span class="ot">&lt;-</span> <span class="fu">taxo_cluster</span>(taxa_brazil)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">as.phylo</span>(cl<span class="sc">$</span>hclust)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tree, <span class="at">main =</span> <span class="st">"Threatened Mammals of Brazil"</span>, <span class="at">cex =</span> <span class="fl">0.85</span>)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. PCoA ordination</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>ord <span class="ot">&lt;-</span> <span class="fu">taxo_ordinate</span>(mat)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ord, <span class="at">main =</span> <span class="st">"PCoA: Taxonomic Distance Space"</span>)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. PERMANOVA</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>groups <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"xenarthra"</span>, <span class="st">"xenarthra"</span>, <span class="st">"carnivore"</span>, <span class="st">"ungulate"</span>, <span class="st">"marsupial"</span>,</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">"primate"</span>, <span class="st">"primate"</span>, <span class="st">"carnivore"</span>, <span class="st">"carnivore"</span>, <span class="st">"carnivore"</span>,</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">"cetacean"</span>, <span class="st">"cetacean"</span>, <span class="st">"sirenian"</span>, <span class="st">"ungulate"</span>, <span class="st">"ungulate"</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>vegan<span class="sc">::</span><span class="fu">adonis2</span>(mat <span class="sc">~</span> groups)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>Anderson, M.J. (2001). A new method for non-parametric multivariate analysis of variance. <em>Austral Ecology</em>, 26, 32–46.</p>
+<p>Clarke, K.R. and Warwick, R.M. (1998). A taxonomic distinctness index and its statistical properties. <em>Journal of Applied Ecology</em>, 35, 523–531.</p>
+<p>Clarke, K.R. and Warwick, R.M. (2001). A further biodiversity index applicable to species lists: variation in taxonomic distinctness. <em>Marine Ecology Progress Series</em>, 216, 265–278.</p>
+<p>Brands, S.J. (1989 onwards). <em>Systema Naturae 2000</em>. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, <a href="http://taxonomicon.taxonomy.nl" class="uri">http://taxonomicon.taxonomy.nl</a>.</p>
+</section></div>
+
+<div class="article-nav">
+  <a href="getting-started.html">← Get Started</a>
+  <a href="../reference.html">Reference →</a>
+</div>
+
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
