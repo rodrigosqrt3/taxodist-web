@@ -1,6 +1,9 @@
 project:
   type: website
 
+resources:
+  - googled25722a3226093de.html
+
 website:
   title: "taxodist"
   site-url: "https://rodrigosqrt3.github.io/taxodist-site"
