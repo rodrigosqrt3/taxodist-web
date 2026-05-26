@@ -300,7 +300,6 @@ format:
     <a href="https://pypi.org/project/taxodist/">
       <img src="https://badge.fury.io/py/taxodist.svg" alt="PyPI version">
     </a>
-    <img src="https://img.shields.io/badge/license-GPL--3-blue" alt="License: GPL-3">
   </div>
   <div class="hero-actions">
     <a href="articles/getting-started.html" class="btn btn-primary">Get started</a>
