@@ -2,4 +2,81 @@
 title: "Changelog"
 ---
 
-Coming soon.
+## taxodist 0.5.0 [Latest]{.badge .bg-primary}
+
+### New features
+- `taxobase`: Built-in reference dataset of 50 taxonomic clades with pre-computed distance matrices, lineage paths, search outputs, and coverage vectors. Acts as a complete offline fallback — examples, vignettes, and unit tests run without a network connection.
+
+### Bug fixes
+- Fixed taxa whose names contain the substring "planet" (e.g. *Periplaneta*) being incorrectly discarded by the astronomical homonym filter. The filter now uses word boundaries (`\bplanet\b`).
+- Fixed a lineage parsing bug affecting genera whose Taxonomicon page does not link back to the genus itself (e.g. *Periplaneta*). The lineage is now correctly truncated before child species entries and the genus name is appended if absent.
+- Added `"Epifamily"` to the bare rank token filter.
+- Fixed a lineage parsing bug where the superscript type-marker `ᵀ` (U+1D40) immediately following a taxon name prevented word-boundary matching, causing the lineage to overshoot the target node and include descendant taxa as ancestors. This bug disproportionately affected higher-rank taxa within deep clades like *Dinosauria*.
+- Fixed a lineage parsing bug where navigation header text could contain the target taxon name, causing the lineage cutoff to land in junk content rather than the taxonomic tree (*Drosophila*, ID 28940, was one affected case).
+
+---
+
+## taxodist 0.4.0
+
+### New features
+- `cache_info()`: Inspects the current session cache, reporting the number of cached lineages and IDs, total memory used, and cached taxon names. Returns a named list invisibly for programmatic use.
+- `focal_distances()`: Computes distances from a single focal taxon to all members of a community vector. Returns a sorted data frame with columns `taxon`, `distance`, `mrca`, and `mrca_depth`.
+
+### Bug fixes
+- Fixed a lineage parsing bug where taxa with `Subphylum` and `Infraphylum` rank prefixes (e.g. Craniata, Vertebrata) were incorrectly discarded. The dagger symbol (`†`) is now stripped before rank-prefix removal.
+- Fixed parsing of `auct.` author annotations preventing rank-prefixed names from being correctly cleaned.
+- Fixed intermediate clades being silently dropped when author strings contained ampersands, hyphens (e.g. Cavalier-Smith), or trailing commas without a year.
+- Fixed a bug where the dagger extinction marker (`†`) appearing between a rank prefix and a taxon name (e.g. `Family † Dromaeosauridae`) caused the taxon to be lost entirely.
+
+---
+
+## taxodist 0.3.0 [First Python release]{.badge .bg-secondary}
+
+### New features
+- `taxo_search()`: Interactive search function that queries The Taxonomicon and returns a tidy data frame of all available IDs, ranks, and authors for a given taxon name.
+- Direct ID support: `get_lineage()` and all distance functions now accept Taxonomicon numeric IDs as a fallback for homonyms and historical ranks that cannot be disambiguated by name alone.
+
+### Network handling
+- Added a 30-second timeout to all HTTP requests to prevent the session from hanging when The Taxonomicon servers are overloaded.
+- Network failures, offline servers, and bad HTTP statuses now emit a clear, informative warning rather than failing silently.
+
+### Bug fixes
+- Extended rank-prefix filter to cover additional bare rank tokens: `Subgenus`, `Section`, `Division`, `Subdivision`, `Supercohort`, `Infracohort`, `Subsection`, `Candidatus`, `Parvphylum`, `Branch`, and the navigation artefact `Go to`.
+- Duplicate lineage nodes from data-quality issues in The Taxonomicon are now collapsed to a single occurrence. A warning is emitted when deduplication occurs.
+- `get_taxonomicon_id()` now collects all biological matches before returning and emits a warning when multiple valid entries are found, surfacing homonym ambiguity (e.g. *Nereis* matching both a polychaete worm and a butterfly genus).
+- `get_taxonomicon_id()` now properly follows taxonomic redirects and removes interface noise from warnings.
+- Lineage parsing is now stricter, truncating philosophical or pre-basal nodes (e.g. `organisms`) appearing before `Biota`.
+- Added validation to `get_lineage_by_id()` to silently return `NULL` for non-numeric strings.
+- Fixed erroneous truncation of the parent `Genus` from species-level queries. Distances and MRCAs between congeneric species are now computed accurately.
+- Fixed an issue where author names enclosed in double quotes were evading the lineage cleaning pipeline and being retained as part of the clade name.
+
+---
+
+## taxodist 0.2.0
+
+### New functions
+- `taxo_cluster()`: Hierarchical clustering of taxa by taxonomic distance.
+- `taxo_ordinate()`: Ordination (PCoA) of taxa in taxonomic distance space.
+- `save_cache()`: Serializes the session lineage cache to an `.rds` file.
+- `load_cache()`: Restores a previously saved cache, avoiding redundant network requests.
+- `taxo_path()`: Returns the full node-by-node path between two taxa as a tidy data frame, ascending from taxon A to their MRCA and descending to taxon B.
+
+### Documentation
+- Added a new vignette (*Statistical Applications of taxodist*) demonstrating integration with `ape` (tree plotting) and `vegan` (taxonomic distinctness, Mantel tests, and PERMANOVA).
+
+### Minor improvements
+- Added `vegan` to `Suggests` in `DESCRIPTION`.
+- Documented compatibility of `distance_matrix()` output with `vegan` functions (`taxondive()`, `mantel()`, `adonis2()`).
+- Documented conversion of `taxo_cluster()` results into `phylo` objects using `ape::as.phylo()`.
+
+### Bug fixes
+- Fixed incorrect MRCA computation caused by unnamed crown nodes (`[crown]`) being matched across different lineages as if they were the same ancestor.
+- Fixed parsing of Taxonomicon rank prefixes (`Cohort`, `Subcohort`, `Magnorder`, `Grandorder`, `Parvorder`, `Legion`) that were being retained as bare rank names instead of the actual clade names.
+
+---
+
+## taxodist 0.1.0 [Initial release]{.badge .bg-secondary}
+
+- Compute taxonomic distances between any two taxa using The Taxonomicon.
+- Session-level caching for lineage data to minimize network requests.
+- Initial function set: `taxo_distance()`, `mrca()`, `distance_matrix()`, `closest_relative()`, `compare_lineages()`, `shared_clades()`, `is_member()`, `filter_clade()`, `lineage_depth()`, `check_coverage()`, `clear_cache()`.

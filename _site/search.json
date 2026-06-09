@@ -1,26 +1,5 @@
 [
   {
-    "objectID": "index.html#overview",
-    "href": "index.html#overview",
-    "title": "taxodist",
-    "section": "Overview",
-    "text": "Overview\ntaxodist provides a unified computational framework in R and Python for calculating phylogenetic distances between any two taxa. It leverages the deeply resolved hierarchical lineage data from The Taxonomicon, a comprehensive curated classification of all life based on Systema Naturae 2000.\nGiven two taxon names, the package retrieves their full lineages, identifies the most recent common ancestor (MRCA), and computes a dissimilarity index based on lineage depth:\n\\[\nd(A, B) = \\frac{1}{\\text{depth}(\\text{MRCA}(A,B))}\n\\]\nThe deeper the shared ancestor, the smaller (closer to zero) the distance. This tree-metric ensures that taxa diverging at the same node are always equidistant from any third taxon, regardless of downstream lineage depth differences."
-  },
-  {
-    "objectID": "index.html#key-features",
-    "href": "index.html#key-features",
-    "title": "taxodist",
-    "section": "Key Features",
-    "text": "Key Features\n\nPhylogenetic Computation: Pairwise taxonomic distances, MRCA identification, and precise taxonomic path tracing.\nMultivariate Ecology: Native generation of symmetric distance matrices ready for hierarchical clustering (taxo_cluster), Principal Coordinate Analysis (taxo_ordinate), and direct integration with vegan (R) or scipy (Python).\nRobust Data Retrieval: Built-in session-level caching to minimize network overhead, automatic homonym disambiguation via strict numeric IDs, and graceful fallback handling for upstream server timeouts."
-  },
-  {
-    "objectID": "index.html#quick-start",
-    "href": "index.html#quick-start",
-    "title": "taxodist",
-    "section": "Quick Start",
-    "text": "Quick Start\nThe API is strictly equivalent across supported languages, ensuring full reproducibility in multi-language bioinformatics workflows.\n\nRPython\n\n\n# Install from CRAN\ninstall.packages(\"taxodist\")\n\nlibrary(taxodist)\n\n# Compute pairwise distance\ntaxo_distance(\"Tyrannosaurus\", \"Velociraptor\")\n\n# Generate a distance matrix\ntheropods &lt;- c(\"Tyrannosaurus\", \"Velociraptor\", \"Spinosaurus\", \"Carnotaurus\")\nmat &lt;- distance_matrix(theropods)\n\n\n# Install from PyPI\npip install taxodist\n\nimport taxodist as td\n\n# Compute pairwise distance\ntd.taxo_distance(\"Tyrannosaurus\", \"Velociraptor\")\n\n# Generate a distance matrix\ntheropods = [\"Tyrannosaurus\", \"Velociraptor\", \"Spinosaurus\", \"Carnotaurus\"]\nmat = td.distance_matrix(theropods)"
-  },
-  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
@@ -33,27 +12,6 @@
     "title": "Articles",
     "section": "",
     "text": "Coming soon."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "taxodist",
-    "section": "",
-    "text": "taxodist\n  \n    Get Started\n    Statistical Applications\n    Reference\n    GitHub ↗\n  \n  ☰\nOverview"
-  },
-  {
-    "objectID": "news.html",
-    "href": "news.html",
-    "title": "Changelog",
-    "section": "",
-    "text": "Coming soon."
-  },
-  {
-    "objectID": "index.html#installation-and-basic-usage",
-    "href": "index.html#installation-and-basic-usage",
-    "title": "taxodist",
-    "section": "Installation and basic usage",
-    "text": "Installation and basic usage\n\nRPython\n\n\ninstall.packages(\"taxodist\")\nlibrary(taxodist)\n\n# Pairwise distance\ntaxo_distance(\"Tyrannosaurus\", \"Velociraptor\")\n#&gt; Distance : 0.01538   MRCA: Tyrannoraptora (depth 65)\n\ntaxo_distance(\"Tyrannosaurus\", \"Homo\")\n#&gt; Distance : 0.02778   MRCA: Amniota (depth 36)\n\ntaxo_distance(\"Tyrannosaurus\", \"Quercus\")\n#&gt; Distance : 0.25000   MRCA: discaria (depth 4)\n\n# Distance matrix and clustering\ntaxa &lt;- c(\"Tyrannosaurus\", \"Velociraptor\", \"Triceratops\",\n          \"Homo sapiens\", \"Panthera leo\", \"Quercus robur\")\nmat &lt;- distance_matrix(taxa)\ncl  &lt;- taxo_cluster(taxa)\nplot(cl)\n\n\npip install taxodist\nimport taxodist as td\n\n# Pairwise distance\ntd.taxo_distance(\"Tyrannosaurus\", \"Velociraptor\")\n# distance: 0.01538   mrca: Tyrannoraptora (depth 65)\n\ntd.taxo_distance(\"Tyrannosaurus\", \"Homo\")\n# distance: 0.02778   mrca: Amniota (depth 36)\n\n# Distance matrix and clustering\ntaxa = [\"Tyrannosaurus\", \"Velociraptor\", \"Triceratops\",\n        \"Homo sapiens\", \"Panthera leo\", \"Quercus robur\"]\nmat = td.distance_matrix(taxa)\ncl  = td.taxo_cluster(taxa)\ncl.plot()\n\n\n\nFunctions\nAPI reference\n\n\n  \n    Distance computation\n    \n      taxo_distance()Pairwise distance between two taxa\n      distance_matrix()Full symmetric distance matrix for a set of taxa\n      focal_distances()Distances from one focal taxon to a community\n      closest_relative()Nearest taxon among a set of candidates\n      mrca()Most recent common ancestor of two taxa\n    \n  \n  \n    Lineage and exploration\n    \n      get_lineage()Full lineage by taxon name\n      get_lineage_by_id()Full lineage by Taxonomicon numeric ID\n      get_taxonomicon_id()Resolve taxon name to numeric ID\n      taxo_search()Search Taxonomicon; handles homonyms\n      compare_lineages()Side-by-side lineage comparison at the MRCA\n      shared_clades()Shared lineage trunk between two taxa\n      taxo_path()Node-by-node path from taxon A to taxon B\n      lineage_depth()Number of nodes in a taxon's lineage\n      is_member()Test whether a taxon belongs to a clade\n      filter_clade()Retain only taxa belonging to a given clade\n      check_coverage()Verify which taxa are present in Taxonomicon\n    \n  \n  \n    Multivariate analysis\n    \n      taxo_cluster()Hierarchical clustering (UPGMA)\n      taxo_ordinate()Principal coordinate analysis (PCoA)\n      taxo_heatmap()Distance heatmap with marginal dendrograms\n    \n  \n  \n    Cache management\n    \n      clear_cache()Remove all entries from the session cache\n      save_cache()Serialise the cache to an .rds file\n      load_cache()Restore a previously saved cache from disk\n      cache_info()Report cache contents and memory use\n    \n  \n\n\n\n  Full reference\n\n\n\n  Data source and citation\n  \n    All lineage data is sourced from The Taxonomicon,\n    based on Systema Naturae 2000 (Brands, S.J., 1989 onwards).\n    Please cite this resource in any published work that uses taxodist.\n  \n  \n    Brands, S.J. (1989 onwards). Systema Naturae 2000. Amsterdam, The Netherlands.\n    Retrieved from The Taxonomicon, http://taxonomicon.taxonomy.nl."
   },
   {
     "objectID": "getting-started.html",
@@ -74,7 +32,7 @@
     "href": "getting-started.html#the-distance-metric",
     "title": "Introduction to taxodist",
     "section": "The distance metric",
-    "text": "The distance metric\ntaxodist measures relatedness by asking a single question: how deep is their most recent common ancestor?\n\n  The deeper the shared ancestor, the smaller the distance — meaning the more related the two taxa are. A shallow MRCA (close to the root) means the two taxa diverged early; a deep MRCA means they share a long common history.\n  d(A,B) = 1 / depth(MRCA)\n\nThis has a key property: taxa that diverged at the same point in the tree are always equidistant from any third taxon, regardless of how many nodes each has in its lineage below the split. For example:\n\nTyrannosaurus and Velociraptor are both Tetanurae: they diverged from Carnotaurus (Ceratosauria) at the same node (Averostra), so both have exactly the same distance to Carnotaurus.\nAll dinosaurs diverged from the mammal lineage at the same node (Amniota), so Homo sapiens is equally distant from Tyrannosaurus, Triceratops, Carnotaurus, and Cyanocorax.\n\nThe distance is not bounded to \\([0, 1]\\) — it depends on the depth of the MRCA in The Taxonomicon’s classification. Deeper, more finely resolved clades will have smaller distances between their members."
+    "text": "The distance metric\ntaxodist measures relatedness by asking a single question: how deep is their most recent common ancestor?\n\n  The deeper the shared ancestor, the smaller the distance — meaning the more related the two taxa are. A shallow MRCA (close to the root) means the two taxa diverged early; a deep MRCA means they share a long common history.\n  d(A,B) = 1 / depth(MRCA)\n\nThis has a key property: taxa that diverged at the same point in the tree are always equidistant from any third taxon, regardless of how many nodes each has in its lineage below the split. For example:\n\nTyrannosaurus and Velociraptor are both Tetanurae: they diverged from Carnotaurus (Ceratosauria) at the same node (Averostra), so both have exactly the same distance to Carnotaurus.\nAll dinosaurs diverged from the mammal lineage at the same node (Amniota), so Homo sapiens is equally distant from Tyrannosaurus, Triceratops, Carnotaurus, and Cyanocorax.\n\nThe distance is bounded to \\([0, 1]\\), where 0 means identical taxa, 1 means the taxa share only the root as their most recent common ancestor, and smaller values reflect increasingly recent shared ancestry."
   },
   {
     "objectID": "getting-started.html#installation",
@@ -124,6 +82,90 @@
     "title": "Introduction to taxodist",
     "section": "Data source and citation",
     "text": "Data source and citation\nAll lineage data is sourced from The Taxonomicon (taxonomy.nl), based on Systema Naturae 2000:\n\nBrands, S.J. (1989 onwards). Systema Naturae 2000. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, http://taxonomicon.taxonomy.nl.\n\nPlease cite this resource in any published work using taxodist."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "taxodist",
+    "section": "",
+    "text": "taxodist is an R and Python package for computing phylogenetic distances between any two taxa. Given two taxon names, taxodist retrieves their full hierarchical lineages from The Taxonomicon database and computes a dissimilarity index based on the depth of their most recent common ancestor (MRCA)."
+  },
+  {
+    "objectID": "index.html#core-functionality",
+    "href": "index.html#core-functionality",
+    "title": "taxodist",
+    "section": "Core Functionality",
+    "text": "Core Functionality\n\nMathematical Properties of the Distance Metric\nThe distance metric implemented in taxodist is defined as:\n\\[d(A, B) = \\frac{1}{\\text{depth}(\\text{MRCA}(A, B))}\\]\nWhere \\(\\text{MRCA}(A, B)\\) represents the deepest shared node (the most recent common ancestor) between the lineages of taxon \\(A\\) and taxon \\(B\\) in The Taxonomicon hierarchy.\nUnlike simple rank-difference methods or Jaccard-based taxonomic dissimilarity indices, this metric satisfies the properties of a tree metric. Crucially, it guarantees that any two taxa sharing a given MRCA are equidistant from any third taxon outside of their shared clade, regardless of subsequent lineage branching or varying lineage depths below the split. This property is necessary for biological correctness in downstream multivariate analyses.\n\n\nData Source and Hierarchical Depth\nAll taxonomic hierarchies are retrieved programmatically from The Taxonomicon database (Systema Naturae 2000, curated by S.J. Brands).\nBecause the classification scheme incorporates extensive intermediate ranks (such as Magnorders, Parvorders, Legions, and Tribes), lineages often resolve up to 70 distinct nodes for well-documented clades. This provides significantly higher resolution than alternative programmatic databases (e.g., the Open Tree of Life or NCBI Taxonomy) which often omit intermediate hierarchical levels.\n\n\nStatistical and Ecological Workflows\nThe distance computation functions return objects natively compatible with standard scientific environments in both R and Python:\n\nMultivariate Ecology: The output of distance_matrix() is a symmetric numeric matrix of class \"dist\" in R. It integrates directly with multivariate ecological workflows, such as those in the vegan package, including taxonomic distinctness analysis (taxondive()), Mantel test correlations (mantel()), and Permutational Multivariate Analysis of Variance (adonis2()).\nPhylogenetic Reconstruction: Cluster hierarchies computed via taxo_cluster() (defaulting to the UPGMA algorithm) can be converted into standard phylo tree objects using ape::as.phylo() for standard tree plotting and comparative phylogenetic analysis.\nOrdination: Classical Multidimensional Scaling (Principal Coordinate Analysis, PCoA) is supported natively via taxo_ordinate(), projecting the calculated distance space into lower dimensions.\n\n\n\nNetwork Safety and Memory Caching\nTo maintain performance during large community queries and prevent unnecessary load on remote servers, the package implements a local caching pipeline:\n\nIn-Memory Cache: Queried lineages are preserved in a session-level cache. Its footprint and contents can be monitored using cache_info().\nCache Serialization: The current session cache can be serialized to disk as an .rds file using save_cache() and subsequently reloaded in new sessions using load_cache(), ensuring full reproducibility of offline pipelines.\nFault Tolerance: Network queries incorporate robust error-handling. If remote servers time out or fail to resolve, the package reports the warning gracefully through native system handlers rather than interrupting execution."
+  },
+  {
+    "objectID": "index.html#interactive-web-application",
+    "href": "index.html#interactive-web-application",
+    "title": "taxodist",
+    "section": "Interactive Web Application",
+    "text": "Interactive Web Application\nA Shiny web application provides access to the core package features—allowing you to search taxa, calculate pairwise distances, visualize lineages, and check coverage.\nLaunch App ↗\nSupported languages: English, Português, Español, Français, Deutsch."
+  },
+  {
+    "objectID": "index.html#api-reference-overview",
+    "href": "index.html#api-reference-overview",
+    "title": "taxodist",
+    "section": "API Reference Overview",
+    "text": "API Reference Overview\nBelow is a summary of the core functions available in both packages:\n\nCore API Functions\n\n\n\n\n\n\n\nCategory\nFunction\nDescription\n\n\n\n\nDistance Computation\ntaxo_distance()\nPairwise distance between two taxa\n\n\n\ndistance_matrix()\nFull symmetric distance matrix for a set of taxa\n\n\n\nfocal_distances()\nDistances from one focal taxon to a community\n\n\n\nclosest_relative()\nNearest taxon among a set of candidates\n\n\n\nmrca()\nMost recent common ancestor of two taxa\n\n\nLineage & Exploration\nget_lineage() / get_lineage_by_id()\nRetrieve complete taxonomic lineages\n\n\n\ntaxo_search()\nResolve taxon names and manage homonyms\n\n\n\ncompare_lineages() / shared_clades()\nCompare lineage hierarchies side-by-side\n\n\n\nis_member() / filter_clade()\nClade membership tests and set filtering\n\n\nMultivariate Analysis\ntaxo_cluster()\nHierarchical clustering (UPGMA)\n\n\n\ntaxo_ordinate()\nPrincipal Coordinate Analysis (PCoA)\n\n\n\ntaxo_heatmap()\nMatrix visualization with dendrograms\n\n\nCache Management\nsave_cache() / load_cache()\nSerialize and restore session cache"
+  },
+  {
+    "objectID": "index.html#installation-and-basic-usage",
+    "href": "index.html#installation-and-basic-usage",
+    "title": "taxodist",
+    "section": "Installation and basic usage",
+    "text": "Installation and basic usage\n\nRPython\n\n\ninstall.packages(\"taxodist\")\nlibrary(taxodist)\n\n# Pairwise distance\ntaxo_distance(\"Tyrannosaurus\", \"Velociraptor\")\n#&gt; Distance : 0.01538   MRCA: Tyrannoraptora (depth 65)\n\ntaxo_distance(\"Tyrannosaurus\", \"Homo\")\n#&gt; Distance : 0.02778   MRCA: Amniota (depth 36)\n\ntaxo_distance(\"Tyrannosaurus\", \"Quercus\")\n#&gt; Distance : 0.25000   MRCA: discaria (depth 4)\n\n# Distance matrix and clustering\ntaxa &lt;- c(\"Tyrannosaurus\", \"Velociraptor\", \"Triceratops\",\n          \"Homo sapiens\", \"Panthera leo\", \"Quercus robur\")\nmat &lt;- distance_matrix(taxa)\ncl  &lt;- taxo_cluster(taxa)\nplot(cl)\n\n\npip install taxodist\nimport taxodist as td\n\n# Pairwise distance\ntd.taxo_distance(\"Tyrannosaurus\", \"Velociraptor\")\n# distance: 0.01538   mrca: Tyrannoraptora (depth 65)\n\ntd.taxo_distance(\"Tyrannosaurus\", \"Homo\")\n# distance: 0.02778   mrca: Amniota (depth 36)\n\n# Distance matrix and clustering\ntaxa = [\"Tyrannosaurus\", \"Velociraptor\", \"Triceratops\",\n        \"Homo sapiens\", \"Panthera leo\", \"Quercus robur\"]\nmat = td.distance_matrix(taxa)\ncl  = td.taxo_cluster(taxa)\ncl.plot()"
+  },
+  {
+    "objectID": "index.html#data-source-and-citation",
+    "href": "index.html#data-source-and-citation",
+    "title": "taxodist",
+    "section": "Data Source and Citation",
+    "text": "Data Source and Citation\nAll lineage data is sourced from The Taxonomicon, based on Systema Naturae 2000 (Brands, S.J., 1989 onwards). Please cite this resource in any published work that uses taxodist:\n\nBrands, S.J. (1989 onwards). Systema Naturae 2000. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, http://taxonomicon.taxonomy.nl."
+  },
+  {
+    "objectID": "news.html",
+    "href": "news.html",
+    "title": "Changelog",
+    "section": "",
+    "text": "taxobase: Built-in reference dataset of 50 taxonomic clades with pre-computed distance matrices, lineage paths, search outputs, and coverage vectors. Acts as a complete offline fallback — examples, vignettes, and unit tests run without a network connection.\n\n\n\n\n\nFixed taxa whose names contain the substring “planet” (e.g. Periplaneta) being incorrectly discarded by the astronomical homonym filter. The filter now uses word boundaries (\\bplanet\\b).\nFixed a lineage parsing bug affecting genera whose Taxonomicon page does not link back to the genus itself (e.g. Periplaneta). The lineage is now correctly truncated before child species entries and the genus name is appended if absent.\nAdded \"Epifamily\" to the bare rank token filter.\nFixed a lineage parsing bug where the superscript type-marker ᵀ (U+1D40) immediately following a taxon name prevented word-boundary matching, causing the lineage to overshoot the target node and include descendant taxa as ancestors. This bug disproportionately affected higher-rank taxa within deep clades like Dinosauria.\nFixed a lineage parsing bug where navigation header text could contain the target taxon name, causing the lineage cutoff to land in junk content rather than the taxonomic tree (Drosophila, ID 28940, was one affected case)."
+  },
+  {
+    "objectID": "news.html#taxodist-0.5.0-latest",
+    "href": "news.html#taxodist-0.5.0-latest",
+    "title": "Changelog",
+    "section": "",
+    "text": "taxobase: Built-in reference dataset of 50 taxonomic clades with pre-computed distance matrices, lineage paths, search outputs, and coverage vectors. Acts as a complete offline fallback — examples, vignettes, and unit tests run without a network connection.\n\n\n\n\n\nFixed taxa whose names contain the substring “planet” (e.g. Periplaneta) being incorrectly discarded by the astronomical homonym filter. The filter now uses word boundaries (\\bplanet\\b).\nFixed a lineage parsing bug affecting genera whose Taxonomicon page does not link back to the genus itself (e.g. Periplaneta). The lineage is now correctly truncated before child species entries and the genus name is appended if absent.\nAdded \"Epifamily\" to the bare rank token filter.\nFixed a lineage parsing bug where the superscript type-marker ᵀ (U+1D40) immediately following a taxon name prevented word-boundary matching, causing the lineage to overshoot the target node and include descendant taxa as ancestors. This bug disproportionately affected higher-rank taxa within deep clades like Dinosauria.\nFixed a lineage parsing bug where navigation header text could contain the target taxon name, causing the lineage cutoff to land in junk content rather than the taxonomic tree (Drosophila, ID 28940, was one affected case)."
+  },
+  {
+    "objectID": "news.html#taxodist-0.4.0",
+    "href": "news.html#taxodist-0.4.0",
+    "title": "Changelog",
+    "section": "taxodist 0.4.0",
+    "text": "taxodist 0.4.0\n\nNew features\n\ncache_info(): Inspects the current session cache, reporting the number of cached lineages and IDs, total memory used, and cached taxon names. Returns a named list invisibly for programmatic use.\nfocal_distances(): Computes distances from a single focal taxon to all members of a community vector. Returns a sorted data frame with columns taxon, distance, mrca, and mrca_depth.\n\n\n\nBug fixes\n\nFixed a lineage parsing bug where taxa with Subphylum and Infraphylum rank prefixes (e.g. Craniata, Vertebrata) were incorrectly discarded. The dagger symbol (†) is now stripped before rank-prefix removal.\nFixed parsing of auct. author annotations preventing rank-prefixed names from being correctly cleaned.\nFixed intermediate clades being silently dropped when author strings contained ampersands, hyphens (e.g. Cavalier-Smith), or trailing commas without a year.\nFixed a bug where the dagger extinction marker (†) appearing between a rank prefix and a taxon name (e.g. Family † Dromaeosauridae) caused the taxon to be lost entirely."
+  },
+  {
+    "objectID": "news.html#taxodist-0.3.0-first-python-release",
+    "href": "news.html#taxodist-0.3.0-first-python-release",
+    "title": "Changelog",
+    "section": "taxodist 0.3.0 First Python release",
+    "text": "taxodist 0.3.0 First Python release\n\nNew features\n\ntaxo_search(): Interactive search function that queries The Taxonomicon and returns a tidy data frame of all available IDs, ranks, and authors for a given taxon name.\nDirect ID support: get_lineage() and all distance functions now accept Taxonomicon numeric IDs as a fallback for homonyms and historical ranks that cannot be disambiguated by name alone.\n\n\n\nNetwork handling\n\nAdded a 30-second timeout to all HTTP requests to prevent the session from hanging when The Taxonomicon servers are overloaded.\nNetwork failures, offline servers, and bad HTTP statuses now emit a clear, informative warning rather than failing silently.\n\n\n\nBug fixes\n\nExtended rank-prefix filter to cover additional bare rank tokens: Subgenus, Section, Division, Subdivision, Supercohort, Infracohort, Subsection, Candidatus, Parvphylum, Branch, and the navigation artefact Go to.\nDuplicate lineage nodes from data-quality issues in The Taxonomicon are now collapsed to a single occurrence. A warning is emitted when deduplication occurs.\nget_taxonomicon_id() now collects all biological matches before returning and emits a warning when multiple valid entries are found, surfacing homonym ambiguity (e.g. Nereis matching both a polychaete worm and a butterfly genus).\nget_taxonomicon_id() now properly follows taxonomic redirects and removes interface noise from warnings.\nLineage parsing is now stricter, truncating philosophical or pre-basal nodes (e.g. organisms) appearing before Biota.\nAdded validation to get_lineage_by_id() to silently return NULL for non-numeric strings.\nFixed erroneous truncation of the parent Genus from species-level queries. Distances and MRCAs between congeneric species are now computed accurately.\nFixed an issue where author names enclosed in double quotes were evading the lineage cleaning pipeline and being retained as part of the clade name."
+  },
+  {
+    "objectID": "news.html#taxodist-0.2.0",
+    "href": "news.html#taxodist-0.2.0",
+    "title": "Changelog",
+    "section": "taxodist 0.2.0",
+    "text": "taxodist 0.2.0\n\nNew functions\n\ntaxo_cluster(): Hierarchical clustering of taxa by taxonomic distance.\ntaxo_ordinate(): Ordination (PCoA) of taxa in taxonomic distance space.\nsave_cache(): Serializes the session lineage cache to an .rds file.\nload_cache(): Restores a previously saved cache, avoiding redundant network requests.\ntaxo_path(): Returns the full node-by-node path between two taxa as a tidy data frame, ascending from taxon A to their MRCA and descending to taxon B.\n\n\n\nDocumentation\n\nAdded a new vignette (Statistical Applications of taxodist) demonstrating integration with ape (tree plotting) and vegan (taxonomic distinctness, Mantel tests, and PERMANOVA).\n\n\n\nMinor improvements\n\nAdded vegan to Suggests in DESCRIPTION.\nDocumented compatibility of distance_matrix() output with vegan functions (taxondive(), mantel(), adonis2()).\nDocumented conversion of taxo_cluster() results into phylo objects using ape::as.phylo().\n\n\n\nBug fixes\n\nFixed incorrect MRCA computation caused by unnamed crown nodes ([crown]) being matched across different lineages as if they were the same ancestor.\nFixed parsing of Taxonomicon rank prefixes (Cohort, Subcohort, Magnorder, Grandorder, Parvorder, Legion) that were being retained as bare rank names instead of the actual clade names."
+  },
+  {
+    "objectID": "news.html#taxodist-0.1.0-initial-release",
+    "href": "news.html#taxodist-0.1.0-initial-release",
+    "title": "Changelog",
+    "section": "taxodist 0.1.0 Initial release",
+    "text": "taxodist 0.1.0 Initial release\n\nCompute taxonomic distances between any two taxa using The Taxonomicon.\nSession-level caching for lineage data to minimize network requests.\nInitial function set: taxo_distance(), mrca(), distance_matrix(), closest_relative(), compare_lineages(), shared_clades(), is_member(), filter_clade(), lineage_depth(), check_coverage(), clear_cache()."
   },
   {
     "objectID": "reference.html",

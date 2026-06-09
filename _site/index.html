@@ -94,9 +94,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit"
   }
 }</script>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=DM+Mono:wght@400;500&amp;family=DM+Sans:wght@300;400;500&amp;display=swap" rel="stylesheet">
-<meta name="description" content="taxodist is an R and Python package for computing taxonomic distances between any two taxa using The Taxonomicon database.">
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -154,7 +154,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#installation-and-basic-usage" id="toc-installation-and-basic-usage" class="nav-link active" data-scroll-target="#installation-and-basic-usage">Installation and basic usage</a></li>
+  <li><a href="#core-functionality" id="toc-core-functionality" class="nav-link active" data-scroll-target="#core-functionality">Core Functionality</a>
+  <ul class="collapse">
+  <li><a href="#mathematical-properties-of-the-distance-metric" id="toc-mathematical-properties-of-the-distance-metric" class="nav-link" data-scroll-target="#mathematical-properties-of-the-distance-metric">Mathematical Properties of the Distance Metric</a></li>
+  <li><a href="#data-source-and-hierarchical-depth" id="toc-data-source-and-hierarchical-depth" class="nav-link" data-scroll-target="#data-source-and-hierarchical-depth">Data Source and Hierarchical Depth</a></li>
+  <li><a href="#statistical-and-ecological-workflows" id="toc-statistical-and-ecological-workflows" class="nav-link" data-scroll-target="#statistical-and-ecological-workflows">Statistical and Ecological Workflows</a></li>
+  <li><a href="#network-safety-and-memory-caching" id="toc-network-safety-and-memory-caching" class="nav-link" data-scroll-target="#network-safety-and-memory-caching">Network Safety and Memory Caching</a></li>
+  </ul></li>
+  <li><a href="#interactive-web-application" id="toc-interactive-web-application" class="nav-link" data-scroll-target="#interactive-web-application">Interactive Web Application</a></li>
+  <li><a href="#api-reference-overview" id="toc-api-reference-overview" class="nav-link" data-scroll-target="#api-reference-overview">API Reference Overview</a></li>
+  <li><a href="#installation-and-basic-usage" id="toc-installation-and-basic-usage" class="nav-link" data-scroll-target="#installation-and-basic-usage">Installation and basic usage</a></li>
+  <li><a href="#data-source-and-citation" id="toc-data-source-and-citation" class="nav-link" data-scroll-target="#data-source-and-citation">Data Source and Citation</a></li>
   </ul>
 </nav>
     </div>
@@ -179,369 +189,133 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<style>
-  :root {
-    --bg:      #faf6ee;
-    --border:  #5c3d1e;
-    --branch:  #8b5e3c;
-    --tip:     #b8865a;
-    --ink:     #3d2510;
-    --muted:   #6b4c30;
-    --rule:    #d9c9b0;
-    --card-bg: #f3ede0;
-    --code-bg: #ede5d0;
-  }
-
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); }
-
-  /* Nav */
-  .site-nav {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    padding: 1rem 0 1rem;
-    border-bottom: 1px solid var(--rule);
-    margin-bottom: 3rem;
-  }
-  .nav-brand {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.15rem;
-    color: var(--ink);
-    text-decoration: none;
-    font-weight: 400;
-    letter-spacing: -0.01em;
-    flex-shrink: 0;
-  }
-  .nav-brand:hover { color: var(--border); text-decoration: none; }
-  .nav-links { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
-  .nav-links a {
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.15s;
-  }
-  .nav-links a:hover { color: var(--ink); text-decoration: none; }
-  .nav-github { margin-left: auto; color: var(--border) !important; }
-  .nav-toggle { display: none; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--ink); }
-  @media (max-width: 600px) {
-    .nav-toggle { display: block; margin-left: auto; }
-    .nav-links { display: none; width: 100%; flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1rem 0; }
-    .nav-links.open { display: flex; }
-    .nav-github { margin-left: 0 !important; }
-  }
-
-  /* Hero */
-  .hero {
-    padding: 4rem 0 3rem;
-    border-bottom: 1px solid var(--rule);
-    margin-bottom: 3.5rem;
-    max-width: 680px;
-  }
-  .hero h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(2.4rem, 5vw, 3.5rem);
-    color: var(--ink);
-    margin: 0 0 0.4rem;
-    font-weight: 400;
-    letter-spacing: -0.01em;
-  }
-  .hero-subtitle {
-    font-size: 1.05rem;
-    color: var(--muted);
-    font-weight: 300;
-    margin: 0 0 2rem;
-    line-height: 1.7;
-  }
-  .hero-badges { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem; }
-  .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.55rem 1.2rem;
-    border-radius: 3px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.15s ease;
-    font-family: 'DM Sans', sans-serif;
-  }
-  .btn-primary { background: var(--border); color: #faf6ee; border: 1px solid var(--border); }
-  .btn-primary:hover { background: var(--ink); border-color: var(--ink); color: #faf6ee; text-decoration: none; }
-  .btn-outline { background: transparent; color: var(--border); border: 1px solid var(--border); }
-  .btn-outline:hover { background: var(--border); color: #faf6ee; text-decoration: none; }
-
-  /* Formula */
-  .formula-strip {
-    background: var(--card-bg);
-    border: 1px solid var(--rule);
-    border-left: 3px solid var(--branch);
-    border-radius: 4px;
-    padding: 2rem 2.5rem;
-    margin: 3rem 0;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 2rem;
-    align-items: center;
-  }
-  .formula-strip h3 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.2rem;
-    font-weight: 400;
-    margin: 0 0 0.6rem;
-    color: var(--ink);
-  }
-  .formula-strip p { margin: 0; color: var(--muted); font-size: 0.9rem; line-height: 1.65; }
-  .formula-math {
-    font-family: 'DM Mono', monospace;
-    font-size: 1.2rem;
-    color: var(--border);
-    white-space: nowrap;
-    background: var(--code-bg);
-    padding: 0.75rem 1.25rem;
-    border-radius: 3px;
-  }
-
-  /* Section headings */
-  .section-label {
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--branch);
-    margin-bottom: 0.4rem;
-  }
-  .section-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(1.5rem, 2.5vw, 2rem);
-    color: var(--ink);
-    margin: 0 0 2rem;
-    font-weight: 400;
-  }
-
-  /* Cards */
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    margin-bottom: 3.5rem;
-  }
-  .card {
-    background: var(--card-bg);
-    border: 1px solid var(--rule);
-    border-radius: 4px;
-    padding: 1.5rem;
-  }
-  .card h4 {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--ink);
-    margin: 0 0 0.5rem;
-    letter-spacing: 0.01em;
-  }
-  .card p { font-size: 0.85rem; color: var(--muted); margin: 0; line-height: 1.6; }
-
-  /* App callout */
-  .app-callout {
-    background: var(--card-bg);
-    border: 1px solid var(--rule);
-    border-left: 3px solid var(--branch);
-    border-radius: 4px;
-    padding: 2rem 2.5rem;
-    margin: 3rem 0;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 2rem;
-    align-items: center;
-  }
-  .app-callout h3 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.2rem;
-    color: var(--ink);
-    margin: 0 0 0.5rem;
-    font-weight: 400;
-  }
-  .app-callout p { color: var(--muted); margin: 0 0 0.75rem; font-size: 0.9rem; line-height: 1.6; }
-  .lang-badges { display: flex; gap: 0.4rem; flex-wrap: wrap; }
-  .lang-badge {
-    font-size: 0.72rem;
-    font-weight: 500;
-    padding: 0.2rem 0.6rem;
-    border-radius: 2px;
-    background: var(--code-bg);
-    color: var(--muted);
-    border: 1px solid var(--rule);
-  }
-  .btn-app {
-    background: var(--branch);
-    color: #faf6ee;
-    border: none;
-    padding: 0.65rem 1.5rem;
-    border-radius: 3px;
-    font-weight: 500;
-    font-size: 0.875rem;
-    text-decoration: none;
-    white-space: nowrap;
-    transition: background 0.15s ease;
-    font-family: 'DM Sans', sans-serif;
-  }
-  .btn-app:hover { background: var(--border); color: #faf6ee; text-decoration: none; }
-
-  /* Function grid */
-  .fn-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-    margin-bottom: 3.5rem;
-  }
-  .fn-group h4 {
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--branch);
-    margin: 0 0 0.75rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--rule);
-  }
-  .fn-list { list-style: none; padding: 0; margin: 0; }
-  .fn-list li {
-    display: flex;
-    align-items: baseline;
-    gap: 0.75rem;
-    padding: 0.3rem 0;
-    border-bottom: 1px solid rgba(217,201,176,0.5);
-    font-size: 0.85rem;
-  }
-  .fn-list li:last-child { border-bottom: none; }
-  .fn-name { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--border); font-weight: 500; white-space: nowrap; }
-  .fn-desc { color: var(--muted); line-height: 1.4; }
-
-  /* Data strip */
-  .data-strip {
-    background: var(--card-bg);
-    border: 1px solid var(--rule);
-    border-radius: 4px;
-    padding: 1.75rem 2.25rem;
-    margin: 3rem 0;
-  }
-  .data-strip h4 {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--ink);
-    margin: 0 0 0.5rem;
-  }
-  .data-strip p { font-size: 0.85rem; color: var(--muted); margin: 0 0 0.4rem; line-height: 1.65; }
-
-  @media (max-width: 768px) {
-    .cards { grid-template-columns: 1fr; }
-    .fn-grid { grid-template-columns: 1fr; }
-    .formula-strip { grid-template-columns: 1fr; }
-    .app-callout { grid-template-columns: 1fr; }
-  }
-</style>
-
-<!-- NAVBAR -->
-<nav class="site-nav">
-  <a href="index.html" class="nav-brand">taxodist</a>
-  <div class="nav-links">
-    <a href="articles/getting-started.html">Get Started</a>
-    <a href="articles/statistical-applications.html">Statistical Applications</a>
-    <a href="reference.html">Reference</a>
-    <a href="https://github.com/rodrigosqrt3/taxodist" class="nav-github">GitHub ↗</a>
-  </div>
-  <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
-</nav>
-
-<div class="hero">
-  <h1>taxodist</h1>
-  <p class="hero-subtitle">
-    An R and Python package for computing phylogenetic distances between any two taxa.
-    Given two taxon names, taxodist retrieves their full hierarchical lineages from
-    The Taxonomicon and computes a dissimilarity index based on the depth of their
-    most recent common ancestor.
-  </p>
-  <div class="hero-badges">
-    <a href="https://cran.r-project.org/package=taxodist">
-      <img src="https://www.r-pkg.org/badges/version/taxodist" alt="CRAN status">
-    </a>
-    <a href="https://pypi.org/project/taxodist/">
-      <img src="https://badge.fury.io/py/taxodist.svg" alt="PyPI version">
-    </a>
-    <img src="https://img.shields.io/badge/license-GPL--3-blue" alt="License: GPL-3">
-  </div>
-  <div class="hero-actions">
-    <a href="articles/getting-started.html" class="btn btn-primary">Get started</a>
-    <a href="reference.html" class="btn btn-outline">Reference</a>
-    <a href="https://github.com/rodrigosqrt3/taxodist" class="btn btn-outline">GitHub</a>
-  </div>
-</div>
-
-<div class="formula-strip">
-  <div>
-    <h3 class="anchored">Distance metric</h3>
-    <p>
-      The distance between taxa A and B is the reciprocal of the depth of their
-      most recent common ancestor (MRCA) in The Taxonomicon hierarchy.
-      The deeper the shared ancestor, the smaller the distance.
-      Taxa diverging at the same node are always equidistant from any third taxon,
-      regardless of lineage depth below the split.
-    </p>
-  </div>
-  <div class="formula-math">d(A,B) = 1 / depth(MRCA)</div>
-</div>
-
-<p class="section-label">Overview</p>
-<h2 class="section-title anchored">Core functionality</h2>
-
-<div class="cards">
-  <div class="card">
-    <h4 class="anchored">Lineage resolution</h4>
-    <p>Lineage data from The Taxonomicon (Systema Naturae 2000), with substantially deeper hierarchical resolution than most programmatic sources — up to 70 nodes for well-studied clades.</p>
-  </div>
-  <div class="card">
-    <h4 class="anchored">Distance computation</h4>
-    <p>Pairwise distances between any two taxa, or a full symmetric distance matrix for a set. Returns standard <code>dist</code> objects compatible with the R and Python ecosystems.</p>
-  </div>
-  <div class="card">
-    <h4 class="anchored">Multivariate analysis</h4>
-    <p>Wrapper functions for hierarchical clustering, PCoA ordination, and heatmap visualisation. Compatible with <code>vegan</code> and <code>ape</code> in R, and <code>scipy</code> in Python.</p>
-  </div>
-  <div class="card">
-    <h4 class="anchored">Lineage utilities</h4>
-    <p>Retrieve full lineages, identify MRCAs, trace taxonomic paths, test clade membership, and filter lists of taxa by clade.</p>
-  </div>
-  <div class="card">
-    <h4 class="anchored">Session caching</h4>
-    <p>Lineages are cached in memory after first retrieval. The cache can be serialised to disk and restored in future sessions, avoiding repeated network requests on large datasets.</p>
-  </div>
-  <div class="card">
-    <h4 class="anchored">R and Python</h4>
-    <p>The API is equivalent across both languages, supporting consistent workflows in multi-language environments. Available on CRAN and PyPI.</p>
-  </div>
-</div>
-
-<div class="app-callout">
-  <div>
-    <h3 class="anchored">Interactive web application</h3>
-    <p>
-      A Shiny web application providing access to the main package functions through
-      an interactive interface — pairwise distances, distance matrices, lineage explorer,
-      closest-relative ranking, coverage checking, and clade filtering.
-    </p>
-    <div class="lang-badges">
-      <span class="lang-badge">English</span>
-      <span class="lang-badge">Português</span>
-      <span class="lang-badge">Español</span>
-      <span class="lang-badge">Français</span>
-      <span class="lang-badge">Deutsch</span>
-    </div>
-  </div>
-  <a href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/" class="btn-app" target="_blank">
-    Launch app
-  </a>
-</div>
+<p><code>taxodist</code> is an R and Python package for computing phylogenetic distances between any two taxa. Given two taxon names, <code>taxodist</code> retrieves their full hierarchical lineages from The Taxonomicon database and computes a dissimilarity index based on the depth of their most recent common ancestor (MRCA).</p>
+<p><a href="https://cran.r-project.org/package=taxodist"><img src="https://img.shields.io/cran/v/taxodist?color=green.png" class="img-fluid" alt="CRAN status"></a> &nbsp; <a href="https://pypi.org/project/taxodist"><img src="https://img.shields.io/pypi/v/taxodist?color=green.png" class="img-fluid" alt="PyPI version"></a></p>
+<section id="core-functionality" class="level2">
+<h2 class="anchored" data-anchor-id="core-functionality">Core Functionality</h2>
+<section id="mathematical-properties-of-the-distance-metric" class="level3">
+<h3 class="anchored" data-anchor-id="mathematical-properties-of-the-distance-metric">Mathematical Properties of the Distance Metric</h3>
+<p>The distance metric implemented in <code>taxodist</code> is defined as:</p>
+<p><span class="math display">\[d(A, B) = \frac{1}{\text{depth}(\text{MRCA}(A, B))}\]</span></p>
+<p>Where <span class="math inline">\(\text{MRCA}(A, B)\)</span> represents the deepest shared node (the most recent common ancestor) between the lineages of taxon <span class="math inline">\(A\)</span> and taxon <span class="math inline">\(B\)</span> in The Taxonomicon hierarchy.</p>
+<p>Unlike simple rank-difference methods or Jaccard-based taxonomic dissimilarity indices, this metric satisfies the properties of a tree metric. Crucially, it guarantees that any two taxa sharing a given MRCA are equidistant from any third taxon outside of their shared clade, regardless of subsequent lineage branching or varying lineage depths below the split. This property is necessary for biological correctness in downstream multivariate analyses.</p>
+</section>
+<section id="data-source-and-hierarchical-depth" class="level3">
+<h3 class="anchored" data-anchor-id="data-source-and-hierarchical-depth">Data Source and Hierarchical Depth</h3>
+<p>All taxonomic hierarchies are retrieved programmatically from <strong>The Taxonomicon</strong> database (Systema Naturae 2000, curated by S.J. Brands).</p>
+<p>Because the classification scheme incorporates extensive intermediate ranks (such as Magnorders, Parvorders, Legions, and Tribes), lineages often resolve up to 70 distinct nodes for well-documented clades. This provides significantly higher resolution than alternative programmatic databases (e.g., the Open Tree of Life or NCBI Taxonomy) which often omit intermediate hierarchical levels.</p>
+</section>
+<section id="statistical-and-ecological-workflows" class="level3">
+<h3 class="anchored" data-anchor-id="statistical-and-ecological-workflows">Statistical and Ecological Workflows</h3>
+<p>The distance computation functions return objects natively compatible with standard scientific environments in both R and Python:</p>
+<ul>
+<li><strong>Multivariate Ecology:</strong> The output of <code>distance_matrix()</code> is a symmetric numeric matrix of class <code>"dist"</code> in R. It integrates directly with multivariate ecological workflows, such as those in the <code>vegan</code> package, including taxonomic distinctness analysis (<code>taxondive()</code>), Mantel test correlations (<code>mantel()</code>), and Permutational Multivariate Analysis of Variance (<code>adonis2()</code>).</li>
+<li><strong>Phylogenetic Reconstruction:</strong> Cluster hierarchies computed via <code>taxo_cluster()</code> (defaulting to the UPGMA algorithm) can be converted into standard <code>phylo</code> tree objects using <code>ape::as.phylo()</code> for standard tree plotting and comparative phylogenetic analysis.</li>
+<li><strong>Ordination:</strong> Classical Multidimensional Scaling (Principal Coordinate Analysis, PCoA) is supported natively via <code>taxo_ordinate()</code>, projecting the calculated distance space into lower dimensions.</li>
+</ul>
+</section>
+<section id="network-safety-and-memory-caching" class="level3">
+<h3 class="anchored" data-anchor-id="network-safety-and-memory-caching">Network Safety and Memory Caching</h3>
+<p>To maintain performance during large community queries and prevent unnecessary load on remote servers, the package implements a local caching pipeline:</p>
+<ul>
+<li><strong>In-Memory Cache:</strong> Queried lineages are preserved in a session-level cache. Its footprint and contents can be monitored using <code>cache_info()</code>.</li>
+<li><strong>Cache Serialization:</strong> The current session cache can be serialized to disk as an <code>.rds</code> file using <code>save_cache()</code> and subsequently reloaded in new sessions using <code>load_cache()</code>, ensuring full reproducibility of offline pipelines.</li>
+<li><strong>Fault Tolerance:</strong> Network queries incorporate robust error-handling. If remote servers time out or fail to resolve, the package reports the warning gracefully through native system handlers rather than interrupting execution.</li>
+</ul>
+</section>
+</section>
+<section id="interactive-web-application" class="level2">
+<h2 class="anchored" data-anchor-id="interactive-web-application">Interactive Web Application</h2>
+<p>A Shiny web application provides access to the core package features—allowing you to search taxa, calculate pairwise distances, visualize lineages, and check coverage.</p>
+<p><a href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/" class="btn btn-outline-primary" role="button">Launch App ↗</a></p>
+<p><em>Supported languages: English, Português, Español, Français, Deutsch.</em></p>
+</section>
+<section id="api-reference-overview" class="level2">
+<h2 class="anchored" data-anchor-id="api-reference-overview">API Reference Overview</h2>
+<p>Below is a summary of the core functions available in both packages:</p>
+<table class="table-striped table-hover table">
+<caption>Core API Functions</caption>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Category</th>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Distance Computation</strong></td>
+<td><code>taxo_distance()</code></td>
+<td>Pairwise distance between two taxa</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>distance_matrix()</code></td>
+<td>Full symmetric distance matrix for a set of taxa</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>focal_distances()</code></td>
+<td>Distances from one focal taxon to a community</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>closest_relative()</code></td>
+<td>Nearest taxon among a set of candidates</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>mrca()</code></td>
+<td>Most recent common ancestor of two taxa</td>
+</tr>
+<tr class="even">
+<td><strong>Lineage &amp; Exploration</strong></td>
+<td><code>get_lineage()</code> / <code>get_lineage_by_id()</code></td>
+<td>Retrieve complete taxonomic lineages</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>taxo_search()</code></td>
+<td>Resolve taxon names and manage homonyms</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>compare_lineages()</code> / <code>shared_clades()</code></td>
+<td>Compare lineage hierarchies side-by-side</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>is_member()</code> / <code>filter_clade()</code></td>
+<td>Clade membership tests and set filtering</td>
+</tr>
+<tr class="even">
+<td><strong>Multivariate Analysis</strong></td>
+<td><code>taxo_cluster()</code></td>
+<td>Hierarchical clustering (UPGMA)</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>taxo_ordinate()</code></td>
+<td>Principal Coordinate Analysis (PCoA)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>taxo_heatmap()</code></td>
+<td>Matrix visualization with dendrograms</td>
+</tr>
+<tr class="odd">
+<td><strong>Cache Management</strong></td>
+<td><code>save_cache()</code> / <code>load_cache()</code></td>
+<td>Serialize and restore session cache</td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="installation-and-basic-usage" class="level2">
 <h2 class="anchored" data-anchor-id="installation-and-basic-usage">Installation and basic usage</h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
@@ -588,71 +362,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p class="section-label" style="margin-top:3.5rem">Functions</p>
-<h2 class="section-title anchored">API reference</h2>
-
-<div class="fn-grid">
-  <div class="fn-group">
-    <h4 class="anchored">Distance computation</h4>
-    <ul class="fn-list">
-      <li><span class="fn-name">taxo_distance()</span><span class="fn-desc">Pairwise distance between two taxa</span></li>
-      <li><span class="fn-name">distance_matrix()</span><span class="fn-desc">Full symmetric distance matrix for a set of taxa</span></li>
-      <li><span class="fn-name">focal_distances()</span><span class="fn-desc">Distances from one focal taxon to a community</span></li>
-      <li><span class="fn-name">closest_relative()</span><span class="fn-desc">Nearest taxon among a set of candidates</span></li>
-      <li><span class="fn-name">mrca()</span><span class="fn-desc">Most recent common ancestor of two taxa</span></li>
-    </ul>
-  </div>
-  <div class="fn-group">
-    <h4 class="anchored">Lineage and exploration</h4>
-    <ul class="fn-list">
-      <li><span class="fn-name">get_lineage()</span><span class="fn-desc">Full lineage by taxon name</span></li>
-      <li><span class="fn-name">get_lineage_by_id()</span><span class="fn-desc">Full lineage by Taxonomicon numeric ID</span></li>
-      <li><span class="fn-name">get_taxonomicon_id()</span><span class="fn-desc">Resolve taxon name to numeric ID</span></li>
-      <li><span class="fn-name">taxo_search()</span><span class="fn-desc">Search Taxonomicon; handles homonyms</span></li>
-      <li><span class="fn-name">compare_lineages()</span><span class="fn-desc">Side-by-side lineage comparison at the MRCA</span></li>
-      <li><span class="fn-name">shared_clades()</span><span class="fn-desc">Shared lineage trunk between two taxa</span></li>
-      <li><span class="fn-name">taxo_path()</span><span class="fn-desc">Node-by-node path from taxon A to taxon B</span></li>
-      <li><span class="fn-name">lineage_depth()</span><span class="fn-desc">Number of nodes in a taxon's lineage</span></li>
-      <li><span class="fn-name">is_member()</span><span class="fn-desc">Test whether a taxon belongs to a clade</span></li>
-      <li><span class="fn-name">filter_clade()</span><span class="fn-desc">Retain only taxa belonging to a given clade</span></li>
-      <li><span class="fn-name">check_coverage()</span><span class="fn-desc">Verify which taxa are present in Taxonomicon</span></li>
-    </ul>
-  </div>
-  <div class="fn-group">
-    <h4 class="anchored">Multivariate analysis</h4>
-    <ul class="fn-list">
-      <li><span class="fn-name">taxo_cluster()</span><span class="fn-desc">Hierarchical clustering (UPGMA)</span></li>
-      <li><span class="fn-name">taxo_ordinate()</span><span class="fn-desc">Principal coordinate analysis (PCoA)</span></li>
-      <li><span class="fn-name">taxo_heatmap()</span><span class="fn-desc">Distance heatmap with marginal dendrograms</span></li>
-    </ul>
-  </div>
-  <div class="fn-group">
-    <h4 class="anchored">Cache management</h4>
-    <ul class="fn-list">
-      <li><span class="fn-name">clear_cache()</span><span class="fn-desc">Remove all entries from the session cache</span></li>
-      <li><span class="fn-name">save_cache()</span><span class="fn-desc">Serialise the cache to an .rds file</span></li>
-      <li><span class="fn-name">load_cache()</span><span class="fn-desc">Restore a previously saved cache from disk</span></li>
-      <li><span class="fn-name">cache_info()</span><span class="fn-desc">Report cache contents and memory use</span></li>
-    </ul>
-  </div>
-</div>
-
-<div style="margin-bottom: 3.5rem;">
-  <a href="reference.html" class="btn btn-primary">Full reference</a>
-</div>
-
-<div class="data-strip">
-  <h4 class="anchored">Data source and citation</h4>
-  <p>
-    All lineage data is sourced from <a href="http://taxonomicon.taxonomy.nl" style="color:var(--border)">The Taxonomicon</a>,
-    based on <em>Systema Naturae 2000</em> (Brands, S.J., 1989 onwards).
-    Please cite this resource in any published work that uses taxodist.
-  </p>
-  <p>
-    Brands, S.J. (1989 onwards). <em>Systema Naturae 2000</em>. Amsterdam, The Netherlands.
-    Retrieved from The Taxonomicon, <a href="http://taxonomicon.taxonomy.nl" style="color:var(--border)">http://taxonomicon.taxonomy.nl</a>.
-  </p>
-</div>
+</section>
+<section id="data-source-and-citation" class="level2">
+<h2 class="anchored" data-anchor-id="data-source-and-citation">Data Source and Citation</h2>
+<p>All lineage data is sourced from <a href="http://taxonomicon.taxonomy.nl">The Taxonomicon</a>, based on <em>Systema Naturae 2000</em> (Brands, S.J., 1989 onwards). Please cite this resource in any published work that uses <code>taxodist</code>:</p>
+<blockquote class="blockquote">
+<p>Brands, S.J. (1989 onwards). <em>Systema Naturae 2000</em>. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, <a href="http://taxonomicon.taxonomy.nl" class="uri">http://taxonomicon.taxonomy.nl</a>.</p>
+</blockquote>
 
 
 </section>

@@ -1,39 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://rodrigosqrt3.github.io/taxodist/index.html</loc>
-    <lastmod>2026-05-25T19:47:20.175Z</lastmod>
-  </url>
-  <url>
-    <loc>https://rodrigosqrt3.github.io/taxodist/about.html</loc>
-    <lastmod>2026-05-13T14:56:34.253Z</lastmod>
-  </url>
-  <url>
-    <loc>https://rodrigosqrt3.github.io/taxodist/Articles.html</loc>
-    <lastmod>2026-05-25T19:47:10.062Z</lastmod>
-  </url>
-  <url>
-    <loc>https://rodrigosqrt3.github.io/taxodist-site/index.html</loc>
-    <lastmod>2026-05-26T18:56:20.422Z</lastmod>
+    <loc>https://rodrigosqrt3.github.io/taxodist-site/about.html</loc>
+    <lastmod>2026-06-09T14:35:04.594Z</lastmod>
   </url>
   <url>
     <loc>https://rodrigosqrt3.github.io/taxodist-site/Articles.html</loc>
-    <lastmod>2026-05-26T17:12:47.322Z</lastmod>
-  </url>
-  <url>
-    <loc>https://rodrigosqrt3.github.io/taxodist-site/news.html</loc>
-    <lastmod>2026-05-26T18:51:43.578Z</lastmod>
+    <lastmod>2026-06-09T14:42:21.742Z</lastmod>
   </url>
   <url>
     <loc>https://rodrigosqrt3.github.io/taxodist-site/getting-started.html</loc>
-    <lastmod>2026-05-26T18:56:27.521Z</lastmod>
+    <lastmod>2026-06-09T14:35:08.521Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rodrigosqrt3.github.io/taxodist-site/index.html</loc>
+    <lastmod>2026-06-09T14:35:10.009Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rodrigosqrt3.github.io/taxodist-site/news.html</loc>
+    <lastmod>2026-06-09T14:35:11.301Z</lastmod>
   </url>
   <url>
     <loc>https://rodrigosqrt3.github.io/taxodist-site/reference.html</loc>
-    <lastmod>2026-05-26T18:57:18.087Z</lastmod>
+    <lastmod>2026-06-09T14:35:12.450Z</lastmod>
   </url>
   <url>
     <loc>https://rodrigosqrt3.github.io/taxodist-site/statistical-applications.html</loc>
-    <lastmod>2026-05-26T18:56:30.850Z</lastmod>
+    <lastmod>2026-06-09T14:35:13.951Z</lastmod>
   </url>
 </urlset>
