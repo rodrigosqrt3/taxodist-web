@@ -9,23 +9,23 @@
   --rule:        #d9c9b0;
   --card-bg:     #f3ede0;
   --code-bg:     #ede5d0;
-  --nav-bg:      #5c3d1e;  /* Deep brown for light mode navbar */
-  --nav-border:  #8b5e3c;  /* Subtle brown border for light mode */
+  --nav-bg:      #5c3d1e;
+  --nav-border:  #8b5e3c;
 }
 
-/* ── Dark Mode Variables (High contrast, warm-charcoal) ───────── */
+/* ── Dark Mode Variables ───────── */
 .quarto-dark {
-  --bg:          #1a1a1a;  /* Dark background */
-  --border:      #e5c19d;  /* Warm gold-tan for links & highlights */
-  --branch:      #c2946d;  /* Active accents */
+  --bg:          #1a1a1a;  
+  --border:      #e5c19d;  
+  --branch:      #c2946d;  
   --tip:         #ede5d0;  
-  --ink:         #f4f1ea;  /* Light warm-off-white for readable text */
-  --muted:       #b0a290;  /* Muted metadata and notes */
-  --rule:        #3d362e;  /* Darker divider lines */
-  --card-bg:     #26211c;  /* Warm dark-gray for card backgrounds */
-  --code-bg:     #2d2620;  /* Dark background for inline code backticks */
-  --nav-bg:      #2a231d;  /* Warm charcoal-brown that stands out from the dark background */
-  --nav-border:  #3d362e;  /* Soft, dark border that won't glow in dark mode */
+  --ink:         #f4f1ea;  
+  --muted:       #b0a290;  
+  --rule:        #3d362e;  
+  --card-bg:     #26211c;
+  --code-bg:     #2d2620; 
+  --nav-bg:      #2a231d; 
+  --nav-border:  #3d362e;
 }
 
 /* ── Base ─────────────────────────────────────────────────────── */
@@ -90,4 +90,13 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--border);
   border-bottom: 2px solid var(--border);
   background: transparent;
+}
+
+/* ── Theme-Sensitive Homepage Logo ───────────────────────────── */
+.quarto-light .homepage-logo {
+  content: url("images/taxodist_sepia.png");
+}
+
+.quarto-dark .homepage-logo {
+  content: url("images/taxodist_dark.png");
 }

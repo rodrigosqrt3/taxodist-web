@@ -86,42 +86,42 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "taxodist",
+    "title": "\ntaxodist\n",
     "section": "",
     "text": "taxodist is an R and Python package for computing phylogenetic distances between any two taxa. Given two taxon names, taxodist retrieves their full hierarchical lineages from The Taxonomicon database and computes a dissimilarity index based on the depth of their most recent common ancestor (MRCA)."
   },
   {
     "objectID": "index.html#core-functionality",
     "href": "index.html#core-functionality",
-    "title": "taxodist",
+    "title": "\ntaxodist\n",
     "section": "Core Functionality",
     "text": "Core Functionality\n\nMathematical Properties of the Distance Metric\nThe distance metric implemented in taxodist is defined as:\n\\[d(A, B) = \\frac{1}{\\text{depth}(\\text{MRCA}(A, B))}\\]\nWhere \\(\\text{MRCA}(A, B)\\) represents the deepest shared node (the most recent common ancestor) between the lineages of taxon \\(A\\) and taxon \\(B\\) in The Taxonomicon hierarchy.\nUnlike simple rank-difference methods or Jaccard-based taxonomic dissimilarity indices, this metric satisfies the properties of a tree metric. Crucially, it guarantees that any two taxa sharing a given MRCA are equidistant from any third taxon outside of their shared clade, regardless of subsequent lineage branching or varying lineage depths below the split. This property is necessary for biological correctness in downstream multivariate analyses.\n\n\nData Source and Hierarchical Depth\nAll taxonomic hierarchies are retrieved programmatically from The Taxonomicon database (Systema Naturae 2000, curated by S.J. Brands).\nBecause the classification scheme incorporates extensive intermediate ranks (such as Magnorders, Parvorders, Legions, and Tribes), lineages often resolve up to 70 distinct nodes for well-documented clades. This provides significantly higher resolution than alternative programmatic databases (e.g., the Open Tree of Life or NCBI Taxonomy) which often omit intermediate hierarchical levels.\n\n\nStatistical and Ecological Workflows\nThe distance computation functions return objects natively compatible with standard scientific environments in both R and Python:\n\nMultivariate Ecology: The output of distance_matrix() is a symmetric numeric matrix of class \"dist\" in R. It integrates directly with multivariate ecological workflows, such as those in the vegan package, including taxonomic distinctness analysis (taxondive()), Mantel test correlations (mantel()), and Permutational Multivariate Analysis of Variance (adonis2()).\nPhylogenetic Reconstruction: Cluster hierarchies computed via taxo_cluster() (defaulting to the UPGMA algorithm) can be converted into standard phylo tree objects using ape::as.phylo() for standard tree plotting and comparative phylogenetic analysis.\nOrdination: Classical Multidimensional Scaling (Principal Coordinate Analysis, PCoA) is supported natively via taxo_ordinate(), projecting the calculated distance space into lower dimensions.\n\n\n\nNetwork Safety and Memory Caching\nTo maintain performance during large community queries and prevent unnecessary load on remote servers, the package implements a local caching pipeline:\n\nIn-Memory Cache: Queried lineages are preserved in a session-level cache. Its footprint and contents can be monitored using cache_info().\nCache Serialization: The current session cache can be serialized to disk as an .rds file using save_cache() and subsequently reloaded in new sessions using load_cache(), ensuring full reproducibility of offline pipelines.\nFault Tolerance: Network queries incorporate robust error-handling. If remote servers time out or fail to resolve, the package reports the warning gracefully through native system handlers rather than interrupting execution."
   },
   {
     "objectID": "index.html#interactive-web-application",
     "href": "index.html#interactive-web-application",
-    "title": "taxodist",
+    "title": "\ntaxodist\n",
     "section": "Interactive Web Application",
     "text": "Interactive Web Application\nA Shiny web application provides access to the core package features—allowing you to search taxa, calculate pairwise distances, visualize lineages, and check coverage.\nLaunch App ↗\nSupported languages: English, Português, Español, Français, Deutsch."
   },
   {
     "objectID": "index.html#api-reference-overview",
     "href": "index.html#api-reference-overview",
-    "title": "taxodist",
+    "title": "\ntaxodist\n",
     "section": "API Reference Overview",
     "text": "API Reference Overview\nBelow is a summary of the core functions available in both packages:\n\nCore API Functions\n\n\n\n\n\n\n\nCategory\nFunction\nDescription\n\n\n\n\nDistance Computation\ntaxo_distance()\nPairwise distance between two taxa\n\n\n\ndistance_matrix()\nFull symmetric distance matrix for a set of taxa\n\n\n\nfocal_distances()\nDistances from one focal taxon to a community\n\n\n\nclosest_relative()\nNearest taxon among a set of candidates\n\n\n\nmrca()\nMost recent common ancestor of two taxa\n\n\nLineage & Exploration\nget_lineage() / get_lineage_by_id()\nRetrieve complete taxonomic lineages\n\n\n\ntaxo_search()\nResolve taxon names and manage homonyms\n\n\n\ncompare_lineages() / shared_clades()\nCompare lineage hierarchies side-by-side\n\n\n\nis_member() / filter_clade()\nClade membership tests and set filtering\n\n\nMultivariate Analysis\ntaxo_cluster()\nHierarchical clustering (UPGMA)\n\n\n\ntaxo_ordinate()\nPrincipal Coordinate Analysis (PCoA)\n\n\n\ntaxo_heatmap()\nMatrix visualization with dendrograms\n\n\nCache Management\nsave_cache() / load_cache()\nSerialize and restore session cache"
   },
   {
     "objectID": "index.html#installation-and-basic-usage",
     "href": "index.html#installation-and-basic-usage",
-    "title": "taxodist",
+    "title": "\ntaxodist\n",
     "section": "Installation and basic usage",
     "text": "Installation and basic usage\n\nRPython\n\n\ninstall.packages(\"taxodist\")\nlibrary(taxodist)\n\n# Pairwise distance\ntaxo_distance(\"Tyrannosaurus\", \"Velociraptor\")\n#&gt; Distance : 0.01538   MRCA: Tyrannoraptora (depth 65)\n\ntaxo_distance(\"Tyrannosaurus\", \"Homo\")\n#&gt; Distance : 0.02778   MRCA: Amniota (depth 36)\n\ntaxo_distance(\"Tyrannosaurus\", \"Quercus\")\n#&gt; Distance : 0.25000   MRCA: discaria (depth 4)\n\n# Distance matrix and clustering\ntaxa &lt;- c(\"Tyrannosaurus\", \"Velociraptor\", \"Triceratops\",\n          \"Homo sapiens\", \"Panthera leo\", \"Quercus robur\")\nmat &lt;- distance_matrix(taxa)\ncl  &lt;- taxo_cluster(taxa)\nplot(cl)\n\n\npip install taxodist\nimport taxodist as td\n\n# Pairwise distance\ntd.taxo_distance(\"Tyrannosaurus\", \"Velociraptor\")\n# distance: 0.01538   mrca: Tyrannoraptora (depth 65)\n\ntd.taxo_distance(\"Tyrannosaurus\", \"Homo\")\n# distance: 0.02778   mrca: Amniota (depth 36)\n\n# Distance matrix and clustering\ntaxa = [\"Tyrannosaurus\", \"Velociraptor\", \"Triceratops\",\n        \"Homo sapiens\", \"Panthera leo\", \"Quercus robur\"]\nmat = td.distance_matrix(taxa)\ncl  = td.taxo_cluster(taxa)\ncl.plot()"
   },
   {
     "objectID": "index.html#data-source-and-citation",
     "href": "index.html#data-source-and-citation",
-    "title": "taxodist",
+    "title": "\ntaxodist\n",
     "section": "Data Source and Citation",
     "text": "Data Source and Citation\nAll lineage data is sourced from The Taxonomicon, based on Systema Naturae 2000 (Brands, S.J., 1989 onwards). Please cite this resource in any published work that uses taxodist:\n\nBrands, S.J. (1989 onwards). Systema Naturae 2000. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, http://taxonomicon.taxonomy.nl."
   },

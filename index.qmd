@@ -1,7 +1,11 @@
 ---
-title: "taxodist"
-subtitle: "Taxonomic Distance and Phylogenetic Lineage Computation"
+title: "" 
 ---
+
+<div class="d-flex align-items-center gap-4" style="margin-top: 2rem; margin-bottom: 2rem; flex-wrap: wrap;">
+  <img class="homepage-logo" src="images/taxodist_sepia.png" height="150" alt="taxodist logo">
+  <h1 style="font-size: clamp(2.5rem, 5vw, 4rem); margin: 0; font-weight: 500; font-family: var(--bs-font-sans-serif);">taxodist</h1>
+</div>
 
 `taxodist` is an R and Python package for computing phylogenetic distances between any two taxa. Given two taxon names, `taxodist` retrieves their full hierarchical lineages from The Taxonomicon database and computes a dissimilarity index based on the depth of their most recent common ancestor (MRCA).
 
