@@ -1,9 +1,6 @@
 project:
   type: website
 
-resources:
-  - googled25722a3226093de.html
-
 website:
   title: "taxodist"
   site-url: "https://rodrigosqrt3.github.io/taxodist-site"
@@ -13,10 +10,18 @@ website:
     left:
       - href: index.qmd
         text: Home
+      - href: getting-started.qmd
+        text: Get Started
       - text: Articles
-        href: articles.qmd
-      - text: Changelog
-        href: news.qmd
+        menu:
+          - href: statistical-applications.qmd
+            text: Statistical Applications
+      - href: reference.qmd
+        text: Reference
+      - href: news.qmd
+        text: Changelog
+      - href: about.qmd
+        text: About
     right:
       - icon: github
         href: https://github.com/rodrigosqrt3/taxodist
