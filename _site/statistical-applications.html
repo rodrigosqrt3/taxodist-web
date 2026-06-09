@@ -94,8 +94,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit"
   }
 }</script>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=DM+Mono:wght@400;500&amp;family=DM+Sans:wght@300;400;500&amp;display=swap" rel="stylesheet">
-<meta name="description" content="Use taxodist distance matrices with vegan and ape for taxonomic diversity, Mantel tests, PERMANOVA, and phylogenetic tree visualisation.">
 
 
 <link rel="stylesheet" href="styles.css">
@@ -192,6 +190,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Statistical Applications of taxodist</h1>
+<p class="subtitle lead">Using taxodist distance matrices with vegan and ape for taxonomic diversity indices, Mantel tests, PERMANOVA, and phylogenetic tree visualization.</p>
 </div>
 
 
@@ -206,135 +205,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-
-<style>
-  :root {
-    --bg:      #faf6ee;
-    --border:  #5c3d1e;
-    --branch:  #8b5e3c;
-    --tip:     #b8865a;
-    --ink:     #3d2510;
-    --muted:   #6b4c30;
-    --rule:    #d9c9b0;
-    --card-bg: #f3ede0;
-    --code-bg: #ede5d0;
-  }
-
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); }
-
-  .site-nav {
-    display: flex; align-items: center; gap: 2rem;
-    padding: 1rem 0; border-bottom: 1px solid var(--rule); margin-bottom: 3rem;
-  }
-  .nav-brand {
-    font-family: 'DM Serif Display', serif; font-size: 1.15rem;
-    color: var(--ink); text-decoration: none; font-weight: 400; flex-shrink: 0;
-  }
-  .nav-brand:hover { color: var(--border); text-decoration: none; }
-  .nav-links { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
-  .nav-links a { font-size: 0.85rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color 0.15s; }
-  .nav-links a:hover { color: var(--ink); text-decoration: none; }
-  .nav-github { margin-left: auto; color: var(--border) !important; }
-  .nav-active { color: var(--ink) !important; border-bottom: 1px solid var(--ink); }
-  .nav-toggle { display: none; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--ink); }
-  @media (max-width: 600px) {
-    .nav-toggle { display: block; margin-left: auto; }
-    .nav-links { display: none; width: 100%; flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1rem 0; }
-    .nav-links.open { display: flex; }
-    .nav-github { margin-left: 0 !important; }
-  }
-
-  .page-header {
-    padding: 3rem 0 2.5rem; border-bottom: 1px solid var(--rule); margin-bottom: 3rem; max-width: 680px;
-  }
-  .page-header .eyebrow {
-    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--branch); margin-bottom: 0.5rem;
-  }
-  .page-header h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(1.8rem, 3vw, 2.5rem);
-    color: var(--ink); margin: 0 0 0.75rem; font-weight: 400;
-  }
-  .page-header p { font-size: 1rem; color: var(--muted); margin: 0; line-height: 1.7; font-weight: 300; }
-
-  .prose { max-width: 720px; }
-  .prose h2 {
-    font-family: 'DM Serif Display', serif; font-size: 1.5rem;
-    color: var(--ink); font-weight: 400; margin: 3rem 0 1rem;
-    padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule);
-  }
-  .prose h3 { font-size: 1rem; font-weight: 600; color: var(--ink); margin: 2rem 0 0.75rem; }
-  .prose p { color: var(--muted); line-height: 1.75; margin: 0 0 1rem; font-size: 0.95rem; }
-  .prose code {
-    font-family: 'DM Mono', monospace; font-size: 0.82rem;
-    background: var(--code-bg); color: var(--border);
-    padding: 0.15em 0.4em; border-radius: 2px;
-  }
-  .prose a { color: var(--border); }
-  .prose a:hover { color: var(--ink); }
-  .prose ul { color: var(--muted); font-size: 0.95rem; line-height: 1.75; padding-left: 1.25rem; margin: 0 0 1rem; }
-  .prose blockquote {
-    border-left: 3px solid var(--branch); margin: 0 0 1rem;
-    padding: 0.5rem 1.25rem;
-    background: var(--card-bg); border-radius: 0 4px 4px 0;
-  }
-  .prose blockquote p { margin: 0; font-size: 0.88rem; }
-
-  .callout {
-    background: var(--card-bg); border: 1px solid var(--rule);
-    border-left: 3px solid var(--branch); border-radius: 4px;
-    padding: 1.25rem 1.5rem; margin: 1.5rem 0;
-  }
-  .callout p { margin: 0; font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
-  .callout strong { color: var(--ink); }
-
-  /* Index table for methods */
-  .method-grid {
-    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0 2rem;
-  }
-  .method-card {
-    background: var(--card-bg); border: 1px solid var(--rule); border-radius: 4px; padding: 1.25rem 1.5rem;
-  }
-  .method-card h4 { font-size: 0.85rem; font-weight: 600; color: var(--ink); margin: 0 0 0.4rem; }
-  .method-card p { font-size: 0.82rem; color: var(--muted); margin: 0; line-height: 1.55; }
-  @media (max-width: 600px) { .method-grid { grid-template-columns: 1fr; } }
-
-  .article-nav {
-    display: flex; justify-content: space-between; margin-top: 4rem;
-    padding-top: 2rem; border-top: 1px solid var(--rule);
-  }
-  .article-nav a {
-    font-size: 0.85rem; font-weight: 500; color: var(--border);
-    text-decoration: none; display: flex; align-items: center; gap: 0.4rem;
-  }
-  .article-nav a:hover { color: var(--ink); text-decoration: none; }
-</style>
-
-<nav class="site-nav">
-  <a href="../index.html" class="nav-brand">taxodist</a>
-  <div class="nav-links">
-    <a href="getting-started.html">Get Started</a>
-    <a href="statistical-applications.html" class="nav-active">Statistical Applications</a>
-    <a href="../reference.html">Reference</a>
-    <a href="https://github.com/rodrigosqrt3/taxodist" class="nav-github">GitHub ↗</a>
-  </div>
-  <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
-</nav>
-
-<div class="page-header">
-  <div class="eyebrow">Article</div>
-  <h1>Statistical Applications</h1>
-  <p>Use the taxodist distance matrix with <code>vegan</code> and <code>ape</code> for taxonomic diversity indices, Mantel tests, PERMANOVA, and phylogenetic tree visualisation.</p>
-</div>
-
-<div class="prose">
 <p>The <code>taxodist</code> distance matrix is a standard <code>dist</code> object and integrates directly with the R ecosystem for multivariate analysis. All examples use a set of threatened mammals from Brazil spanning five broad taxonomic groups.</p>
-<div class="method-grid">
-  <div class="method-card"><h4 class="anchored">Phylogenetic tree</h4><p>Convert a taxo_cluster result to a <code>phylo</code> object for publication-quality plots with <code>ape</code>.</p></div>
-  <div class="method-card"><h4 class="anchored">Taxonomic diversity</h4><p>Clarke &amp; Warwick indices via <code>vegan::taxondive()</code> — Delta, Delta*, Delta+, Lambda+.</p></div>
-  <div class="method-card"><h4 class="anchored">Mantel test</h4><p>Test correlation between taxonomic distance and geographic or trait distance matrices.</p></div>
-  <div class="method-card"><h4 class="anchored">PERMANOVA</h4><p>Test whether taxonomic groups occupy distinct regions of distance space with <code>vegan::adonis2()</code>.</p></div>
+<div class="grid">
+<section id="phylogenetic-reconstruction" class="level3 g-col-12 g-col-md-6">
+<h3 class="anchored" data-anchor-id="phylogenetic-reconstruction">Phylogenetic Reconstruction</h3>
+<p>Convert a <code>taxo_cluster</code> hierarchical clustering result into a standard <code>phylo</code> object for publication-quality tree plotting using the <code>ape</code> package.</p>
+</section>
+<section id="taxonomic-diversity" class="level3 g-col-12 g-col-md-6">
+<h3 class="anchored" data-anchor-id="taxonomic-diversity">Taxonomic Diversity</h3>
+<p>Compute Clarke &amp; Warwick biodiversity indices (Delta, Delta*, Delta+, and Lambda+) natively using <code>vegan::taxondive()</code>.</p>
+</section>
+<section id="mantel-correlation-tests" class="level3 g-col-12 g-col-md-6">
+<h3 class="anchored" data-anchor-id="mantel-correlation-tests">Mantel Correlation Tests</h3>
+<p>Evaluate the correlation between your taxonomic distance matrix and geographic or phenotypic distance matrices.</p>
+</section>
+<section id="permanova" class="level3 g-col-12 g-col-md-6">
+<h3 class="anchored" data-anchor-id="permanova">PERMANOVA</h3>
+<p>Determine whether pre-defined taxonomic groups occupy significantly distinct regions of your calculated distance space with <code>vegan::adonis2()</code>.</p>
+</section>
 </div>
 <hr>
 <section id="example-dataset-threatened-mammals-of-brazil" class="level2">
@@ -358,8 +246,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Leontopithecus 0.01694915   0.01694915 0.01666667 0.01666667 0.01754386</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><code>Didelphis</code> shows the largest distances to all other taxa (0.01754), consistent with the early divergence of marsupials from placental mammals. Carnivores (<code>Panthera</code>, <code>Pteronura</code>, <code>Puma</code>) show smaller distances among themselves, reflecting a more recent common ancestor within Carnivora.</p>
-<div class="callout">
-  <p><strong>Caching:</strong> Lineages are cached after the first retrieval, so subsequent analyses on the same taxa are instantaneous. Run <code>save_cache()</code> at the end of a session and <code>load_cache()</code> at the start of the next to persist the cache across sessions.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Caching and Optimization
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Retrieved lineages are preserved in a local memory cache, making subsequent operations on those same taxa instantaneous. To persist this cache across sessions, run <code>save_cache()</code> at the end of your run and reload it with <code>load_cache()</code> in future sessions.</p>
+</div>
 </div>
 <hr>
 </section>
@@ -427,8 +325,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>vegan<span class="sc">::</span><span class="fu">mantel</span>(mat, geo_dist, <span class="at">method =</span> <span class="st">"spearman"</span>, <span class="at">permutations =</span> <span class="dv">9999</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Mantel statistic r: -0.07405</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       Significance: 0.672</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout">
-  <p><strong>Note:</strong> The non-significant result here is expected — coordinates are random. In practice, replace <code>coords</code> with observed latitude/longitude values from your study area.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The non-significant Mantel test result here is expected because the geographic coordinates used in this example are randomly generated. In standard research workflows, replace these with observed latitude and longitude coordinates from your field collections.</p>
+</div>
 </div>
 <hr>
 </section>
@@ -492,15 +400,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Clarke, K.R. and Warwick, R.M. (1998). A taxonomic distinctness index and its statistical properties. <em>Journal of Applied Ecology</em>, 35, 523–531.</p>
 <p>Clarke, K.R. and Warwick, R.M. (2001). A further biodiversity index applicable to species lists: variation in taxonomic distinctness. <em>Marine Ecology Progress Series</em>, 216, 265–278.</p>
 <p>Brands, S.J. (1989 onwards). <em>Systema Naturae 2000</em>. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, <a href="http://taxonomicon.taxonomy.nl" class="uri">http://taxonomicon.taxonomy.nl</a>.</p>
-</section></div>
-
-<div class="article-nav">
-  <a href="getting-started.html">← Get Started</a>
-  <a href="../reference.html">Reference →</a>
-</div>
+<hr>
+<p><a href="./getting-started.html" class="btn btn-outline-secondary" role="button">← Return to Getting Started</a> &nbsp; <a href="./reference.html" class="btn btn-outline-primary" role="button">Go to API Reference →</a></p>
 
 
-
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

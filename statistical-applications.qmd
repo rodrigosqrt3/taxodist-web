@@ -1,150 +1,33 @@
 ---
 title: "Statistical Applications of taxodist"
-format:
-  html:
-    include-in-header:
-      text: |
-        <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-        <meta name="description" content="Use taxodist distance matrices with vegan and ape for taxonomic diversity, Mantel tests, PERMANOVA, and phylogenetic tree visualisation.">
+subtitle: "Using taxodist distance matrices with vegan and ape for taxonomic diversity indices, Mantel tests, PERMANOVA, and phylogenetic tree visualization."
 ---
 
-```{=html}
-<style>
-  :root {
-    --bg:      #faf6ee;
-    --border:  #5c3d1e;
-    --branch:  #8b5e3c;
-    --tip:     #b8865a;
-    --ink:     #3d2510;
-    --muted:   #6b4c30;
-    --rule:    #d9c9b0;
-    --card-bg: #f3ede0;
-    --code-bg: #ede5d0;
-  }
+The `taxodist` distance matrix is a standard `dist` object and integrates directly with the R ecosystem for multivariate analysis. All examples use a set of threatened mammals from Brazil spanning five broad taxonomic groups.
 
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); }
+::: {.grid}
 
-  .site-nav {
-    display: flex; align-items: center; gap: 2rem;
-    padding: 1rem 0; border-bottom: 1px solid var(--rule); margin-bottom: 3rem;
-  }
-  .nav-brand {
-    font-family: 'DM Serif Display', serif; font-size: 1.15rem;
-    color: var(--ink); text-decoration: none; font-weight: 400; flex-shrink: 0;
-  }
-  .nav-brand:hover { color: var(--border); text-decoration: none; }
-  .nav-links { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
-  .nav-links a { font-size: 0.85rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color 0.15s; }
-  .nav-links a:hover { color: var(--ink); text-decoration: none; }
-  .nav-github { margin-left: auto; color: var(--border) !important; }
-  .nav-active { color: var(--ink) !important; border-bottom: 1px solid var(--ink); }
-  .nav-toggle { display: none; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--ink); }
-  @media (max-width: 600px) {
-    .nav-toggle { display: block; margin-left: auto; }
-    .nav-links { display: none; width: 100%; flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1rem 0; }
-    .nav-links.open { display: flex; }
-    .nav-github { margin-left: 0 !important; }
-  }
+::: {.g-col-12 .g-col-md-6}
+### Phylogenetic Reconstruction
+Convert a `taxo_cluster` hierarchical clustering result into a standard `phylo` object for publication-quality tree plotting using the `ape` package.
+:::
 
-  .page-header {
-    padding: 3rem 0 2.5rem; border-bottom: 1px solid var(--rule); margin-bottom: 3rem; max-width: 680px;
-  }
-  .page-header .eyebrow {
-    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--branch); margin-bottom: 0.5rem;
-  }
-  .page-header h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(1.8rem, 3vw, 2.5rem);
-    color: var(--ink); margin: 0 0 0.75rem; font-weight: 400;
-  }
-  .page-header p { font-size: 1rem; color: var(--muted); margin: 0; line-height: 1.7; font-weight: 300; }
+::: {.g-col-12 .g-col-md-6}
+### Taxonomic Diversity
+Compute Clarke & Warwick biodiversity indices (Delta, Delta*, Delta+, and Lambda+) natively using `vegan::taxondive()`.
+:::
 
-  .prose { max-width: 720px; }
-  .prose h2 {
-    font-family: 'DM Serif Display', serif; font-size: 1.5rem;
-    color: var(--ink); font-weight: 400; margin: 3rem 0 1rem;
-    padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule);
-  }
-  .prose h3 { font-size: 1rem; font-weight: 600; color: var(--ink); margin: 2rem 0 0.75rem; }
-  .prose p { color: var(--muted); line-height: 1.75; margin: 0 0 1rem; font-size: 0.95rem; }
-  .prose code {
-    font-family: 'DM Mono', monospace; font-size: 0.82rem;
-    background: var(--code-bg); color: var(--border);
-    padding: 0.15em 0.4em; border-radius: 2px;
-  }
-  .prose a { color: var(--border); }
-  .prose a:hover { color: var(--ink); }
-  .prose ul { color: var(--muted); font-size: 0.95rem; line-height: 1.75; padding-left: 1.25rem; margin: 0 0 1rem; }
-  .prose blockquote {
-    border-left: 3px solid var(--branch); margin: 0 0 1rem;
-    padding: 0.5rem 1.25rem;
-    background: var(--card-bg); border-radius: 0 4px 4px 0;
-  }
-  .prose blockquote p { margin: 0; font-size: 0.88rem; }
+::: {.g-col-12 .g-col-md-6}
+### Mantel Correlation Tests
+Evaluate the correlation between your taxonomic distance matrix and geographic or phenotypic distance matrices.
+:::
 
-  .callout {
-    background: var(--card-bg); border: 1px solid var(--rule);
-    border-left: 3px solid var(--branch); border-radius: 4px;
-    padding: 1.25rem 1.5rem; margin: 1.5rem 0;
-  }
-  .callout p { margin: 0; font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
-  .callout strong { color: var(--ink); }
+::: {.g-col-12 .g-col-md-6}
+### PERMANOVA
+Determine whether pre-defined taxonomic groups occupy significantly distinct regions of your calculated distance space with `vegan::adonis2()`.
+:::
 
-  /* Index table for methods */
-  .method-grid {
-    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0 2rem;
-  }
-  .method-card {
-    background: var(--card-bg); border: 1px solid var(--rule); border-radius: 4px; padding: 1.25rem 1.5rem;
-  }
-  .method-card h4 { font-size: 0.85rem; font-weight: 600; color: var(--ink); margin: 0 0 0.4rem; }
-  .method-card p { font-size: 0.82rem; color: var(--muted); margin: 0; line-height: 1.55; }
-  @media (max-width: 600px) { .method-grid { grid-template-columns: 1fr; } }
-
-  .article-nav {
-    display: flex; justify-content: space-between; margin-top: 4rem;
-    padding-top: 2rem; border-top: 1px solid var(--rule);
-  }
-  .article-nav a {
-    font-size: 0.85rem; font-weight: 500; color: var(--border);
-    text-decoration: none; display: flex; align-items: center; gap: 0.4rem;
-  }
-  .article-nav a:hover { color: var(--ink); text-decoration: none; }
-</style>
-
-<nav class="site-nav">
-  <a href="../index.html" class="nav-brand">taxodist</a>
-  <div class="nav-links">
-    <a href="getting-started.html">Get Started</a>
-    <a href="statistical-applications.html" class="nav-active">Statistical Applications</a>
-    <a href="../reference.html">Reference</a>
-    <a href="https://github.com/rodrigosqrt3/taxodist" class="nav-github">GitHub ↗</a>
-  </div>
-  <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
-</nav>
-
-<div class="page-header">
-  <div class="eyebrow">Article</div>
-  <h1>Statistical Applications</h1>
-  <p>Use the taxodist distance matrix with <code>vegan</code> and <code>ape</code> for taxonomic diversity indices, Mantel tests, PERMANOVA, and phylogenetic tree visualisation.</p>
-</div>
-
-<div class="prose">
-```
-
-The `taxodist` distance matrix is a standard `dist` object and integrates
-directly with the R ecosystem for multivariate analysis. All examples use a set
-of threatened mammals from Brazil spanning five broad taxonomic groups.
-
-```{=html}
-<div class="method-grid">
-  <div class="method-card"><h4>Phylogenetic tree</h4><p>Convert a taxo_cluster result to a <code>phylo</code> object for publication-quality plots with <code>ape</code>.</p></div>
-  <div class="method-card"><h4>Taxonomic diversity</h4><p>Clarke &amp; Warwick indices via <code>vegan::taxondive()</code> — Delta, Delta*, Delta+, Lambda+.</p></div>
-  <div class="method-card"><h4>Mantel test</h4><p>Test correlation between taxonomic distance and geographic or trait distance matrices.</p></div>
-  <div class="method-card"><h4>PERMANOVA</h4><p>Test whether taxonomic groups occupy distinct regions of distance space with <code>vegan::adonis2()</code>.</p></div>
-</div>
-```
+:::
 
 ---
 
@@ -184,11 +67,10 @@ consistent with the early divergence of marsupials from placental mammals.
 Carnivores (`Panthera`, `Pteronura`, `Puma`) show smaller distances among
 themselves, reflecting a more recent common ancestor within Carnivora.
 
-```{=html}
-<div class="callout">
-  <p><strong>Caching:</strong> Lineages are cached after the first retrieval, so subsequent analyses on the same taxa are instantaneous. Run <code>save_cache()</code> at the end of a session and <code>load_cache()</code> at the start of the next to persist the cache across sessions.</p>
-</div>
-```
+::: {.callout-tip}
+## Caching and Optimization
+Retrieved lineages are preserved in a local memory cache, making subsequent operations on those same taxa instantaneous. To persist this cache across sessions, run `save_cache()` at the end of your run and reload it with `load_cache()` in future sessions.
+:::
 
 ---
 
@@ -288,11 +170,9 @@ vegan::mantel(mat, geo_dist, method = "spearman", permutations = 9999)
 #>       Significance: 0.672
 ```
 
-```{=html}
-<div class="callout">
-  <p><strong>Note:</strong> The non-significant result here is expected — coordinates are random. In practice, replace <code>coords</code> with observed latitude/longitude values from your study area.</p>
-</div>
-```
+::: {.callout-note}
+The non-significant Mantel test result here is expected because the geographic coordinates used in this example are randomly generated. In standard research workflows, replace these with observed latitude and longitude coordinates from your field collections.
+:::
 
 ---
 
@@ -381,11 +261,6 @@ Series*, 216, 265–278.
 Brands, S.J. (1989 onwards). *Systema Naturae 2000*. Amsterdam, The Netherlands.
 Retrieved from The Taxonomicon, <http://taxonomicon.taxonomy.nl>.
 
-```{=html}
-</div>
+---
 
-<div class="article-nav">
-  <a href="getting-started.html">← Get Started</a>
-  <a href="../reference.html">Reference →</a>
-</div>
-```
+[← Return to Getting Started](getting-started.qmd){.btn .btn-outline-secondary role="button"} &nbsp; [Go to API Reference →](reference.qmd){.btn .btn-outline-primary role="button"}

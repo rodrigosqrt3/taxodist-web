@@ -1,394 +1,233 @@
 ---
 title: "Function Reference"
-format:
-  html:
-    include-in-header:
-      text: |
-        <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-        <meta name="description" content="Complete function reference for the taxodist R and Python package — distance computation, lineage utilities, multivariate analysis, and cache management.">
+subtitle: "Complete API reference for taxodist in R and Python. All functions are structurally equivalent across both ecosystems."
 ---
 
-```{=html}
-<style>
-  :root {
-    --bg:      #faf6ee;
-    --border:  #5c3d1e;
-    --branch:  #8b5e3c;
-    --tip:     #b8865a;
-    --ink:     #3d2510;
-    --muted:   #6b4c30;
-    --rule:    #d9c9b0;
-    --card-bg: #f3ede0;
-    --code-bg: #ede5d0;
-  }
+## Distance Computation
 
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); }
+### `taxo_distance()`
+**Signature:** `taxo_distance(taxon_a, taxon_b)`
 
-  .site-nav {
-    display: flex; align-items: center; gap: 2rem;
-    padding: 1rem 0; border-bottom: 1px solid var(--rule); margin-bottom: 3rem;
-  }
-  .nav-brand {
-    font-family: 'DM Serif Display', serif; font-size: 1.15rem;
-    color: var(--ink); text-decoration: none; font-weight: 400; flex-shrink: 0;
-  }
-  .nav-brand:hover { color: var(--border); text-decoration: none; }
-  .nav-links { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
-  .nav-links a { font-size: 0.85rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color 0.15s; }
-  .nav-links a:hover { color: var(--ink); text-decoration: none; }
-  .nav-github { margin-left: auto; color: var(--border) !important; }
-  .nav-active { color: var(--ink) !important; border-bottom: 1px solid var(--ink); }
-  .nav-toggle { display: none; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--ink); }
-  @media (max-width: 600px) {
-    .nav-toggle { display: block; margin-left: auto; }
-    .nav-links { display: none; width: 100%; flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1rem 0; }
-    .nav-links.open { display: flex; }
-    .nav-github { margin-left: 0 !important; }
-  }
+Computes the taxonomic distance between two taxa. Retrieves both lineages from The Taxonomicon, finds their most recent common ancestor (MRCA), and calculates the distance as $1 / \text{depth}(\text{MRCA})$.
 
-  .page-header {
-    padding: 3rem 0 2.5rem; border-bottom: 1px solid var(--rule); margin-bottom: 3rem; max-width: 680px;
-  }
-  .page-header .eyebrow {
-    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--branch); margin-bottom: 0.5rem;
-  }
-  .page-header h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(1.8rem, 3vw, 2.5rem);
-    color: var(--ink); margin: 0 0 0.75rem; font-weight: 400;
-  }
-  .page-header p { font-size: 1rem; color: var(--muted); margin: 0; line-height: 1.7; font-weight: 300; }
+* **Returns:** `named list` (R) or `dict` (Python) containing the following fields:
+  * `distance`: Numeric taxonomic distance.
+  * `mrca`: Name of the most recent common ancestor.
+  * `mrca_depth`: Hierarchical node depth of the MRCA.
+  * `depth_a` / `depth_b`: Absolute lineage depths of both input taxa.
 
-  /* Reference layout: sidebar + content */
-  .ref-layout { display: grid; grid-template-columns: 180px 1fr; gap: 3rem; align-items: start; }
-  .ref-sidebar { position: sticky; top: 2rem; }
-  .ref-sidebar-group { margin-bottom: 1.75rem; }
-  .ref-sidebar-group h5 {
-    font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--branch); margin: 0 0 0.5rem;
-  }
-  .ref-sidebar-group a {
-    display: block; font-family: 'DM Mono', monospace; font-size: 0.75rem;
-    color: var(--muted); text-decoration: none; padding: 0.2rem 0;
-    transition: color 0.15s;
-  }
-  .ref-sidebar-group a:hover { color: var(--border); }
-  @media (max-width: 768px) { .ref-layout { grid-template-columns: 1fr; } .ref-sidebar { display: none; } }
+---
 
-  /* Function entries */
-  .fn-section { margin-bottom: 3.5rem; }
-  .fn-section-title {
-    font-family: 'DM Serif Display', serif; font-size: 1.3rem;
-    color: var(--ink); font-weight: 400; margin: 0 0 1.25rem;
-    padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule);
-  }
-  .fn-entry {
-    background: var(--card-bg); border: 1px solid var(--rule);
-    border-radius: 4px; padding: 1.25rem 1.5rem; margin-bottom: 0.75rem;
-  }
-  .fn-entry-header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
-  .fn-entry-name {
-    font-family: 'DM Mono', monospace; font-size: 0.9rem;
-    color: var(--border); font-weight: 500;
-  }
-  .fn-entry-sig { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--muted); }
-  .fn-entry-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.65; margin: 0; }
-  .fn-entry-desc code {
-    font-family: 'DM Mono', monospace; font-size: 0.78rem;
-    background: var(--code-bg); color: var(--border);
-    padding: 0.1em 0.35em; border-radius: 2px;
-  }
-  .fn-returns {
-    margin-top: 0.6rem; font-size: 0.78rem; color: var(--tip);
-    font-family: 'DM Mono', monospace;
-  }
-</style>
+### `distance_matrix()`
+**Signature:** `distance_matrix(taxa)`
 
-<nav class="site-nav">
-  <a href="index.html" class="nav-brand">taxodist</a>
-  <div class="nav-links">
-    <a href="articles/getting-started.html">Get Started</a>
-    <a href="articles/statistical-applications.html">Statistical Applications</a>
-    <a href="reference.html" class="nav-active">Reference</a>
-    <a href="https://github.com/rodrigosqrt3/taxodist" class="nav-github">GitHub ↗</a>
-  </div>
-  <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
-</nav>
+Computes the full symmetric pairwise distance matrix for a vector of taxon names. Lineages are cached in memory after first retrieval to avoid redundant network requests.
 
-<div class="page-header">
-  <div class="eyebrow">Reference</div>
-  <h1>Function Reference</h1>
-  <p>Complete API reference for taxodist in R and Python. All functions are available in both languages with equivalent signatures.</p>
-</div>
+* **Returns:** Standard `dist` object in R, or a `scipy`-compatible distance matrix (NumPy `ndarray`) in Python, with zeros on the diagonal. Taxa not present in the database are populated with `NA` / `None` distances.
 
-<div class="ref-layout">
+---
 
-<!-- Sidebar -->
-<div class="ref-sidebar">
-  <div class="ref-sidebar-group">
-    <h5>Distance</h5>
-    <a href="#distance-computation">taxo_distance()</a>
-    <a href="#distance-computation">distance_matrix()</a>
-    <a href="#distance-computation">focal_distances()</a>
-    <a href="#distance-computation">closest_relative()</a>
-    <a href="#distance-computation">mrca()</a>
-  </div>
-  <div class="ref-sidebar-group">
-    <h5>Lineage</h5>
-    <a href="#lineage-utilities">get_lineage()</a>
-    <a href="#lineage-utilities">get_lineage_by_id()</a>
-    <a href="#lineage-utilities">get_taxonomicon_id()</a>
-    <a href="#lineage-utilities">taxo_search()</a>
-    <a href="#lineage-utilities">compare_lineages()</a>
-    <a href="#lineage-utilities">shared_clades()</a>
-    <a href="#lineage-utilities">taxo_path()</a>
-    <a href="#lineage-utilities">lineage_depth()</a>
-    <a href="#lineage-utilities">is_member()</a>
-    <a href="#lineage-utilities">filter_clade()</a>
-    <a href="#lineage-utilities">check_coverage()</a>
-  </div>
-  <div class="ref-sidebar-group">
-    <h5>Multivariate</h5>
-    <a href="#multivariate-analysis">taxo_cluster()</a>
-    <a href="#multivariate-analysis">taxo_ordinate()</a>
-    <a href="#multivariate-analysis">taxo_heatmap()</a>
-  </div>
-  <div class="ref-sidebar-group">
-    <h5>Cache</h5>
-    <a href="#cache-management">clear_cache()</a>
-    <a href="#cache-management">save_cache()</a>
-    <a href="#cache-management">load_cache()</a>
-    <a href="#cache-management">cache_info()</a>
-  </div>
-</div>
+### `focal_distances()`
+**Signature:** `focal_distances(focal, community)`
 
-<!-- Main content -->
-<div>
+Computes taxonomic distances from a single focal taxon to all members of a community vector. This is equivalent to pulling a single row of a complete distance matrix, but operates with higher execution efficiency.
 
-<div class="fn-section" id="distance-computation">
-  <div class="fn-section-title">Distance computation</div>
+* **Returns:** `named numeric vector` (R) or pandas `Series` (Python).
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">taxo_distance()</span>
-      <span class="fn-entry-sig">taxo_distance(taxon_a, taxon_b)</span>
-    </div>
-    <p class="fn-entry-desc">Compute the taxonomic distance between two taxa. Retrieves both lineages from The Taxonomicon, finds the most recent common ancestor, and returns <code>1 / depth(MRCA)</code>. Also returns the MRCA name, its depth, and the individual lineage depths.</p>
-    <div class="fn-returns">→ named list / dict: distance, mrca, mrca_depth, depth_a, depth_b</div>
-  </div>
+---
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">distance_matrix()</span>
-      <span class="fn-entry-sig">distance_matrix(taxa)</span>
-    </div>
-    <p class="fn-entry-desc">Compute the full symmetric pairwise distance matrix for a vector of taxon names. All lineages are cached after retrieval. Returns a standard <code>dist</code> object (R) or a <code>scipy</code>-compatible distance matrix (Python) with zeros on the diagonal. Taxa not found in The Taxonomicon produce <code>NA</code> distances.</p>
-    <div class="fn-returns">→ dist object (R) / ndarray (Python)</div>
-  </div>
+### `closest_relative()`
+**Signature:** `closest_relative(query, candidates)`
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">focal_distances()</span>
-      <span class="fn-entry-sig">focal_distances(focal, community)</span>
-    </div>
-    <p class="fn-entry-desc">Compute distances from a single focal taxon to every member of a community vector. Equivalent to a single row of <code>distance_matrix()</code> but more efficient when only one focal taxon is needed.</p>
-    <div class="fn-returns">→ named numeric vector / Series</div>
-  </div>
+Identifies and ranks candidate taxa based on their taxonomic proximity to a query taxon. Useful for nearest-neighbor classification or phylogenetic sorting.
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">closest_relative()</span>
-      <span class="fn-entry-sig">closest_relative(query, candidates)</span>
-    </div>
-    <p class="fn-entry-desc">Find the closest relative of a query taxon among a set of candidates. Returns all candidates ranked by distance (ascending). Useful for nearest-neighbour classification and phylogenetic placement.</p>
-    <div class="fn-returns">→ data.frame / DataFrame: taxon, distance (sorted)</div>
-  </div>
+* **Returns:** `data.frame` (R) or pandas `DataFrame` (Python) containing columns `taxon` and `distance` (sorted in ascending order).
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">mrca()</span>
-      <span class="fn-entry-sig">mrca(taxon_a, taxon_b)</span>
-    </div>
-    <p class="fn-entry-desc">Return the name of the most recent common ancestor of two taxa as recorded in The Taxonomicon hierarchy.</p>
-    <div class="fn-returns">→ character string / str</div>
-  </div>
-</div>
+---
 
-<div class="fn-section" id="lineage-utilities">
-  <div class="fn-section-title">Lineage utilities</div>
+### `mrca()`
+**Signature:** `mrca(taxon_a, taxon_b)`
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">get_lineage()</span>
-      <span class="fn-entry-sig">get_lineage(taxon)</span>
-    </div>
-    <p class="fn-entry-desc">Retrieve the full hierarchical lineage of a taxon by name, from the root (Biota) down to the taxon itself. Accepts names at any rank: species, genus, family, order, or any named clade. Results are cached in memory.</p>
-    <div class="fn-returns">→ character vector / list of strings</div>
-  </div>
+Retrieves the name of the most recent common ancestor of two taxa as recorded in The Taxonomicon classification hierarchy.
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">get_lineage_by_id()</span>
-      <span class="fn-entry-sig">get_lineage_by_id(id)</span>
-    </div>
-    <p class="fn-entry-desc">Retrieve a lineage using The Taxonomicon's numeric ID instead of a name. Useful for disambiguating homonyms — use <code>taxo_search()</code> or the Search Database tab in the web app to find the correct ID.</p>
-    <div class="fn-returns">→ character vector / list of strings</div>
-  </div>
+* **Returns:** `character string` (R) or `str` (Python).
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">get_taxonomicon_id()</span>
-      <span class="fn-entry-sig">get_taxonomicon_id(taxon)</span>
-    </div>
-    <p class="fn-entry-desc">Resolve a taxon name to its numeric Taxonomicon ID. Returns the ID of the first match. For homonyms, use <code>taxo_search()</code> to inspect all matches before committing to an ID.</p>
-    <div class="fn-returns">→ integer / int</div>
-  </div>
+---
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">taxo_search()</span>
-      <span class="fn-entry-sig">taxo_search(query)</span>
-    </div>
-    <p class="fn-entry-desc">Search The Taxonomicon for all taxa matching a query string. Returns a table of matches with their numeric IDs, accepted names, and ranks — essential for resolving homonyms or finding the correct entry for a historical classification.</p>
-    <div class="fn-returns">→ data.frame / DataFrame: id, name, rank, accepted_name</div>
-  </div>
+## Lineage Utilities
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">compare_lineages()</span>
-      <span class="fn-entry-sig">compare_lineages(taxon_a, taxon_b)</span>
-    </div>
-    <p class="fn-entry-desc">Print a side-by-side comparison of two lineages, showing the shared trunk up to the MRCA and the unique portion of each lineage below the split.</p>
-    <div class="fn-returns">→ invisibly returns a list: shared, unique_a, unique_b</div>
-  </div>
+### `get_lineage()`
+**Signature:** `get_lineage(taxon)`
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">shared_clades()</span>
-      <span class="fn-entry-sig">shared_clades(taxon_a, taxon_b)</span>
-    </div>
-    <p class="fn-entry-desc">Return the shared portion of the lineage — all nodes from the root down to and including the MRCA.</p>
-    <div class="fn-returns">→ character vector / list of strings</div>
-  </div>
+Retrieves the full hierarchical lineage of a taxon by name, from the root node (Biota) down to the taxon itself. This function resolves classifications at any rank, including species, genus, family, order, or named clades. All successfully resolved lineages are stored in the local session cache.
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">taxo_path()</span>
-      <span class="fn-entry-sig">taxo_path(taxon_a, taxon_b)</span>
-    </div>
-    <p class="fn-entry-desc">Return the node-by-node path from taxon A up to the MRCA and then down to taxon B — the shortest path through the tree connecting the two taxa.</p>
-    <div class="fn-returns">→ character vector / list of strings</div>
-  </div>
+* **Returns:** `character vector` (R) or `list` of strings (Python).
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">lineage_depth()</span>
-      <span class="fn-entry-sig">lineage_depth(taxon)</span>
-    </div>
-    <p class="fn-entry-desc">Return the number of nodes in a taxon's lineage. Useful for assessing how well a taxon is resolved in The Taxonomicon before running distance computations.</p>
-    <div class="fn-returns">→ integer / int</div>
-  </div>
+---
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">is_member()</span>
-      <span class="fn-entry-sig">is_member(taxon, clade)</span>
-    </div>
-    <p class="fn-entry-desc">Test whether a taxon is a member of a given clade by checking whether the clade name appears in the taxon's lineage.</p>
-    <div class="fn-returns">→ logical / bool</div>
-  </div>
+### `get_lineage_by_id()`
+**Signature:** `get_lineage_by_id(id)`
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">filter_clade()</span>
-      <span class="fn-entry-sig">filter_clade(taxa, clade)</span>
-    </div>
-    <p class="fn-entry-desc">Filter a vector of taxon names, retaining only those that belong to a specified clade. Calls <code>is_member()</code> for each taxon.</p>
-    <div class="fn-returns">→ character vector / list of strings</div>
-  </div>
+Retrieves and parses a complete hierarchical lineage using The Taxonomicon's unique numeric identifier instead of a text name. This method bypasses name resolution and is recommended for programmatically resolving homonyms or historical classifications.
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">check_coverage()</span>
-      <span class="fn-entry-sig">check_coverage(taxa)</span>
-    </div>
-    <p class="fn-entry-desc">Check which taxa in a vector are present in The Taxonomicon. Returns a named logical vector. Use before <code>distance_matrix()</code> on large datasets — taxa returning <code>FALSE</code> will produce <code>NA</code> distances.</p>
-    <div class="fn-returns">→ named logical vector / Series of bool</div>
-  </div>
-</div>
+* **Returns:** `character vector` (R) or `list` of strings (Python).
 
-<div class="fn-section" id="multivariate-analysis">
-  <div class="fn-section-title">Multivariate analysis</div>
+---
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">taxo_cluster()</span>
-      <span class="fn-entry-sig">taxo_cluster(taxa, method = "average")</span>
-    </div>
-    <p class="fn-entry-desc">Perform hierarchical clustering (UPGMA by default) on the taxonomic distance matrix. Returns an object containing the <code>hclust</code> result and the distance matrix, which can be converted to a <code>phylo</code> tree via <code>ape::as.phylo()</code>.</p>
-    <div class="fn-returns">→ list: hclust, dist_matrix</div>
-  </div>
+### `get_taxonomicon_id()`
+**Signature:** `get_taxonomicon_id(taxon)`
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">taxo_ordinate()</span>
-      <span class="fn-entry-sig">taxo_ordinate(taxa_or_dist)</span>
-    </div>
-    <p class="fn-entry-desc">Perform principal coordinate analysis (PCoA) on the taxonomic distance matrix. Accepts either a vector of taxon names or a precomputed <code>dist</code> object. Returns coordinates and goodness-of-fit statistics. Compatible with <code>vegan</code> plotting functions.</p>
-    <div class="fn-returns">→ list: points, eigenvalues, gof</div>
-  </div>
+Resolves a text taxon name to its corresponding numeric Taxonomicon database identifier. It returns the identifier of the first valid taxonomic match. For highly ambiguous queries or homonyms, use `taxo_search()` first to inspect all possible matches.
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">taxo_heatmap()</span>
-      <span class="fn-entry-sig">taxo_heatmap(taxa_or_dist)</span>
-    </div>
-    <p class="fn-entry-desc">Plot a distance heatmap with marginal dendrograms. Rows and columns are reordered by hierarchical clustering. Accepts either a vector of taxon names or a precomputed <code>dist</code> object.</p>
-    <div class="fn-returns">→ invisibly returns the plot object</div>
-  </div>
-</div>
+* **Returns:** `integer` (R) or `int` (Python).
 
-<div class="fn-section" id="cache-management">
-  <div class="fn-section-title">Cache management</div>
+---
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">clear_cache()</span>
-      <span class="fn-entry-sig">clear_cache()</span>
-    </div>
-    <p class="fn-entry-desc">Remove all entries from the in-memory lineage cache. Subsequent calls to any function requiring a lineage will trigger fresh network requests.</p>
-    <div class="fn-returns">→ invisibly returns NULL</div>
-  </div>
+### `taxo_search()`
+**Signature:** `taxo_search(query)`
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">save_cache()</span>
-      <span class="fn-entry-sig">save_cache(path)</span>
-    </div>
-    <p class="fn-entry-desc">Serialise the current in-memory cache to an <code>.rds</code> file (R) or <code>.pkl</code> file (Python). Call at the end of a session to preserve retrieved lineages for future use.</p>
-    <div class="fn-returns">→ invisibly returns the path</div>
-  </div>
+Queries The Taxonomicon database for all biological entries matching the specified query string. This is used to resolve homonym ambiguities, evaluate taxonomic synonyms, or locate the precise numeric database ID for a genus or species.
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">load_cache()</span>
-      <span class="fn-entry-sig">load_cache(path)</span>
-    </div>
-    <p class="fn-entry-desc">Restore a previously saved cache from disk into the current session. Call before any distance functions to avoid redundant network requests. The loaded cache merges with any existing in-memory cache.</p>
-    <div class="fn-returns">→ invisibly returns NULL</div>
-  </div>
+* **Returns:** `data.frame` (R) or pandas `DataFrame` (Python) containing columns:
+  * `id`: The numeric Taxonomicon ID.
+  * `name`: The full taxon description, including author and publication year annotations.
+  * `rank`: The assigned taxonomic rank.
+  * `accepted_name`: The current accepted name according to Systema Naturae 2000.
 
-  <div class="fn-entry">
-    <div class="fn-entry-header">
-      <span class="fn-entry-name">cache_info()</span>
-      <span class="fn-entry-sig">cache_info()</span>
-    </div>
-    <p class="fn-entry-desc">Report the current state of the in-memory cache: number of cached lineages, total memory used, and a preview of cached taxon names.</p>
-    <div class="fn-returns">→ prints to console, invisibly returns a list</div>
-  </div>
-</div>
+---
 
-</div><!-- end main -->
-</div><!-- end ref-layout -->
-```
+### `compare_lineages()`
+**Signature:** `compare_lineages(taxon_a, taxon_b)`
+
+Generates a comparative side-by-side printout of two complete taxonomic lineages. It aligns both hierarchies, isolating the shared ancestral trunk up to their most recent common ancestor, and lists the unique diverging clades for each taxon below the split.
+
+* **Returns:** Invisibly returns a `list` (R) or `dict` (Python) containing the following fields:
+  * `shared`: Lineage path shared by both taxa up to the MRCA.
+  * `unique_a`: Unique ancestral nodes for taxon A.
+  * `unique_b`: Unique ancestral nodes for taxon B.
+
+---
+
+### `shared_clades()`
+**Signature:** `shared_clades(taxon_a, taxon_b)`
+
+Extracts the shared portion of the taxonomic lineage between two taxa, representing all overlapping hierarchical nodes from the root (Biota) down to and including their MRCA.
+
+* **Returns:** `character vector` (R) or `list` of strings (Python).
+
+---
+
+### `taxo_path()`
+**Signature:** `taxo_path(taxon_a, taxon_b)`
+
+Traces the node-by-node path connecting two taxa through the taxonomic hierarchy, ascending from taxon A up to their MRCA, and then descending down to taxon B. This maps the shortest topological path between both entities.
+
+* **Returns:** `character vector` (R) or `list` of strings (Python).
+
+---
+
+### `lineage_depth()`
+**Signature:** `lineage_depth(taxon)`
+
+Calculates the absolute number of taxonomic nodes present in a taxon's lineage from root to tip. This measures how fully resolved the hierarchy of a given clade is within The Taxonomicon database.
+
+* **Returns:** `integer` (R) or `int` (Python).
+
+---
+
+### `is_member()`
+**Signature:** `is_member(taxon, clade)`
+
+Evaluates whether a target taxon is nested within a specified clade. This is determined by verifying whether the target clade name is present in the taxon's hierarchical lineage.
+
+* **Returns:** `logical` (R) or `bool` (Python).
+
+---
+
+### `filter_clade()`
+**Signature:** `filter_clade(taxa, clade)`
+
+Filters a vector of taxonomic names, retaining only those individuals that belong to the specified clade. This serves as a set operation tool to isolate specific evolutionary groups from broad ecological communities.
+
+* **Returns:** `character vector` (R) or `list` of strings (Python).
+
+---
+
+### `check_coverage()`
+**Signature:** `check_coverage(taxa)`
+
+Cross-references a list of taxon names against The Taxonomicon database to verify their presence. This serves as a pre-screening step before executing larger distance computations, as unrecognized taxa will return `NA` distance values.
+
+* **Returns:** Named `logical vector` (R) or pandas `Series` of booleans (Python).
+
+---
+
+## Multivariate Analysis
+
+### `taxo_cluster()`
+**Signature:** `taxo_cluster(taxa, method = "average")`
+
+Executes hierarchical clustering on a calculated taxonomic distance matrix. The default clustering algorithm is UPGMA (`"average"`), which preserves taxonomic distance properties. The output object integrates directly with standard plotting methods and phylogenetics pipelines.
+
+* **Returns:** A custom list object containing:
+  * `hclust`: The standard R `hclust` object (which can be cast to a phylogenetic tree via `ape::as.phylo()`).
+  * `dist`: The underlying symmetric taxonomic distance matrix.
+
+---
+
+### `taxo_ordinate()`
+**Signature:** `taxo_ordinate(taxa_or_dist)`
+
+Applies classical multidimensional scaling (Principal Coordinate Analysis, PCoA) to project a taxonomic distance matrix into a low-dimensional Euclidean space. This function accepts either a raw vector of taxon names or a pre-computed distance matrix of class `"dist"`.
+
+* **Returns:** A structured list containing:
+  * `points`: A numeric coordinate matrix of dimensions $N \times K$.
+  * `eigenvalues`: Eigenvalues computed for each PCoA axis.
+  * `gof`: Goodness-of-fit statistics.
+
+---
+
+### `taxo_heatmap()`
+**Signature:** `taxo_heatmap(taxa_or_dist)`
+
+Generates a spatial distance heatmap with marginal dendrograms. The rows and columns are automatically reordered based on UPGMA hierarchical clustering. It accepts either a raw list of taxa or a pre-computed distance matrix.
+
+* **Returns:** Invisibly returns the underlying plot object or active graphical device.
+
+---
+
+## Cache Management
+
+### `clear_cache()`
+**Signature:** `clear_cache()`
+
+Purges all taxonomic lineages and database identifiers currently preserved in the session-level memory cache. Subsequent calculations will require fresh HTTP queries to the database server.
+
+* **Returns:** Invisibly returns `NULL` (R) or `None` (Python).
+
+---
+
+### `save_cache()`
+**Signature:** `save_cache(path)`
+
+Serializes the active in-memory session cache to disk as an `.rds` file (R) or a `.pkl` file (Python). This preserves parsed classifications and avoids repeating network requests in future analytical sessions.
+
+* **Returns:** Invisibly returns the serialized path string.
+
+---
+
+### `load_cache()`
+**Signature:** `load_cache(path)`
+
+Restores a serialized cache from disk back into your active programming environment. This merges the stored classifications with your current session cache, preventing redundant network requests.
+
+* **Returns:** Invisibly returns `NULL` (R) or `None` (Python).
+
+---
+
+### `cache_info()`
+**Signature:** `cache_info()`
+
+Generates a diagnostic report summarizing the active session cache. It reports the total number of cached lineages, resolved database identifiers, active memory consumption (in bytes), and a preview of cached taxonomic names.
+
+* **Returns:** Prints structural summary statistics to the console, and invisibly returns a diagnostic `list` (R) or `dict` (Python).
