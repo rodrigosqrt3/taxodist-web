@@ -1,9 +1,43 @@
 ---
-title: "About"
+title: "About taxodist"
+subtitle: "Project background, licensing, and citation metadata."
 ---
 
-About this site
+## Project Context
 
-```{r}
-1 + 1
-```
+The `taxodist` project was developed to provide researchers in ecology, evolutionary biology, and taxonomy with a reliable, high-resolution tool for computing taxonomic dissimilarity. 
+
+By programmatically bridging R and Python workflows with the extensive classification database of *The Taxonomicon*, the package enables standardized, reproducible community and phylogenetic analyses that are robust to varying taxonomic resolution and server-level queries.
+
+## Project Inception
+
+The development of `taxodist` began as a personal curiosity project, driven by a deep interest in evolutionary biology and systematic taxonomy. The core concept emerged from a simple, recurring question: *Given any two arbitrary organisms on Earth, how can we programmatically identify their most recent common ancestor (MRCA) and mathematically evaluate their taxonomic proximity?*
+
+What started as an informal exploration into taxonomic database architectures and web scraping led to deep research into structural tree metrics, parsing hierarchical data from *Systema Naturae 2000*, and ultimately building a unified package to standardize these computations. The goal of `taxodist` is to share this capability with the broader scientific community, turning a personal inquiry into a reliable tool for ecological and evolutionary research.
+
+## Citing taxodist
+
+If you use `taxodist` in a scientific publication, report, or presentation, please cite the package and the underlying data source:
+
+### Citing the Package
+> Villa, R. F. (2026). *taxodist: Taxonomic Distance and Phylogenetic Lineage Computation*. R package version 0.5.0. Available at <https://github.com/rodrigosqrt3/taxodist>.
+
+### Citing the Data Source (The Taxonomicon)
+> Brands, S.J. (1989 onwards). *Systema Naturae 2000*. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, <http://taxonomicon.taxonomy.nl>.
+
+---
+
+## Authorship and Maintainer
+
+*   **Author & Maintainer:** Rodrigo Fonseca Villa 
+*   **Contact Email:** [rodrigo03.villa@gmail.com](mailto:rodrigo03.villa@gmail.com)
+*   **ORCID:** [0009-0005-2938-2270](https://orcid.org/0009-0005-2938-2270)
+*   **Source Code:** <https://github.com/rodrigosqrt3/taxodist>
+
+---
+
+## Licensing and Open Source
+
+This package is distributed as free, open-source software under the **GNU General Public License (GPL >= 3)**. 
+
+You are free to use, modify, and redistribute this software in accordance with the terms of the license. The source code is hosted publicly on GitHub, and bug reports, feature requests, or contributions can be submitted directly via the [GitHub Issues tracker](https://github.com/rodrigosqrt3/taxodist/issues).

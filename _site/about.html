@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>taxodist - About</title>
+<title>taxodist - About taxodist</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,40 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -167,14 +133,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#project-context" id="toc-project-context" class="nav-link active" data-scroll-target="#project-context">Project Context</a></li>
+  <li><a href="#project-inception" id="toc-project-inception" class="nav-link" data-scroll-target="#project-inception">Project Inception</a></li>
+  <li><a href="#citing-taxodist" id="toc-citing-taxodist" class="nav-link" data-scroll-target="#citing-taxodist">Citing taxodist</a>
+  <ul class="collapse">
+  <li><a href="#citing-the-package" id="toc-citing-the-package" class="nav-link" data-scroll-target="#citing-the-package">Citing the Package</a></li>
+  <li><a href="#citing-the-data-source-the-taxonomicon" id="toc-citing-the-data-source-the-taxonomicon" class="nav-link" data-scroll-target="#citing-the-data-source-the-taxonomicon">Citing the Data Source (The Taxonomicon)</a></li>
+  </ul></li>
+  <li><a href="#authorship-and-maintainer" id="toc-authorship-and-maintainer" class="nav-link" data-scroll-target="#authorship-and-maintainer">Authorship and Maintainer</a></li>
+  <li><a href="#licensing-and-open-source" id="toc-licensing-and-open-source" class="nav-link" data-scroll-target="#licensing-and-open-source">Licensing and Open Source</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">About</h1>
+<h1 class="title">About taxodist</h1>
+<p class="subtitle lead">Project background, licensing, and citation metadata.</p>
 </div>
 
 
@@ -189,15 +170,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>About this site</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
-</div>
-</div>
+<section id="project-context" class="level2">
+<h2 class="anchored" data-anchor-id="project-context">Project Context</h2>
+<p>The <code>taxodist</code> project was developed to provide researchers in ecology, evolutionary biology, and taxonomy with a reliable, high-resolution tool for computing taxonomic dissimilarity.</p>
+<p>By programmatically bridging R and Python workflows with the extensive classification database of <em>The Taxonomicon</em>, the package enables standardized, reproducible community and phylogenetic analyses that are robust to varying taxonomic resolution and server-level queries.</p>
+</section>
+<section id="project-inception" class="level2">
+<h2 class="anchored" data-anchor-id="project-inception">Project Inception</h2>
+<p>The development of <code>taxodist</code> began as a personal curiosity project, driven by a deep interest in evolutionary biology and systematic taxonomy. The core concept emerged from a simple, recurring question: <em>Given any two arbitrary organisms on Earth, how can we programmatically identify their most recent common ancestor (MRCA) and mathematically evaluate their taxonomic proximity?</em></p>
+<p>What started as an informal exploration into taxonomic database architectures and web scraping led to deep research into structural tree metrics, parsing hierarchical data from <em>Systema Naturae 2000</em>, and ultimately building a unified package to standardize these computations. The goal of <code>taxodist</code> is to share this capability with the broader scientific community, turning a personal inquiry into a reliable tool for ecological and evolutionary research.</p>
+</section>
+<section id="citing-taxodist" class="level2">
+<h2 class="anchored" data-anchor-id="citing-taxodist">Citing taxodist</h2>
+<p>If you use <code>taxodist</code> in a scientific publication, report, or presentation, please cite the package and the underlying data source:</p>
+<section id="citing-the-package" class="level3">
+<h3 class="anchored" data-anchor-id="citing-the-package">Citing the Package</h3>
+<blockquote class="blockquote">
+<p>Villa, R. F. (2026). <em>taxodist: Taxonomic Distance and Phylogenetic Lineage Computation</em>. R package version 0.5.0. Available at <a href="https://github.com/rodrigosqrt3/taxodist" class="uri">https://github.com/rodrigosqrt3/taxodist</a>.</p>
+</blockquote>
+</section>
+<section id="citing-the-data-source-the-taxonomicon" class="level3">
+<h3 class="anchored" data-anchor-id="citing-the-data-source-the-taxonomicon">Citing the Data Source (The Taxonomicon)</h3>
+<blockquote class="blockquote">
+<p>Brands, S.J. (1989 onwards). <em>Systema Naturae 2000</em>. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, <a href="http://taxonomicon.taxonomy.nl" class="uri">http://taxonomicon.taxonomy.nl</a>.</p>
+</blockquote>
+<hr>
+</section>
+</section>
+<section id="authorship-and-maintainer" class="level2">
+<h2 class="anchored" data-anchor-id="authorship-and-maintainer">Authorship and Maintainer</h2>
+<ul>
+<li><strong>Author &amp; Maintainer:</strong> Rodrigo Fonseca Villa</li>
+<li><strong>Contact Email:</strong> <a href="mailto:rodrigo03.villa@gmail.com">rodrigo03.villa@gmail.com</a></li>
+<li><strong>ORCID:</strong> <a href="https://orcid.org/0009-0005-2938-2270">0009-0005-2938-2270</a></li>
+<li><strong>Source Code:</strong> <a href="https://github.com/rodrigosqrt3/taxodist" class="uri">https://github.com/rodrigosqrt3/taxodist</a></li>
+</ul>
+<hr>
+</section>
+<section id="licensing-and-open-source" class="level2">
+<h2 class="anchored" data-anchor-id="licensing-and-open-source">Licensing and Open Source</h2>
+<p>This package is distributed as free, open-source software under the <strong>GNU General Public License (GPL &gt;= 3)</strong>.</p>
+<p>You are free to use, modify, and redistribute this software in accordance with the terms of the license. The source code is hosted publicly on GitHub, and bug reports, feature requests, or contributions can be submitted directly via the <a href="https://github.com/rodrigosqrt3/taxodist/issues">GitHub Issues tracker</a>.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

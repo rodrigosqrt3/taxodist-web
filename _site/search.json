@@ -2,9 +2,9 @@
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About",
+    "title": "About taxodist",
     "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
+    "text": "The taxodist project was developed to provide researchers in ecology, evolutionary biology, and taxonomy with a reliable, high-resolution tool for computing taxonomic dissimilarity.\nBy programmatically bridging R and Python workflows with the extensive classification database of The Taxonomicon, the package enables standardized, reproducible community and phylogenetic analyses that are robust to varying taxonomic resolution and server-level queries."
   },
   {
     "objectID": "Articles.html",
@@ -257,5 +257,40 @@
     "title": "Function Reference",
     "section": "Cache Management",
     "text": "Cache Management\n\nclear_cache()\nSignature: clear_cache()\nPurges all taxonomic lineages and database identifiers currently preserved in the session-level memory cache. Subsequent calculations will require fresh HTTP queries to the database server.\n\nReturns: Invisibly returns NULL (R) or None (Python).\n\n\n\n\nsave_cache()\nSignature: save_cache(path)\nSerializes the active in-memory session cache to disk as an .rds file (R) or a .pkl file (Python). This preserves parsed classifications and avoids repeating network requests in future analytical sessions.\n\nReturns: Invisibly returns the serialized path string.\n\n\n\n\nload_cache()\nSignature: load_cache(path)\nRestores a serialized cache from disk back into your active programming environment. This merges the stored classifications with your current session cache, preventing redundant network requests.\n\nReturns: Invisibly returns NULL (R) or None (Python).\n\n\n\n\ncache_info()\nSignature: cache_info()\nGenerates a diagnostic report summarizing the active session cache. It reports the total number of cached lineages, resolved database identifiers, active memory consumption (in bytes), and a preview of cached taxonomic names.\n\nReturns: Prints structural summary statistics to the console, and invisibly returns a diagnostic list (R) or dict (Python)."
+  },
+  {
+    "objectID": "about.html#project-context",
+    "href": "about.html#project-context",
+    "title": "About taxodist",
+    "section": "",
+    "text": "The taxodist project was developed to provide researchers in ecology, evolutionary biology, and taxonomy with a reliable, high-resolution tool for computing taxonomic dissimilarity.\nBy programmatically bridging R and Python workflows with the extensive classification database of The Taxonomicon, the package enables standardized, reproducible community and phylogenetic analyses that are robust to varying taxonomic resolution and server-level queries."
+  },
+  {
+    "objectID": "about.html#citing-taxodist",
+    "href": "about.html#citing-taxodist",
+    "title": "About taxodist",
+    "section": "Citing taxodist",
+    "text": "Citing taxodist\nIf you use taxodist in a scientific publication, report, or presentation, please cite the package and the underlying data source:\n\nCiting the Package\n\nVilla, R. F. (2026). taxodist: Taxonomic Distance and Phylogenetic Lineage Computation. R package version 0.5.0. Available at https://github.com/rodrigosqrt3/taxodist.\n\n\n\nCiting the Data Source (The Taxonomicon)\n\nBrands, S.J. (1989 onwards). Systema Naturae 2000. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, http://taxonomicon.taxonomy.nl."
+  },
+  {
+    "objectID": "about.html#authorship-and-maintainer",
+    "href": "about.html#authorship-and-maintainer",
+    "title": "About taxodist",
+    "section": "Authorship and Maintainer",
+    "text": "Authorship and Maintainer\n\nAuthor & Maintainer: Rodrigo Fonseca Villa\nContact Email: rodrigo03.villa@gmail.com\nORCID: 0009-0005-2938-2270\nSource Code: https://github.com/rodrigosqrt3/taxodist"
+  },
+  {
+    "objectID": "about.html#licensing-and-open-source",
+    "href": "about.html#licensing-and-open-source",
+    "title": "About taxodist",
+    "section": "Licensing and Open Source",
+    "text": "Licensing and Open Source\nThis package is distributed as free, open-source software under the GNU General Public License (GPL &gt;= 3).\nYou are free to use, modify, and redistribute this software in accordance with the terms of the license. The source code is hosted publicly on GitHub, and bug reports, feature requests, or contributions can be submitted directly via the GitHub Issues tracker."
+  },
+  {
+    "objectID": "about.html#project-inception",
+    "href": "about.html#project-inception",
+    "title": "About taxodist",
+    "section": "Project Inception",
+    "text": "Project Inception\nThe development of taxodist began as a personal curiosity project, driven by a deep interest in evolutionary biology and systematic taxonomy. The core concept emerged from a simple, recurring question: Given any two arbitrary organisms on Earth, how can we programmatically identify their most recent common ancestor (MRCA) and mathematically evaluate their taxonomic proximity?\nWhat started as an informal exploration into taxonomic database architectures and web scraping led to deep research into structural tree metrics, parsing hierarchical data from Systema Naturae 2000, and ultimately building a unified package to standardize these computations. The goal of taxodist is to share this capability with the broader scientific community, turning a personal inquiry into a reliable tool for ecological and evolutionary research."
   }
 ]
