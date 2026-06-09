@@ -94,8 +94,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit"
   }
 }</script>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=DM+Mono:wght@400;500&amp;family=DM+Sans:wght@300;400;500&amp;display=swap" rel="stylesheet">
-<meta name="description" content="Getting started with taxodist: compute taxonomic distances and retrieve phylogenetic lineages in R and Python.">
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -125,12 +123,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./articles.qmd" rel="" target="">
- <span class="menu-text">Articles</span></a>
+    <a class="nav-link active" href="./getting-started.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Get Started</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-articles" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Articles</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">    
+        <li>
+    <a class="dropdown-item" href="./statistical-applications.html" rel="" target="">
+ <span class="dropdown-text">Statistical Applications</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="./reference.html" rel="" target="">
+ <span class="menu-text">Reference</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./news.html" rel="" target="">
  <span class="menu-text">Changelog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
@@ -194,6 +211,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Introduction to taxodist</h1>
+<p class="subtitle lead">Learn how to compute taxonomic distances and retrieve phylogenetic lineages for any pair of taxa, from dinosaurs to bacteria.</p>
 </div>
 
 
@@ -208,135 +226,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<style>
-  :root {
-    --bg:      #faf6ee;
-    --border:  #5c3d1e;
-    --branch:  #8b5e3c;
-    --tip:     #b8865a;
-    --ink:     #3d2510;
-    --muted:   #6b4c30;
-    --rule:    #d9c9b0;
-    --card-bg: #f3ede0;
-    --code-bg: #ede5d0;
-  }
-
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); }
-
-  /* Nav */
-  .site-nav {
-    display: flex; align-items: center; gap: 2rem;
-    padding: 1rem 0; border-bottom: 1px solid var(--rule); margin-bottom: 3rem;
-  }
-  .nav-brand {
-    font-family: 'DM Serif Display', serif; font-size: 1.15rem;
-    color: var(--ink); text-decoration: none; font-weight: 400; flex-shrink: 0;
-  }
-  .nav-brand:hover { color: var(--border); text-decoration: none; }
-  .nav-links { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
-  .nav-links a { font-size: 0.85rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color 0.15s; }
-  .nav-links a:hover { color: var(--ink); text-decoration: none; }
-  .nav-github { margin-left: auto; color: var(--border) !important; }
-  .nav-active { color: var(--ink) !important; border-bottom: 1px solid var(--ink); }
-  .nav-toggle { display: none; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--ink); }
-  @media (max-width: 600px) {
-    .nav-toggle { display: block; margin-left: auto; }
-    .nav-links { display: none; width: 100%; flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1rem 0; }
-    .nav-links.open { display: flex; }
-    .nav-github { margin-left: 0 !important; }
-  }
-
-  /* Page header */
-  .page-header {
-    padding: 3rem 0 2.5rem;
-    border-bottom: 1px solid var(--rule);
-    margin-bottom: 3rem;
-    max-width: 680px;
-  }
-  .page-header .eyebrow {
-    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--branch); margin-bottom: 0.5rem;
-  }
-  .page-header h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(1.8rem, 3vw, 2.5rem);
-    color: var(--ink); margin: 0 0 0.75rem; font-weight: 400;
-  }
-  .page-header p { font-size: 1rem; color: var(--muted); margin: 0; line-height: 1.7; font-weight: 300; }
-
-  /* Prose */
-  .prose { max-width: 720px; }
-  .prose h2 {
-    font-family: 'DM Serif Display', serif; font-size: 1.5rem;
-    color: var(--ink); font-weight: 400; margin: 3rem 0 1rem;
-    padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule);
-  }
-  .prose h3 {
-    font-family: 'DM Sans', sans-serif; font-size: 1rem;
-    font-weight: 600; color: var(--ink); margin: 2rem 0 0.75rem;
-  }
-  .prose p { color: var(--muted); line-height: 1.75; margin: 0 0 1rem; font-size: 0.95rem; }
-  .prose code {
-    font-family: 'DM Mono', monospace; font-size: 0.82rem;
-    background: var(--code-bg); color: var(--border);
-    padding: 0.15em 0.4em; border-radius: 2px;
-  }
-  .prose a { color: var(--border); }
-  .prose a:hover { color: var(--ink); }
-
-  /* Callout box */
-  .callout {
-    background: var(--card-bg); border: 1px solid var(--rule);
-    border-left: 3px solid var(--branch); border-radius: 4px;
-    padding: 1.25rem 1.5rem; margin: 1.5rem 0;
-  }
-  .callout p { margin: 0; font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
-  .callout strong { color: var(--ink); }
-
-  /* Formula */
-  .formula-block {
-    background: var(--card-bg); border: 1px solid var(--rule);
-    border-left: 3px solid var(--branch); border-radius: 4px;
-    padding: 1.5rem 2rem; margin: 1.5rem 0;
-    display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;
-  }
-  .formula-block p { margin: 0; color: var(--muted); font-size: 0.88rem; line-height: 1.65; flex: 1; min-width: 200px; }
-  .formula-math {
-    font-family: 'DM Mono', monospace; font-size: 1.1rem;
-    color: var(--border); background: var(--code-bg);
-    padding: 0.6rem 1rem; border-radius: 3px; white-space: nowrap;
-  }
-
-  /* Section nav (bottom) */
-  .article-nav {
-    display: flex; justify-content: flex-end; margin-top: 4rem;
-    padding-top: 2rem; border-top: 1px solid var(--rule);
-  }
-  .article-nav a {
-    font-size: 0.85rem; font-weight: 500; color: var(--border);
-    text-decoration: none; display: flex; align-items: center; gap: 0.4rem;
-  }
-  .article-nav a:hover { color: var(--ink); text-decoration: none; }
-</style>
-
-<nav class="site-nav">
-  <a href="../index.html" class="nav-brand">taxodist</a>
-  <div class="nav-links">
-    <a href="getting-started.html" class="nav-active">Get Started</a>
-    <a href="statistical-applications.html">Statistical Applications</a>
-    <a href="../reference.html">Reference</a>
-    <a href="https://github.com/rodrigosqrt3/taxodist" class="nav-github">GitHub ↗</a>
-  </div>
-  <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
-</nav>
-
-<div class="page-header">
-  <div class="eyebrow">Article</div>
-  <h1>Introduction to taxodist</h1>
-  <p>Learn how to compute taxonomic distances and retrieve phylogenetic lineages for any pair of taxa, from dinosaurs to bacteria.</p>
-</div>
-
-<div class="prose">
 <section id="what-is-taxodist" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-taxodist">What is taxodist?</h2>
 <p><code>taxodist</code> answers a simple question: <em>how related are any two living things?</em></p>
@@ -348,9 +237,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="the-distance-metric" class="level2">
 <h2 class="anchored" data-anchor-id="the-distance-metric">The distance metric</h2>
 <p><code>taxodist</code> measures relatedness by asking a single question: <em>how deep is their most recent common ancestor?</em></p>
-<div class="formula-block">
-  <p>The deeper the shared ancestor, the smaller the distance — meaning the more related the two taxa are. A shallow MRCA (close to the root) means the two taxa diverged early; a deep MRCA means they share a long common history.</p>
-  <div class="formula-math">d(A,B) = 1 / depth(MRCA)</div>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The deeper the shared ancestor, the smaller the distance — meaning the more related the two taxa are. A shallow MRCA (close to the root) means the two taxa diverged early; a deep MRCA means they share a long common history:</p>
+<p><span class="math display">\[d(A,B) = \frac{1}{\text{depth}(\text{MRCA}(A, B))}\]</span></p>
+</div>
+</div>
 </div>
 <p>This has a key property: taxa that diverged at the same point in the tree are always equidistant from any third taxon, regardless of how many nodes each has in its lineage below the split. For example:</p>
 <ul>
@@ -529,8 +425,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="persisting-the-cache-across-sessions">Persisting the cache across sessions</h3>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save_cache</span>(<span class="st">"my_taxa_cache.rds"</span>)   <span class="co"># end of session</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load_cache</span>(<span class="st">"my_taxa_cache.rds"</span>)   <span class="co"># start of next session, before any calls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout">
-  <p><strong>Tip:</strong> Save the cache before running <code>distance_matrix()</code> on a large dataset. Lineages are cached in memory after first retrieval, so reloading a saved cache avoids all redundant network requests.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Optimization Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Save your session cache before running <code>distance_matrix()</code> on a large dataset. Because retrieved lineages are preserved locally in memory, reloading a saved cache avoids all subsequent network queries.</p>
+</div>
 </div>
 <hr>
 </section>
@@ -547,14 +453,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Brands, S.J. (1989 onwards). <em>Systema Naturae 2000</em>. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, http://taxonomicon.taxonomy.nl.</p>
 </blockquote>
 <p>Please cite this resource in any published work using <code>taxodist</code>.</p>
-</section></div>
-
-<div class="article-nav">
-  <a href="statistical-applications.html">Statistical Applications →</a>
-</div>
+<hr>
+<p><a href="./statistical-applications.html" class="btn btn-outline-primary" role="button">Continue to Statistical Applications →</a></p>
 
 
-
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -18,21 +18,21 @@
     "href": "getting-started.html",
     "title": "Introduction to taxodist",
     "section": "",
-    "text": "taxodist\n  \n    Get Started\n    Statistical Applications\n    Reference\n    GitHub ↗\n  \n  ☰"
+    "text": "taxodist answers a simple question: how related are any two living things?\nGiven any two taxon names — a pair of dinosaurs, a dinosaur and a fungus, two species of fly, or an oak tree and a human — taxodist retrieves their full hierarchical lineages from The Taxonomicon and computes a dissimilarity index between them.\nThe Taxonomicon is based on Systema Naturae 2000 (Brands, 1989 onwards) and provides exceptionally deep lineage resolution, substantially exceeding other programmatic sources.\nSearches work at any taxonomic level: genus, species, family, order, or any clade. Both \"Tyrannosaurus\" and \"Tyrannosaurus rex\" are valid inputs, as are \"Drosophila melanogaster\", \"Homo sapiens\", or \"Araucaria angustifolia\"."
   },
   {
     "objectID": "getting-started.html#what-is-taxodist",
     "href": "getting-started.html#what-is-taxodist",
     "title": "Introduction to taxodist",
-    "section": "What is taxodist?",
-    "text": "What is taxodist?\ntaxodist answers a simple question: how related are any two living things?\nGiven any two taxon names — a pair of dinosaurs, a dinosaur and a fungus, two species of fly, or an oak tree and a human — taxodist retrieves their full hierarchical lineages from The Taxonomicon and computes a dissimilarity index between them.\nThe Taxonomicon is based on Systema Naturae 2000 (Brands, 1989 onwards) and provides exceptionally deep lineage resolution, substantially exceeding other programmatic sources.\nSearches work at any taxonomic level: genus, species, family, order, or any clade. Both \"Tyrannosaurus\" and \"Tyrannosaurus rex\" are valid inputs, as are \"Drosophila melanogaster\", \"Homo sapiens\", or \"Araucaria angustifolia\"."
+    "section": "",
+    "text": "taxodist answers a simple question: how related are any two living things?\nGiven any two taxon names — a pair of dinosaurs, a dinosaur and a fungus, two species of fly, or an oak tree and a human — taxodist retrieves their full hierarchical lineages from The Taxonomicon and computes a dissimilarity index between them.\nThe Taxonomicon is based on Systema Naturae 2000 (Brands, 1989 onwards) and provides exceptionally deep lineage resolution, substantially exceeding other programmatic sources.\nSearches work at any taxonomic level: genus, species, family, order, or any clade. Both \"Tyrannosaurus\" and \"Tyrannosaurus rex\" are valid inputs, as are \"Drosophila melanogaster\", \"Homo sapiens\", or \"Araucaria angustifolia\"."
   },
   {
     "objectID": "getting-started.html#the-distance-metric",
     "href": "getting-started.html#the-distance-metric",
     "title": "Introduction to taxodist",
     "section": "The distance metric",
-    "text": "The distance metric\ntaxodist measures relatedness by asking a single question: how deep is their most recent common ancestor?\n\n  The deeper the shared ancestor, the smaller the distance — meaning the more related the two taxa are. A shallow MRCA (close to the root) means the two taxa diverged early; a deep MRCA means they share a long common history.\n  d(A,B) = 1 / depth(MRCA)\n\nThis has a key property: taxa that diverged at the same point in the tree are always equidistant from any third taxon, regardless of how many nodes each has in its lineage below the split. For example:\n\nTyrannosaurus and Velociraptor are both Tetanurae: they diverged from Carnotaurus (Ceratosauria) at the same node (Averostra), so both have exactly the same distance to Carnotaurus.\nAll dinosaurs diverged from the mammal lineage at the same node (Amniota), so Homo sapiens is equally distant from Tyrannosaurus, Triceratops, Carnotaurus, and Cyanocorax.\n\nThe distance is bounded to \\([0, 1]\\), where 0 means identical taxa, 1 means the taxa share only the root as their most recent common ancestor, and smaller values reflect increasingly recent shared ancestry."
+    "text": "The distance metric\ntaxodist measures relatedness by asking a single question: how deep is their most recent common ancestor?\n\n\n\n\n\n\nThe deeper the shared ancestor, the smaller the distance — meaning the more related the two taxa are. A shallow MRCA (close to the root) means the two taxa diverged early; a deep MRCA means they share a long common history:\n\\[d(A,B) = \\frac{1}{\\text{depth}(\\text{MRCA}(A, B))}\\]\n\n\n\nThis has a key property: taxa that diverged at the same point in the tree are always equidistant from any third taxon, regardless of how many nodes each has in its lineage below the split. For example:\n\nTyrannosaurus and Velociraptor are both Tetanurae: they diverged from Carnotaurus (Ceratosauria) at the same node (Averostra), so both have exactly the same distance to Carnotaurus.\nAll dinosaurs diverged from the mammal lineage at the same node (Amniota), so Homo sapiens is equally distant from Tyrannosaurus, Triceratops, Carnotaurus, and Cyanocorax.\n\nThe distance is bounded to \\([0, 1]\\), where 0 means identical taxa, 1 means the taxa share only the root as their most recent common ancestor, and smaller values reflect increasingly recent shared ancestry."
   },
   {
     "objectID": "getting-started.html#installation",
@@ -67,7 +67,7 @@
     "href": "getting-started.html#coverage-and-caching",
     "title": "Introduction to taxodist",
     "section": "Coverage and caching",
-    "text": "Coverage and caching\n\nChecking coverage before a large run\ntaxa &lt;- c(\"Tyrannosaurus\", \"Velociraptor\", \"Apis mellifera\", \"Fakeosaurus\")\ncheck_coverage(taxa)\n#&gt;  Tyrannosaurus  Velociraptor  Apis mellifera    Fakeosaurus\n#&gt;           TRUE          TRUE            TRUE          FALSE\nUse check_coverage() to pre-screen a list before distance_matrix() — taxa returning FALSE will produce NA distances.\n\n\nPersisting the cache across sessions\nsave_cache(\"my_taxa_cache.rds\")   # end of session\nload_cache(\"my_taxa_cache.rds\")   # start of next session, before any calls\n\n  Tip: Save the cache before running distance_matrix() on a large dataset. Lineages are cached in memory after first retrieval, so reloading a saved cache avoids all redundant network requests."
+    "text": "Coverage and caching\n\nChecking coverage before a large run\ntaxa &lt;- c(\"Tyrannosaurus\", \"Velociraptor\", \"Apis mellifera\", \"Fakeosaurus\")\ncheck_coverage(taxa)\n#&gt;  Tyrannosaurus  Velociraptor  Apis mellifera    Fakeosaurus\n#&gt;           TRUE          TRUE            TRUE          FALSE\nUse check_coverage() to pre-screen a list before distance_matrix() — taxa returning FALSE will produce NA distances.\n\n\nPersisting the cache across sessions\nsave_cache(\"my_taxa_cache.rds\")   # end of session\nload_cache(\"my_taxa_cache.rds\")   # start of next session, before any calls\n\n\n\n\n\n\nOptimization Tip\n\n\n\nSave your session cache before running distance_matrix() on a large dataset. Because retrieved lineages are preserved locally in memory, reloading a saved cache avoids all subsequent network queries."
   },
   {
     "objectID": "getting-started.html#a-note-on-lineage-depth",
@@ -81,7 +81,7 @@
     "href": "getting-started.html#data-source-and-citation",
     "title": "Introduction to taxodist",
     "section": "Data source and citation",
-    "text": "Data source and citation\nAll lineage data is sourced from The Taxonomicon (taxonomy.nl), based on Systema Naturae 2000:\n\nBrands, S.J. (1989 onwards). Systema Naturae 2000. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, http://taxonomicon.taxonomy.nl.\n\nPlease cite this resource in any published work using taxodist."
+    "text": "Data source and citation\nAll lineage data is sourced from The Taxonomicon (taxonomy.nl), based on Systema Naturae 2000:\n\nBrands, S.J. (1989 onwards). Systema Naturae 2000. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, http://taxonomicon.taxonomy.nl.\n\nPlease cite this resource in any published work using taxodist.\n\nContinue to Statistical Applications →"
   },
   {
     "objectID": "index.html",
