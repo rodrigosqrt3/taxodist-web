@@ -39,6 +39,9 @@ jobs:
       - name: Render site
         run: quarto render
 
+      - name: Copy Google verification file
+        run: cp googled25722a3226093de.html _site/
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
