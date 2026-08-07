@@ -4,6 +4,7 @@ project:
 website:
   title: "taxodist"
   site-url: "https://rodrigosqrt3.github.io/taxodist-site"
+  description: "Taxonomic hierarchy distances and lineage analysis in R and Python."
   navbar:
     background: "#5c3d1e"
     search: true
@@ -14,8 +15,12 @@ website:
         text: Get Started
       - text: Articles
         menu:
+          - href: methodology.qmd
+            text: Methodology
           - href: statistical-applications.qmd
             text: Statistical Applications
+          - href: r-python-compatibility.qmd
+            text: R/Python Compatibility
       - href: reference.qmd
         text: Reference
       - href: news.qmd
@@ -23,9 +28,26 @@ website:
       - href: about.qmd
         text: About
     right:
-      - icon: github
-        href: https://github.com/rodrigosqrt3/taxodist
-        aria-label: GitHub
+      - text: "Launch App ↗"
+        href: https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/
+      - text: Source
+        icon: github
+        menu:
+          - text: R source
+            href: https://github.com/rodrigosqrt3/taxodist
+          - text: Python source
+            href: https://github.com/rodrigosqrt3/taxodist-py
+
+  page-footer:
+    left: "taxodist 0.6.0"
+    center: "Taxonomic hierarchy distances — not evolutionary time or branch length."
+    right:
+      - text: R
+        href: https://cran.r-project.org/package=taxodist
+      - text: Python
+        href: https://pypi.org/project/taxodist/
+      - text: App
+        href: https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/
 
 format:
   html:
@@ -36,3 +58,6 @@ format:
     toc: true
     toc-title: "Contents"
     code-copy: true
+    code-overflow: wrap
+    anchor-sections: true
+    smooth-scroll: true
