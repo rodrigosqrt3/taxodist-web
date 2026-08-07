@@ -1,20 +1,52 @@
-# taxodist — Package Website
+# taxodist website
 
-This site is currently under construction.
+Official documentation website for [`taxodist`](https://rodrigosqrt3.github.io/taxodist-site), an open-source package for taxonomic hierarchy distances and lineage analysis in R and Python.
 
-This repository hosts the documentation website for the `taxodist` package,
-available for both R and Python.
+The site documents how `taxodist` retrieves ordered lineages from [The Taxonomicon](http://taxonomicon.taxonomy.nl), compares taxa through the depth of their most recent common ancestor, and integrates the resulting distance objects with multivariate analysis workflows.
 
-Website: [https://rodrigosqrt3.github.io/taxodist-site](https://rodrigosqrt3.github.io/taxodist-web/)
+> `taxodist` measures separation within a recorded taxonomic classification. Its values are not evolutionary time, genetic distance, morphological divergence, or phylogenetic branch length.
 
-## What is taxodist?
+## Documentation
 
-`taxodist` computes phylogenetic distances between any two taxa using
-hierarchical lineage data from The Taxonomicon. Available on:
+The website includes:
 
-- [CRAN](https://cran.r-project.org/package=taxodist)
-- [PyPI](https://pypi.org/project/taxodist/)
+- installation and introductory workflows for R and Python;
+- the definition, properties, assumptions, and limitations of the distance measure;
+- statistical applications using clustering, ordination, taxonomic distinctness, Mantel tests, and PERMANOVA;
+- an R/Python compatibility guide;
+- a complete function reference and changelog;
+- citation, data-source, and reproducibility guidance.
 
-## Source code
+Visit the published site at:
 
-The package source lives at: https://github.com/rodrigosqrt3/taxodist
+**https://rodrigosqrt3.github.io/taxodist-site**
+
+## Related projects
+
+- [R package](https://cran.r-project.org/package=taxodist) — [source code](https://github.com/rodrigosqrt3/taxodist)
+- [Python package](https://pypi.org/project/taxodist/) — [source code](https://github.com/rodrigosqrt3/taxodist-py)
+- [Interactive web application](https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/)
+
+## Local preview
+
+The website is built with [Quarto](https://quarto.org/). From this directory, run:
+
+```bash
+quarto preview
+```
+
+To render the complete static site:
+
+```bash
+quarto render
+```
+
+Rendered files are written to `_site/`.
+
+## Data source
+
+Lineage data retrieved by `taxodist` originate from **The Taxonomicon**, based on *Systema Naturae 2000* by S. J. Brands. Published analyses should cite both the software and the underlying classification source.
+
+## License
+
+The `taxodist` software is distributed under the GNU General Public License version 3 or later.

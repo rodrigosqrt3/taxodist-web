@@ -1,51 +1,49 @@
 ---
 title: "Introduction to taxodist"
-subtitle: "Learn how to compute taxonomic distances and retrieve phylogenetic lineages for any pair of taxa, from dinosaurs to bacteria."
+subtitle: "Retrieve ordered taxonomic lineages and compare hierarchy nodes in R or Python."
 ---
 
 ## What is taxodist?
 
-`taxodist` answers a simple question: *how related are any two living things?*
+`taxodist` compares taxa through their positions in a taxonomic classification. Given a scientific name or a Taxonomicon numeric ID, it retrieves the corresponding ordered lineage from [The Taxonomicon](http://taxonomicon.taxonomy.nl).
 
-Given any two taxon names — a pair of dinosaurs, a dinosaur and a fungus, two
-species of fly, or an oak tree and a human — `taxodist` retrieves their full
-hierarchical lineages from [The Taxonomicon](http://taxonomicon.taxonomy.nl) and
-computes a dissimilarity index between them.
+You can then use those lineages to:
 
-The Taxonomicon is based on *Systema Naturae 2000* (Brands, 1989 onwards) and
-provides exceptionally deep lineage resolution, substantially exceeding other programmatic sources.
+- calculate the distance between two hierarchy nodes;
+- identify their most recent common ancestor (MRCA);
+- construct pairwise distance matrices for communities;
+- inspect shared and divergent portions of lineages;
+- test or filter clade membership;
+- perform hierarchical clustering and principal coordinates analysis (PCoA);
+- save retrieved lineages for later reuse.
 
-Searches work at any taxonomic level: genus, species, family, order, or
-any clade. Both `"Tyrannosaurus"` and `"Tyrannosaurus rex"` are valid inputs, as
-are `"Drosophila melanogaster"`, `"Homo sapiens"`, or `"Araucaria angustifolia"`.
+Names at different taxonomic levels are accepted. Examples include `"Tyrannosaurus"`, `"Tyrannosaurus rex"`, `"Dinosauria"`, `"Homo sapiens"`, and `"Drosophilidae"`.
 
----
-
-## The distance metric
-
-`taxodist` measures relatedness by asking a single question:
-*how deep is their most recent common ancestor?*
-
-::: {.callout-note appearance="simple"}
-The deeper the shared ancestor, the smaller the distance — meaning the more related the two taxa are. A shallow MRCA (close to the root) means the two taxa diverged early; a deep MRCA means they share a long common history:
-
-$$d(A,B) = \frac{1}{\text{depth}(\text{MRCA}(A, B))}$$
+::: {.callout-note title="Terminology"}
+Throughout this site, **distance** means distance between nodes in a taxonomic hierarchy. It does not mean phylogenetic branch length or elapsed evolutionary time.
 :::
 
-This has a key property: taxa that diverged at the same point
-in the tree are always equidistant from any third taxon, regardless of how
-many nodes each has in its lineage below the split. For example:
+## The distance definition
 
-- *Tyrannosaurus* and *Velociraptor* are both Tetanurae: they diverged from
-  *Carnotaurus* (Ceratosauria) at the same node (Averostra), so both have
-  exactly the same distance to Carnotaurus.
+For two ordered lineages, the MRCA is the final node in their continuous common prefix. The metric is
 
-- All dinosaurs diverged from the mammal lineage at the same
-  node (Amniota), so *Homo sapiens* is equally distant from *Tyrannosaurus*, *Triceratops*, *Carnotaurus*, and *Cyanocorax*.
+$$
+d(A,B)=
+\begin{cases}
+0, & \text{if the complete lineages of } A \text{ and } B \text{ are identical}, \\
+\dfrac{1}{\operatorname{depth}(\operatorname{MRCA}(A,B))}, & \text{otherwise}.
+\end{cases}
+$$
 
-The distance is bounded to $[0, 1]$, where 0 means identical taxa, 1 means the taxa share only the root as their most recent common ancestor, and smaller values reflect increasingly recent shared ancestry.
+The root has depth 1. Consequently, distinct nodes sharing only that root have distance 1, while a deeper MRCA produces a smaller positive value.
 
----
+Zero is reserved for identical hierarchy nodes. If one queried node is an ancestor of the other, their distance remains positive. Use `is_member()` when your question is about containment and `taxo_path()` when you want to inspect the route between nodes.
+
+Within a connected hierarchy, this definition is an ultrametric. If two lineages share no root, their distance is infinite. If a lineage cannot be retrieved, the corresponding values are missing (`NA` in R and `NaN` in Python matrices).
+
+::: {.callout-warning title="Interpretation"}
+Classification depth depends on the source and on which intermediate clades it records. These distances must not be interpreted as genetic divergence, morphological difference, evolutionary time, or phylogenetic branch length.
+:::
 
 ## Installation
 
@@ -53,239 +51,411 @@ The distance is bounded to $[0, 1]$, where 0 means identical taxa, 1 means the t
 
 ### R
 
+Install the released package from CRAN:
+
 ```r
 install.packages("taxodist")
 library(taxodist)
 ```
 
+Install the development version from GitHub:
+
+```r
+# install.packages("remotes")
+remotes::install_github("rodrigosqrt3/taxodist")
+```
+
 ### Python
 
-```python
+Install the released package from PyPI:
+
+```bash
 pip install taxodist
+```
+
+Then import it:
+
+```python
 import taxodist as td
 ```
 
+Install the development version from GitHub:
+
+```bash
+pip install git+https://github.com/rodrigosqrt3/taxodist-py.git
+```
+
 :::
 
----
+## Retrieve a lineage
 
-## Basic usage
+::: {.panel-tabset}
 
-### Getting a lineage
-
-```r
-lin <- get_lineage("Tyrannosaurus")
-tail(lin, 8)
-#> [1] "Avetheropoda"     "Coelurosauria"    "Tyrannoraptora"   "Tyrannosauroidea"
-#> [5] "Tyrannosauridae"  "Tyrannosaurinae"  "Tyrannosaurini"   "Tyrannosaurus"
-```
-
-Species-level searches also work:
+### R
 
 ```r
-lin <- get_lineage("Drosophila melanogaster")
-tail(lin, 4)
-#> [1] "Ephydroidea"             "Drosophilidae"           "Drosophilinae"
-#> [4] "Drosophila melanogaster"
+lineage <- get_lineage("Tyrannosaurus")
+lineage
+length(lineage)
 ```
 
-### Computing distance between two taxa
+### Python
+
+```python
+lineage = td.get_lineage("Tyrannosaurus")
+lineage
+len(lineage)
+```
+
+:::
+
+The returned character vector or list is ordered from the root to the queried node. Retrieval results are cached automatically during the session.
+
+You can also query a known numeric Taxonomicon ID directly:
+
+::: {.panel-tabset}
+
+### R
+
+```r
+get_lineage_by_id("50841")
+get_lineage("50841")
+```
+
+### Python
+
+```python
+td.get_lineage_by_id("50841")
+td.get_lineage("50841")
+```
+
+:::
+
+## Compare two taxa
+
+### Taxonomic distance
+
+::: {.panel-tabset}
+
+#### R
 
 ```r
 result <- taxo_distance("Tyrannosaurus", "Velociraptor")
-print(result)
-#> -- Taxonomic Distance --
-#>
-#> * Tyrannosaurus vs Velociraptor
-#>   Distance : 0.0153846153846154
-#>   MRCA : Tyrannoraptora (depth 65)
-#>   Depth A : 70
-#>   Depth B : 73
+result
+
+result$distance
+result$mrca
+result$mrca_depth
+result$depth_a
+result$depth_b
 ```
 
-The distance grows as taxa become more distantly related:
+#### Python
+
+```python
+result = td.taxo_distance("Tyrannosaurus", "Velociraptor")
+result
+
+result["distance"]
+result["mrca"]
+result["mrca_depth"]
+result["depth_a"]
+result["depth_b"]
+```
+
+:::
+
+Examples on this site do not hard-code live distances or lineage depths. The Taxonomicon is an external, curated source, so classifications may change over time. Accessing the returned fields keeps the workflow valid when the source is updated.
+
+### Most recent common ancestor
+
+::: {.panel-tabset}
+
+#### R
 
 ```r
-taxo_distance("Tyrannosaurus", "Homo")$distance        # 0.02777778
-taxo_distance("Tyrannosaurus", "Drosophila")$distance  # 0.06666667
-taxo_distance("Tyrannosaurus", "Quercus")$distance     # 0.25
-taxo_distance("Escherichia", "Homo")$distance          # 1
+mrca("Tyrannosaurus", "Velociraptor")
+mrca("Tyrannosaurus", "Triceratops")
+mrca("Tyrannosaurus", "Homo")
 ```
 
-### Finding the most recent common ancestor
+#### Python
+
+```python
+td.mrca("Tyrannosaurus", "Velociraptor")
+td.mrca("Tyrannosaurus", "Triceratops")
+td.mrca("Tyrannosaurus", "Homo")
+```
+
+:::
+
+### Shared lineage and path
+
+`shared_clades()` returns the common trunk from the root through the MRCA. `taxo_path()` returns the route from the first node to the MRCA and then to the second node.
+
+::: {.panel-tabset}
+
+#### R
 
 ```r
-mrca("Tyrannosaurus", "Velociraptor")  # "Tyrannoraptora"
-mrca("Tyrannosaurus", "Triceratops")   # "Dinosauria"
-mrca("Tyrannosaurus", "Homo")          # "Amniota"
-mrca("Tyrannosaurus", "Drosophila")    # "Nephrozoa"
-mrca("Tyrannosaurus", "Quercus")       # "discaria"
+shared_clades("Tyrannosaurus", "Triceratops")
+compare_lineages("Tyrannosaurus", "Triceratops")
+
+path <- taxo_path("Tyrannosaurus", "Triceratops")
+path
 ```
 
----
+#### Python
 
-## Working with multiple taxa
+```python
+td.shared_clades("Tyrannosaurus", "Triceratops")
+td.compare_lineages("Tyrannosaurus", "Triceratops")
 
-### Pairwise distance matrix
+path = td.taxo_path("Tyrannosaurus", "Triceratops")
+path
+```
+
+:::
+
+## Work with multiple taxa
+
+Before analyzing a large set, inspect name coverage and resolve ambiguous or missing taxa. Each previously unseen taxon may require a network request; repeated retrievals use the session cache.
+
+::: {.panel-tabset}
+
+### R
 
 ```r
 taxa <- c(
-  "Tyrannosaurus", "Carnotaurus", "Triceratops",
-  "Parasaurolophus", "Stegosaurus", "Brachiosaurus",
-  "Homo sapiens", "Homo neanderthalensis", "Pan troglodytes",
-  "Panthera leo", "Canis lupus",
-  "Ornithorhynchus anatinus",
-  "Loxodonta africana",
-  "Struthio camelus",
-  "Aptenodytes forsteri",
-  "Ara ararauna",
-  "Crocodylus niloticus",
-  "Chelonia mydas",
-  "Ambystoma mexicanum",
-  "Octopus vulgaris",
-  "Carcharodon carcharias",
-  "Balaenoptera musculus",
-  "Drosophila melanogaster",
-  "Apis mellifera",
-  "Arabidopsis thaliana",
-  "Quercus robur",
-  "Ginkgo biloba",
-  "Welwitschia mirabilis",
-  "Saccharomyces cerevisiae",
-  "Escherichia coli",
-  "Bacillus subtilis",
-  "Plasmodium falciparum"
+  "Tyrannosaurus",
+  "Velociraptor",
+  "Triceratops",
+  "Brachiosaurus",
+  "Homo sapiens",
+  "Panthera leo"
 )
-mat <- distance_matrix(taxa)
+
+coverage <- check_coverage(taxa)
+distances <- distance_matrix(taxa)
+
+coverage
+distances
+as.matrix(distances)
 ```
 
-The matrix is symmetric with zeros on the diagonal.
+### Python
 
-### Hierarchical clustering
+```python
+taxa = [
+    "Tyrannosaurus",
+    "Velociraptor",
+    "Triceratops",
+    "Brachiosaurus",
+    "Homo sapiens",
+    "Panthera leo",
+]
 
-```r
-cl <- taxo_cluster(taxa)
-plot(cl)
+coverage = td.check_coverage(taxa)
+distances = td.distance_matrix(taxa)
+
+coverage
+distances
 ```
 
-### PCoA ordination
-
-```r
-ord <- taxo_ordinate(taxa)
-summary(ord)
-plot(ord)
-```
-
-### Heatmap
-
-```r
-taxo_heatmap(taxa)
-```
-
-### Finding the closest relative
-
-```r
-closest_relative(
-  "Carnotaurus",
-  c("Aucasaurus", "Velociraptor", "Triceratops",
-    "Brachiosaurus", "Homo sapiens", "Apis mellifera")
-)
-#>            taxon   distance
-#> 1     Aucasaurus 0.01515152
-#> 2   Velociraptor 0.01666667
-#> 4  Brachiosaurus 0.01754386
-#> 3    Triceratops 0.01818182
-#> 5   Homo sapiens 0.02777778
-#> 6 Apis mellifera 0.06666667
-```
-
----
-
-## Lineage utilities
-
-### Comparing lineages side by side
-
-```r
-compare_lineages("Carnotaurus", "Tyrannosaurus")
-#> -- Lineage Comparison --
-#> MRCA: Averostra at depth 60
-#>
-#> Shared lineage (60 nodes):
-#>   Biota ... Theropoda
-#>
-#> Carnotaurus only (7 nodes):
-#>   Ceratosauria ... Carnotaurus
-#>
-#> Tyrannosaurus only (10 nodes):
-#>   Tetanurae ... Tyrannosaurus
-```
-
-### Testing and filtering by clade
-
-```r
-is_member("Tyrannosaurus", "Theropoda")          # TRUE
-is_member("Triceratops", "Theropoda")            # FALSE
-is_member("Homo sapiens", "Amniota")             # TRUE
-
-filter_clade(taxa, "Dinosauria")
-#> [1] "Tyrannosaurus" "Carnotaurus" "Triceratops" "Velociraptor"
-
-filter_clade(taxa, "Theropoda")
-#> [1] "Tyrannosaurus" "Carnotaurus" "Velociraptor"
-```
-
----
-
-## Coverage and caching
-
-### Checking coverage before a large run
-
-```r
-taxa <- c("Tyrannosaurus", "Velociraptor", "Apis mellifera", "Fakeosaurus")
-check_coverage(taxa)
-#>  Tyrannosaurus  Velociraptor  Apis mellifera    Fakeosaurus
-#>           TRUE          TRUE            TRUE          FALSE
-```
-
-Use `check_coverage()` to pre-screen a list before `distance_matrix()` — taxa
-returning `FALSE` will produce `NA` distances.
-
-### Persisting the cache across sessions
-
-```r
-save_cache("my_taxa_cache.rds")   # end of session
-load_cache("my_taxa_cache.rds")   # start of next session, before any calls
-```
-
-::: {.callout-tip}
-## Optimization Tip
-Save your session cache before running `distance_matrix()` on a large dataset. Because retrieved lineages are preserved locally in memory, reloading a saved cache avoids all subsequent network queries.
 :::
 
----
+In R, `distance_matrix()` returns a base `dist` object. Convert it with `as.matrix()` when a full square matrix is required. In Python, it returns a symmetric `pandas.DataFrame` with taxon names as row and column labels.
 
-## A note on lineage depth
+Taxa that cannot be resolved remain represented in the result, with missing pairwise distances.
 
-The Taxonomicon provides substantially deeper lineage resolution than most
-other programmatic sources. *Tyrannosaurus* has 70 nodes in its lineage,
-capturing intermediate clades at the level of superfamilies, tribes, and
-named subclades absent from most sources. This depth is what makes the
-distance metric meaningful — shallower sources produce coarser distances
-that conflate distantly related groups.
+### Distances from one focal taxon
 
----
+`focal_distances()` includes the MRCA and its depth for every comparison. `closest_relative()` provides the simpler taxon-and-distance view.
+
+::: {.panel-tabset}
+
+#### R
+
+```r
+community <- c(
+  "Velociraptor",
+  "Triceratops",
+  "Brachiosaurus",
+  "Homo sapiens"
+)
+
+focal_distances("Tyrannosaurus", community)
+closest_relative("Tyrannosaurus", community)
+```
+
+#### Python
+
+```python
+community = [
+    "Velociraptor",
+    "Triceratops",
+    "Brachiosaurus",
+    "Homo sapiens",
+]
+
+td.focal_distances("Tyrannosaurus", community)
+td.closest_relative("Tyrannosaurus", community)
+```
+
+:::
+
+## Test and filter clade membership
+
+Clade matching is exact, case-insensitive, and ignores surrounding whitespace. A partial string such as `"Dino"` does not match `"Dinosauria"`.
+
+::: {.panel-tabset}
+
+### R
+
+```r
+is_member("Tyrannosaurus", "Theropoda")
+is_member("Triceratops", "Theropoda")
+
+filter_clade(taxa, "Dinosauria")
+```
+
+### Python
+
+```python
+td.is_member("Tyrannosaurus", "Theropoda")
+td.is_member("Triceratops", "Theropoda")
+
+td.filter_clade(taxa, "Dinosauria")
+```
+
+:::
+
+## Clustering, ordination, and heatmaps
+
+The analysis helpers accept taxon names or a previously computed distance object.
+
+::: {.panel-tabset}
+
+### R
+
+```r
+distances <- distance_matrix(taxa)
+
+cluster <- taxo_cluster(distances)
+ordination <- taxo_ordinate(distances, k = 2)
+
+plot(cluster)
+summary(ordination)
+plot(ordination)
+taxo_heatmap(distances)
+```
+
+### Python
+
+```python
+distances = td.distance_matrix(taxa)
+
+cluster = td.taxo_cluster(distances)
+ordination = td.taxo_ordinate(distances, k=2)
+heatmap_data = td.taxo_heatmap(distances)
+```
+
+:::
+
+::: {.callout-warning title="Check the matrix first"}
+Clustering, ordination, and heatmaps require at least two taxa and a finite, complete distance matrix. The helpers warn and return an empty analysis component when the matrix contains missing or infinite distances.
+:::
+
+The clustering dendrogram is a visualization of taxonomic hierarchy distances. It is not a phylogeny inferred from characters, sequences, or branch lengths.
+
+## Coverage, search, and homonyms
+
+Use `check_coverage()` before a large calculation to identify names that cannot be resolved. Use `taxo_search()` to inspect possible Taxonomicon matches when a name is ambiguous or unexpected.
+
+::: {.panel-tabset}
+
+### R
+
+```r
+check_coverage(c("Tyrannosaurus", "Homo sapiens", "Fakeosaurus"))
+taxo_search("Bacteria")
+get_taxonomicon_id("Tyrannosaurus")
+```
+
+### Python
+
+```python
+td.check_coverage(["Tyrannosaurus", "Homo sapiens", "Fakeosaurus"])
+td.taxo_search("Bacteria")
+td.get_taxonomicon_id("Tyrannosaurus")
+```
+
+:::
+
+When reproducibility matters, record the resolved numeric ID and the retrieval date. This helps distinguish homonyms and documents which external classification was queried.
+
+## Save and restore the cache
+
+Retrieved identifiers and lineages are cached in memory. Saving the cache avoids repeating those network requests in a later session.
+
+::: {.panel-tabset}
+
+### R
+
+```r
+cache_info()
+save_cache("taxodist-cache.rds")
+
+clear_cache()
+load_cache("taxodist-cache.rds")
+```
+
+### Python
+
+```python
+td.cache_info()
+td.save_cache("taxodist-cache.pkl")
+
+td.clear_cache()
+td.load_cache("taxodist-cache.pkl")
+```
+
+:::
+
+R and Python use different serialization formats, so their cache files are not interchangeable. Python cache files use `pickle`; only load files from sources you trust.
+
+## Use the offline reference data
+
+The packaged `taxobase` object provides a fixed, offline dataset for examples, tests, and comparisons that must not depend on the availability or current state of The Taxonomicon.
+
+::: {.panel-tabset}
+
+### R
+
+```r
+data(taxobase, package = "taxodist")
+names(taxobase)
+taxobase$metadata
+```
+
+### Python
+
+```python
+taxobase = td.load_taxobase()
+taxobase.keys()
+taxobase["metadata"]
+```
+
+:::
+
+Release 0.6.0 distributes equivalent reference content in both packages, preserving component names, taxon order, matrices, examples, and provenance metadata. The native serialized package artifacts remain language-specific.
 
 ## Data source and citation
 
-All lineage data is sourced from The Taxonomicon (taxonomy.nl), based on
-*Systema Naturae 2000*:
+All live lineage data originate from The Taxonomicon, based on *Systema Naturae 2000*:
 
-> Brands, S.J. (1989 onwards). *Systema Naturae 2000*. Amsterdam,
-> The Netherlands. Retrieved from The Taxonomicon,
-> http://taxonomicon.taxonomy.nl.
+> Brands, S.J. (1989 onwards). *Systema Naturae 2000*. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, <http://taxonomicon.taxonomy.nl>.
 
-Please cite this resource in any published work using `taxodist`.
+Published analyses should cite both the `taxodist` software and the underlying classification source.
 
----
-
-[Continue to Statistical Applications →](statistical-applications.qmd){.btn .btn-outline-primary role="button"}
+[Read the Methodology →](methodology.qmd){.btn .btn-outline-secondary role="button"} [Continue to Statistical Applications →](statistical-applications.qmd){.btn .btn-outline-primary role="button"}

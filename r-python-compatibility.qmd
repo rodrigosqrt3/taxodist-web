@@ -1,0 +1,311 @@
+---
+title: "R and Python Compatibility"
+subtitle: "Shared semantics, native return types, and reproducible cross-language workflows in taxodist 0.6.0."
+---
+
+## Compatibility contract
+
+The R and Python packages are separate implementations of the same taxonomic hierarchy distance. Version 0.6.0 aligns their core behavioral contract:
+
+- ordered lineages are compared through their continuous common prefix;
+- identical complete lineages receive distance zero;
+- distinct nodes receive $1 / \operatorname{depth}(\operatorname{MRCA})$;
+- lineages without a common root receive infinite distance;
+- unresolved lineages produce missing values in multi-taxon results;
+- ancestor–descendant pairs retain positive distance;
+- clade membership uses exact, case-insensitive matching;
+- the packaged reference data preserve the same component structure, taxa, order, values, and provenance.
+
+Compatibility means equivalent scientific semantics and labeled results. It does not mean that every object has the same internal representation or printed appearance.
+
+## Equivalent basic workflow
+
+::: {.panel-tabset}
+
+### R
+
+```r
+library(taxodist)
+
+taxa <- c(
+  "Tyrannosaurus",
+  "Velociraptor",
+  "Triceratops",
+  "Homo sapiens"
+)
+
+lineage <- get_lineage("Tyrannosaurus")
+pair <- taxo_distance("Tyrannosaurus", "Velociraptor")
+matrix <- distance_matrix(taxa, progress = FALSE)
+
+pair$mrca
+pair$distance
+as.matrix(matrix)
+```
+
+### Python
+
+```python
+import taxodist as td
+
+taxa = [
+    "Tyrannosaurus",
+    "Velociraptor",
+    "Triceratops",
+    "Homo sapiens",
+]
+
+lineage = td.get_lineage("Tyrannosaurus")
+pair = td.taxo_distance("Tyrannosaurus", "Velociraptor")
+matrix = td.distance_matrix(taxa, progress=False)
+
+pair["mrca"]
+pair["distance"]
+matrix
+```
+
+:::
+
+For lineages retrieved from the same Taxonomicon record and processed under the same version, the MRCA depth and distance should agree.
+
+## Function correspondence
+
+| Task | R and Python function |
+|---|---|
+| Resolve a name | `get_taxonomicon_id()` |
+| Search candidates | `taxo_search()` |
+| Retrieve a lineage | `get_lineage()`, `get_lineage_by_id()` |
+| Compare two nodes | `taxo_distance()`, `mrca()` |
+| Construct a matrix | `distance_matrix()` |
+| Compare a focal taxon | `focal_distances()`, `closest_relative()` |
+| Inspect lineages | `compare_lineages()`, `shared_clades()`, `taxo_path()` |
+| Test membership | `is_member()`, `filter_clade()` |
+| Check availability | `check_coverage()`, `lineage_depth()` |
+| Analyze a matrix | `taxo_cluster()`, `taxo_ordinate()`, `taxo_heatmap()` |
+| Manage the cache | `cache_info()`, `save_cache()`, `load_cache()`, `clear_cache()` |
+| Load reference data | R: `data(taxobase)`; Python: `load_taxobase()` |
+
+Argument names and defaults are matched where language conventions permit. Both implementations support `verbose`; matrix and focal operations also support `progress`.
+
+## Native object differences
+
+| Result | R | Python |
+|---|---|---|
+| Lineage | Character vector | List of strings |
+| Pairwise distance | S3 list, class `taxodist_result` | Dictionary |
+| Distance matrix | Base R `dist` | Labeled `pandas.DataFrame` |
+| Coverage | Named logical vector | Boolean `pandas.Series` |
+| Closest/focal results | Data frame, with S3 class for focal results | `pandas.DataFrame` with attributes |
+| Taxonomic path | Data frame, class `taxodist_path` | `pandas.DataFrame` with attributes |
+| Clustering | `hclust` inside `taxodist_cluster` | SciPy linkage matrix inside a dictionary |
+| Ordination coordinates | Numeric matrix | Labeled `pandas.DataFrame` |
+| Cache | Environment serialized to `.rds` | Dictionary serialized to `.pkl` |
+| Missing numeric value | `NA_real_` | `NaN` |
+| Missing object | `NULL` | `None` |
+
+These differences are intentional. They allow results to integrate naturally with each language rather than imitating the other language's object system.
+
+## Pairwise result fields
+
+Both implementations return the same named information from `taxo_distance()`:
+
+| Field | Meaning |
+|---|---|
+| `distance` | Hierarchy distance |
+| `mrca` | Name of the MRCA |
+| `mrca_depth` | Depth of the MRCA |
+| `depth_a` | Complete depth of lineage A |
+| `depth_b` | Complete depth of lineage B |
+| `taxon_a` | First input label |
+| `taxon_b` | Second input label |
+
+R uses `$` and Python uses dictionary indexing:
+
+```text
+R:      result$mrca
+Python: result["mrca"]
+```
+
+## Distance matrices
+
+R stores only the lower triangle in a compact `dist` object. Convert it when a square matrix is required:
+
+```r
+d <- distance_matrix(taxa)
+m <- as.matrix(d)
+```
+
+Python returns the square labeled matrix directly:
+
+```python
+d = td.distance_matrix(taxa)
+m = d.to_numpy()
+```
+
+Both preserve input taxon order. Unresolved taxa remain labeled and have missing off-diagonal distances.
+
+## Clustering and ordination
+
+The analysis results are semantically aligned but use different numerical ecosystems.
+
+### Clustering
+
+R delegates to `stats::hclust()`. Python delegates to SciPy hierarchical clustering. With the same complete finite matrix and equivalent method, both summarize the same dissimilarities, although internal merge representations and plotting defaults differ.
+
+### Ordination
+
+Both implementations perform classical multidimensional scaling and return:
+
+- `points`;
+- the underlying `dist` or distance DataFrame;
+- `GOF` goodness-of-fit values;
+- `eig` eigenvalues.
+
+Coordinate signs may differ between numerical implementations because eigenvectors are defined only up to sign. A sign reversal of an axis does not change the represented geometry or pairwise distances.
+
+::: {.callout-note title="Compare geometry, not axis orientation"}
+When validating ordinations across languages, compare eigenvalues and Euclidean distances among coordinates. Do not require every coordinate column to have the same sign.
+:::
+
+## Plotting and console output
+
+R uses S3 methods such as `print()`, `plot()`, and `summary()`. Python exposes explicit helpers such as `print_taxodist_result()`, `plot_taxodist_cluster()`, `plot_taxodist_ord()`, and `summary_taxodist_ord()`.
+
+Typography, plotting backends, colors, dendrogram orientation, and console formatting are not part of the cross-language compatibility contract. Scientific values, labels, and structural fields are.
+
+## Reference data parity
+
+Release 0.6.0 distributes equivalent `taxobase` content in both packages. The Python JSON contains the same component structure and converts matrices and coverage values to native labeled `pandas` objects during loading.
+
+::: {.panel-tabset}
+
+### R
+
+```r
+data(taxobase, package = "taxodist")
+
+names(taxobase)
+taxobase$metadata
+labels(taxobase$statistical_matrix)
+```
+
+### Python
+
+```python
+taxobase = td.load_taxobase()
+
+taxobase.keys()
+taxobase["metadata"]
+taxobase["statistical_matrix"].index.tolist()
+```
+
+:::
+
+The corresponding objects preserve component names, taxon order, coverage values, pairwise metadata, lineage examples, general and statistical matrices, package version, and distance-definition metadata.
+
+## Cross-language matrix verification
+
+A simple independent comparison can be performed through a neutral CSV representation.
+
+### Export from R
+
+```r
+data(taxobase, package = "taxodist")
+
+write.csv(
+  as.matrix(taxobase$statistical_matrix),
+  "taxobase-statistical-matrix.csv",
+  quote = FALSE
+)
+```
+
+### Compare in Python
+
+```python
+import numpy as np
+import pandas as pd
+import taxodist as td
+
+from_r = pd.read_csv(
+    "taxobase-statistical-matrix.csv",
+    index_col=0,
+)
+from_python = td.load_taxobase()["statistical_matrix"]
+
+assert from_r.index.tolist() == from_python.index.tolist()
+assert from_r.columns.tolist() == from_python.columns.tolist()
+assert np.allclose(
+    from_r.to_numpy(),
+    from_python.to_numpy(),
+    rtol=0,
+    atol=1e-12,
+)
+```
+
+This checks labels, order, and numerical values without depending on language-specific serialization.
+
+## Cache compatibility
+
+Cache contents have the same conceptual keys—resolved IDs and lineages—but the files are intentionally not interchangeable:
+
+- R uses `saveRDS()` and `.rds` files;
+- Python uses `pickle` and `.pkl` files.
+
+Do not rename one format to imitate the other. For a cross-language archival record, export resolved numeric IDs and lineages to a neutral format such as CSV or JSON.
+
+::: {.callout-warning title="Untrusted Python cache files"}
+Only load `.pkl` files from trusted sources. Python's pickle format can execute code during deserialization.
+:::
+
+## Live retrieval may differ over time
+
+The packages query an external website. Two runs can differ if they occur at different times, resolve different homonyms, encounter different network responses, or use different package versions.
+
+For reproducible comparisons:
+
+1. use the same `taxodist` version;
+2. query the same numeric Taxonomicon IDs;
+3. record the retrieval date;
+4. verify lineage equality before comparing distances;
+5. save language-specific caches when live records must be retained;
+6. use `taxobase` for fixed examples and regression tests.
+
+## What compatibility does not guarantee
+
+The project does not guarantee:
+
+- byte-identical serialized files;
+- identical console messages;
+- identical plot appearance;
+- identical internal clustering arrays;
+- identical eigenvector signs;
+- identical live results obtained from different source revisions.
+
+It does guarantee a shared versioned definition and aims to preserve equivalent labels, distances, MRCA logic, edge-case handling, and reference data.
+
+## Version reporting
+
+::: {.panel-tabset}
+
+### R
+
+```r
+packageVersion("taxodist")
+sessionInfo()
+```
+
+### Python
+
+```python
+import platform
+import taxodist as td
+
+td.__version__
+platform.python_version()
+```
+
+:::
+
+Report these values whenever results are exchanged between languages.
+
+[← Methodology](methodology.qmd){.btn .btn-outline-secondary role="button"} [API Reference →](reference.qmd){.btn .btn-outline-primary role="button"}

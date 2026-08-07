@@ -1,130 +1,139 @@
 ---
-title: "" 
+title: ""
+toc: false
 ---
 
-<div class="d-flex align-items-center gap-4" style="margin-top: 2rem; margin-bottom: 2rem; flex-wrap: wrap;">
-  <img class="homepage-logo" src="images/taxodist_sepia.png" height="150" alt="taxodist logo">
-  <h1 style="font-size: clamp(2.5rem, 5vw, 4rem); margin: 0; font-weight: 500; font-family: var(--bs-font-sans-serif);">taxodist</h1>
-</div>
+::: {.grid .align-items-center}
+::: {.g-col-12 .g-col-md-9}
+# taxodist
 
-`taxodist` is an R and Python package for computing phylogenetic distances between any two taxa. Given two taxon names, `taxodist` retrieves their full hierarchical lineages from The Taxonomicon database and computes a dissimilarity index based on the depth of their most recent common ancestor (MRCA).
+Taxonomic hierarchy distances and lineage analysis in R and Python
+:::
+
+::: {.g-col-12 .g-col-md-3 .text-center}
+![](images/taxodist_sepia.png){.homepage-logo width="160" fig-alt="taxodist logo"}
+:::
+:::
 
 [![CRAN status](https://img.shields.io/cran/v/taxodist?color=green)](https://cran.r-project.org/package=taxodist) &nbsp; [![PyPI version](https://img.shields.io/pypi/v/taxodist?color=green)](https://pypi.org/project/taxodist)
 
-## Core Functionality
+`taxodist` retrieves ordered taxonomic lineages from [The Taxonomicon](http://taxonomicon.taxonomy.nl) and compares hierarchy nodes through the depth of their most recent common ancestor (MRCA). The R and Python packages implement the same distance definition and lineage semantics.
 
-### Mathematical Properties of the Distance Metric
-The distance metric implemented in `taxodist` is defined as:
+[Get started](getting-started.qmd){.btn .btn-primary role="button"} [Launch the web app ↗](https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/){.btn .btn-outline-primary role="button"} [Browse the API](reference.qmd){.btn .btn-outline-secondary role="button"}
 
-$$d(A, B) = \frac{1}{\text{depth}(\text{MRCA}(A, B))}$$
+## What does taxodist measure?
 
-Where $\text{MRCA}(A, B)$ represents the deepest shared node (the most recent common ancestor) between the lineages of taxon $A$ and taxon $B$ in The Taxonomicon hierarchy. 
+For two ordered lineages, `taxodist` finds their continuous common prefix. The final node in that prefix is their MRCA. Distance is then defined as
 
-Unlike simple rank-difference methods or Jaccard-based taxonomic dissimilarity indices, this metric satisfies the properties of a tree metric. Crucially, it guarantees that any two taxa sharing a given MRCA are equidistant from any third taxon outside of their shared clade, regardless of subsequent lineage branching or varying lineage depths below the split. This property is necessary for biological correctness in downstream multivariate analyses.
+$$
+d(A,B)=
+\begin{cases}
+0, & \text{if the complete lineages of } A \text{ and } B \text{ are identical}, \\
+\dfrac{1}{\operatorname{depth}(\operatorname{MRCA}(A,B))}, & \text{otherwise}.
+\end{cases}
+$$
 
-### Data Source and Hierarchical Depth
-All taxonomic hierarchies are retrieved programmatically from **The Taxonomicon** database (Systema Naturae 2000, curated by S.J. Brands). 
+A deeper shared ancestor produces a smaller distance. Zero is reserved for identical hierarchy nodes; distinct nodes always have a positive distance, including when one taxon is an ancestor of the other.
 
-Because the classification scheme incorporates extensive intermediate ranks (such as Magnorders, Parvorders, Legions, and Tribes), lineages often resolve up to 70 distinct nodes for well-documented clades. This provides significantly higher resolution than alternative programmatic databases (e.g., the Open Tree of Life or NCBI Taxonomy) which often omit intermediate hierarchical levels.
+::: {.callout-important title="Classification distance, not evolutionary distance"}
+The values describe separation in a taxonomic classification. They are **not** evolutionary time, genetic distance, morphological divergence, or phylogenetic branch length. Dendrograms produced from the matrix summarize these classification distances and must not be interpreted as inferred phylogenetic trees.
+:::
 
-### Statistical and Ecological Workflows
-The distance computation functions return objects natively compatible with standard scientific environments in both R and Python:
+Within each connected hierarchy, the definition is an ultrametric. Lineages with no shared root have infinite distance, while taxa whose lineages cannot be retrieved produce missing values in multi-taxon results.
 
-*   **Multivariate Ecology:** The output of `distance_matrix()` is a symmetric numeric matrix of class `"dist"` in R. It integrates directly with multivariate ecological workflows, such as those in the `vegan` package, including taxonomic distinctness analysis (`taxondive()`), Mantel test correlations (`mantel()`), and Permutational Multivariate Analysis of Variance (`adonis2()`).
-*   **Phylogenetic Reconstruction:** Cluster hierarchies computed via `taxo_cluster()` (defaulting to the UPGMA algorithm) can be converted into standard `phylo` tree objects using `ape::as.phylo()` for standard tree plotting and comparative phylogenetic analysis.
-*   **Ordination:** Classical Multidimensional Scaling (Principal Coordinate Analysis, PCoA) is supported natively via `taxo_ordinate()`, projecting the calculated distance space into lower dimensions.
+[Read the complete methodology →](methodology.qmd)
 
-### Network Safety and Memory Caching
-To maintain performance during large community queries and prevent unnecessary load on remote servers, the package implements a local caching pipeline:
+## Software interfaces
 
-*   **In-Memory Cache:** Queried lineages are preserved in a session-level cache. Its footprint and contents can be monitored using `cache_info()`.
-*   **Cache Serialization:** The current session cache can be serialized to disk as an `.rds` file using `save_cache()` and subsequently reloaded in new sessions using `load_cache()`, ensuring full reproducibility of offline pipelines.
-*   **Fault Tolerance:** Network queries incorporate robust error-handling. If remote servers time out or fail to resolve, the package reports the warning gracefully through native system handlers rather than interrupting execution.
-
-## Interactive Web Application
-
-A Shiny web application provides access to the core package features—allowing you to search taxa, calculate pairwise distances, visualize lineages, and check coverage.
-
-[Launch App ↗](https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/){.btn .btn-outline-primary role="button"}
-
-*Supported languages: English, Português, Español, Français, Deutsch.*
-
-## API Reference Overview
-
-Below is a summary of the core functions available in both packages:
-
-| Category | Function | Description |
+| Interface | Distribution | Principal output |
 |---|---|---|
-| **Distance Computation** | `taxo_distance()` | Pairwise distance between two taxa |
-| | `distance_matrix()` | Full symmetric distance matrix for a set of taxa |
-| | `focal_distances()` | Distances from one focal taxon to a community |
-| | `closest_relative()` | Nearest taxon among a set of candidates |
-| | `mrca()` | Most recent common ancestor of two taxa |
-| **Lineage & Exploration**| `get_lineage()` / `get_lineage_by_id()` | Retrieve complete taxonomic lineages |
-| | `taxo_search()` | Resolve taxon names and manage homonyms |
-| | `compare_lineages()` / `shared_clades()` | Compare lineage hierarchies side-by-side |
-| | `is_member()` / `filter_clade()` | Clade membership tests and set filtering |
-| **Multivariate Analysis**| `taxo_cluster()` | Hierarchical clustering (UPGMA) |
-| | `taxo_ordinate()` | Principal Coordinate Analysis (PCoA) |
-| | `taxo_heatmap()` | Matrix visualization with dendrograms |
-| **Cache Management**    | `save_cache()` / `load_cache()` | Serialize and restore session cache |
+| R | [CRAN](https://cran.r-project.org/package=taxodist) and [source code](https://github.com/rodrigosqrt3/taxodist) | Base R `dist` objects and S3 analysis methods |
+| Python | [PyPI](https://pypi.org/project/taxodist) and [source code](https://github.com/rodrigosqrt3/taxodist-py) | Labeled `pandas` objects and analysis dictionaries |
+| Web application | [Interactive interface](https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/) | Browser-based lineage and distance exploration |
 
-: Core API Functions {.striped .hover}
-
-
-## Installation and basic usage
+## A common workflow
 
 ::: {.panel-tabset}
 
 ### R
 
 ```r
-install.packages("taxodist")
 library(taxodist)
 
-# Pairwise distance
-taxo_distance("Tyrannosaurus", "Velociraptor")
-#> Distance : 0.01538   MRCA: Tyrannoraptora (depth 65)
+taxa <- c(
+  "Tyrannosaurus",
+  "Velociraptor",
+  "Triceratops",
+  "Homo sapiens"
+)
 
-taxo_distance("Tyrannosaurus", "Homo")
-#> Distance : 0.02778   MRCA: Amniota (depth 36)
+# Retrieve an ordered lineage
+lineage <- get_lineage("Tyrannosaurus")
 
-taxo_distance("Tyrannosaurus", "Quercus")
-#> Distance : 0.25000   MRCA: discaria (depth 4)
+# Compare two hierarchy nodes
+result <- taxo_distance("Tyrannosaurus", "Velociraptor")
+result$mrca
+result$distance
 
-# Distance matrix and clustering
-taxa <- c("Tyrannosaurus", "Velociraptor", "Triceratops",
-          "Homo sapiens", "Panthera leo", "Quercus robur")
+# Build and analyze a community matrix
 mat <- distance_matrix(taxa)
-cl  <- taxo_cluster(taxa)
-plot(cl)
+cluster <- taxo_cluster(mat)
+ordination <- taxo_ordinate(mat)
+
+plot(cluster)
+plot(ordination)
 ```
 
 ### Python
 
 ```python
-pip install taxodist
 import taxodist as td
 
-# Pairwise distance
-td.taxo_distance("Tyrannosaurus", "Velociraptor")
-# distance: 0.01538   mrca: Tyrannoraptora (depth 65)
+taxa = [
+    "Tyrannosaurus",
+    "Velociraptor",
+    "Triceratops",
+    "Homo sapiens",
+]
 
-td.taxo_distance("Tyrannosaurus", "Homo")
-# distance: 0.02778   mrca: Amniota (depth 36)
+# Retrieve an ordered lineage
+lineage = td.get_lineage("Tyrannosaurus")
 
-# Distance matrix and clustering
-taxa = ["Tyrannosaurus", "Velociraptor", "Triceratops",
-        "Homo sapiens", "Panthera leo", "Quercus robur"]
-mat = td.distance_matrix(taxa)
-cl  = td.taxo_cluster(taxa)
-cl.plot()
+# Compare two hierarchy nodes
+result = td.taxo_distance("Tyrannosaurus", "Velociraptor")
+result["mrca"]
+result["distance"]
+
+# Build and analyze a community matrix
+matrix = td.distance_matrix(taxa)
+cluster = td.taxo_cluster(matrix)
+ordination = td.taxo_ordinate(matrix)
 ```
 
 :::
 
-## Data Source and Citation
+## Core API
 
-All lineage data is sourced from [The Taxonomicon](http://taxonomicon.taxonomy.nl), based on *Systema Naturae 2000* (Brands, S.J., 1989 onwards). Please cite this resource in any published work that uses `taxodist`:
+| Task | Functions |
+|---|---|
+| Retrieve and resolve taxa | `get_lineage()`, `get_lineage_by_id()`, `get_taxonomicon_id()`, `taxo_search()` |
+| Compare two lineages | `taxo_distance()`, `mrca()`, `shared_clades()`, `compare_lineages()`, `taxo_path()` |
+| Work with communities | `distance_matrix()`, `focal_distances()`, `closest_relative()`, `check_coverage()` |
+| Test clade membership | `is_member()`, `filter_clade()` |
+| Analyze and visualize | `taxo_cluster()`, `taxo_ordinate()`, `taxo_heatmap()` |
+| Manage retrieval caches | `cache_info()`, `save_cache()`, `load_cache()`, `clear_cache()` |
+| Load the offline reference object | `load_taxobase()` |
+
+## Reproducible reference data
+
+The R package provides `taxobase`, and Python provides `load_taxobase()`, for examples and tests that should not depend on live network access. Release 0.6.0 preserves the same component structure, taxon order, matrices, examples, and provenance metadata across the two implementations, using native containers in each language.
+
+This object is useful for demonstrations, tests, and reproducible examples that should not depend on live network access. Live Taxonomicon queries may change as the underlying classification is updated.
+
+## Data source and citation
+
+All retrieved lineage data originate from **The Taxonomicon**, based on *Systema Naturae 2000*. Published analyses should cite both the `taxodist` software and the underlying classification source:
 
 > Brands, S.J. (1989 onwards). *Systema Naturae 2000*. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, <http://taxonomicon.taxonomy.nl>.
+
+[Start with the full guide →](getting-started.qmd){.btn .btn-primary role="button"}

@@ -1,0 +1,227 @@
+---
+title: "Methodology"
+subtitle: "Definition, mathematical properties, assumptions, and limitations of the taxodist hierarchy distance."
+---
+
+## Scope
+
+`taxodist` represents a taxon as an ordered sequence of hierarchy nodes retrieved from The Taxonomicon. The first element is the retained root and the final element is the queried node.
+
+The distance is defined from the position of the most recent common ancestor (MRCA) in those ordered lineages. It is therefore a property of a **taxonomic classification**, not a direct measurement of evolutionary process.
+
+## Formal definition
+
+Let
+
+$$
+L_A = (a_1, a_2, \ldots, a_m)
+\qquad\text{and}\qquad
+L_B = (b_1, b_2, \ldots, b_n)
+$$
+
+be the ordered lineages of nodes $A$ and $B$. Define the common-prefix depth as
+
+$$
+h(A,B) = \max\left\{k : a_i=b_i \text{ for every } i \leq k\right\}.
+$$
+
+When $h(A,B)>0$, the node $a_{h(A,B)}=b_{h(A,B)}$ is the MRCA under the source classification. The distance is
+
+$$
+d(A,B)=
+\begin{cases}
+0, & L_A=L_B, \\
+\dfrac{1}{h(A,B)}, & L_A\neq L_B \text{ and } h(A,B)>0, \\
+\infty, & h(A,B)=0.
+\end{cases}
+$$
+
+Depth is counted from 1 at the retained root. Consequently, finite distances between distinct nodes lie in $(0,1]$.
+
+### Why the continuous prefix matters
+
+Shared ancestry must be continuous from the root. A name that occurs in both lineages after their first disagreement is not treated as a shared ancestor. This prevents homonyms or repeated labels below different branches from producing an incorrect MRCA.
+
+For example, consider
+
+```text
+Biota → Animalia → Alpha → Homonym → A
+Biota → Animalia → Beta  → Homonym → B
+```
+
+The MRCA is `Animalia`, not `Homonym`, because the lineages diverge before the repeated label.
+
+## Identity and ancestor–descendant pairs
+
+Zero is reserved for identical complete lineages. Two different nodes always have positive finite distance when they belong to the same connected hierarchy.
+
+Suppose $A$ is an ancestor of $B$. Then $L_A$ is a proper prefix of $L_B$, so the MRCA is $A$ and
+
+$$
+d(A,B)=\frac{1}{\operatorname{depth}(A)}>0.
+$$
+
+This choice distinguishes node identity from containment:
+
+- use `taxo_distance()` to compare hierarchy nodes;
+- use `is_member()` to test whether a taxon belongs to a clade;
+- use `taxo_path()` to inspect the route connecting two nodes.
+
+## Ultrametric property
+
+Within one connected hierarchy, the distance is non-negative, symmetric, and satisfies identity of indiscernibles. It also satisfies the strong triangle inequality
+
+$$
+d(A,C) \leq \max\{d(A,B),d(B,C)\}.
+$$
+
+### Proof
+
+If $A$, $B$, and $C$ belong to the same connected hierarchy, the common prefix of $A$ and $C$ must be at least as long as the shorter of the common prefixes of $(A,B)$ and $(B,C)$:
+
+$$
+h(A,C) \geq \min\{h(A,B),h(B,C)\}.
+$$
+
+For distinct nodes, taking positive reciprocals reverses the inequality:
+
+$$
+\frac{1}{h(A,C)}
+\leq
+\frac{1}{\min\{h(A,B),h(B,C)\}}
+=
+\max\left\{\frac{1}{h(A,B)},\frac{1}{h(B,C)}\right\}.
+$$
+
+Cases involving identical nodes follow immediately because their distance is zero. Thus the strong triangle inequality holds.
+
+### Consequence
+
+If two pairs of taxa share an MRCA at the same depth, both pairs receive the same distance. Differences in the number of recorded nodes **below** that MRCA do not affect their pairwise distance.
+
+This produces tied distance levels corresponding to shared positions in the hierarchy. Such ties are an expected property of the measure, not numerical imprecision.
+
+## Verification with the offline reference matrix
+
+The ultrametric inequality can be checked using the fixed `taxobase` object.
+
+::: {.panel-tabset}
+
+### R
+
+```r
+library(taxodist)
+data(taxobase, package = "taxodist")
+
+m <- as.matrix(taxobase$statistical_matrix)
+tol <- sqrt(.Machine$double.eps)
+
+check_triplet <- function(index) {
+  i <- index[1]
+  j <- index[2]
+  k <- index[3]
+
+  d <- c(m[i, j], m[i, k], m[j, k])
+  max(d) <= sort(d, decreasing = TRUE)[2] + tol
+}
+
+all(combn(seq_len(nrow(m)), 3, FUN = check_triplet))
+```
+
+### Python
+
+```python
+from itertools import combinations
+import numpy as np
+import taxodist as td
+
+taxobase = td.load_taxobase()
+matrix = taxobase["statistical_matrix"]
+if matrix.empty:
+    matrix = taxobase["matrix"]
+m = matrix.to_numpy()
+tol = np.sqrt(np.finfo(float).eps)
+
+def check_triplet(index):
+    i, j, k = index
+    distances = sorted(
+        [m[i, j], m[i, k], m[j, k]],
+        reverse=True,
+    )
+    return distances[0] <= distances[1] + tol
+
+all(check_triplet(x) for x in combinations(range(len(m)), 3))
+```
+
+:::
+
+For an ultrametric triangle, the two largest pairwise distances are equal. The checks above allow a small numerical tolerance.
+
+## Dependence on the source classification
+
+The distance depends on the number and arrangement of nodes recorded before the MRCA. It is therefore sensitive to:
+
+- taxonomic revision;
+- alternative classification systems;
+- insertion or removal of intermediate clades;
+- unequal resolution among taxonomic groups;
+- lineage-cleaning decisions;
+- ambiguous name resolution.
+
+Adding an intermediate node to the shared prefix increases MRCA depth and decreases the numerical distance. Adding nodes only below the MRCA does not affect that pair.
+
+Distances should consequently be compared only when derived from compatible lineage sources and processing rules.
+
+## Ambiguous, missing, and disconnected lineages
+
+### Ambiguous names
+
+A scientific name may correspond to several biological entries. Use `taxo_search()` to inspect candidates and supply a numeric Taxonomicon ID when a particular taxonomic concept is required.
+
+### Missing lineages
+
+If a lineage cannot be retrieved, pairwise matrices retain the taxon label and use `NA` in R or `NaN` in Python for affected comparisons. Coverage should be examined before analysis.
+
+### Disconnected roots
+
+If the cleaned lineages have no common initial node, the distance is infinite and the MRCA is absent. This differs from a missing lineage: both lineages exist, but they are not connected under the retained representation.
+
+Clustering, ordination, and heatmap methods require a finite, complete matrix. Version 0.6.0 checks these conditions and returns an informative fallback object when they are not satisfied.
+
+## Interpretation
+
+A smaller finite value indicates a deeper shared node in the selected classification. It does **not** quantify:
+
+- elapsed evolutionary time;
+- nucleotide or amino-acid substitution;
+- morphological divergence;
+- phylogenetic branch length;
+- probability or support for common ancestry;
+- ecological or functional similarity.
+
+A clustering dendrogram constructed from these values summarizes the classification-depth matrix. Conversion to class `phylo` changes the data representation, not the evidential basis of the tree.
+
+## Reproducibility
+
+Live lineages may change when The Taxonomicon is updated. For empirical work, record:
+
+1. `taxodist` version and implementation;
+2. retrieval date;
+3. queried names and resolved numeric IDs;
+4. treatment of homonyms and redirects;
+5. missing or excluded taxa;
+6. lineage source and cleaning settings;
+7. the distance definition;
+8. downstream clustering, ordination, or permutation settings.
+
+Use `save_cache()` when the exact retrieved lineages must be reused. Cache files are language-specific. Use `taxobase` when a fixed, packaged example is preferable to a live query.
+
+## Recommended methods statement
+
+A concise description may be adapted as follows:
+
+> Ordered taxonomic lineages were retrieved from The Taxonomicon using `taxodist` version 0.6.0. For distinct nodes, distance was defined as the reciprocal of the depth of their most recent common ancestor in the continuous common lineage prefix; identical complete lineages received distance zero. The resulting values represent classification depth rather than evolutionary time or phylogenetic branch length.
+
+Report retrieval dates, unresolved taxa, and downstream analysis details separately.
+
+[Continue to Statistical Applications →](statistical-applications.qmd){.btn .btn-outline-primary role="button"}

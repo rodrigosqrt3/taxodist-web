@@ -1,233 +1,322 @@
 ---
 title: "Function Reference"
-subtitle: "Complete API reference for taxodist in R and Python. All functions are structurally equivalent across both ecosystems."
+subtitle: "Public API for taxodist 0.6.0 in R and Python."
 ---
 
-## Distance Computation
+The R and Python implementations share the same distance semantics and principal function names. Native return types follow the conventions of each language.
 
-### `taxo_distance()`
-**Signature:** `taxo_distance(taxon_a, taxon_b)`
+| Concept | R | Python |
+|---|---|---|
+| Missing scalar result | `NULL` or `NA` | `None` or `NaN` |
+| Distance matrix | Base R `dist` | `pandas.DataFrame` |
+| Structured result | S3 list or data frame | `dict` or `pandas.DataFrame` |
+| Cache file | `.rds` | `.pkl` |
 
-Computes the taxonomic distance between two taxa. Retrieves both lineages from The Taxonomicon, finds their most recent common ancestor (MRCA), and calculates the distance as $1 / \text{depth}(\text{MRCA})$.
+Unless stated otherwise, retrieval functions accept `verbose = FALSE` in R and `verbose=False` in Python.
 
-* **Returns:** `named list` (R) or `dict` (Python) containing the following fields:
-  * `distance`: Numeric taxonomic distance.
-  * `mrca`: Name of the most recent common ancestor.
-  * `mrca_depth`: Hierarchical node depth of the MRCA.
-  * `depth_a` / `depth_b`: Absolute lineage depths of both input taxa.
-
----
-
-### `distance_matrix()`
-**Signature:** `distance_matrix(taxa)`
-
-Computes the full symmetric pairwise distance matrix for a vector of taxon names. Lineages are cached in memory after first retrieval to avoid redundant network requests.
-
-* **Returns:** Standard `dist` object in R, or a `scipy`-compatible distance matrix (NumPy `ndarray`) in Python, with zeros on the diagonal. Taxa not present in the database are populated with `NA` / `None` distances.
-
----
-
-### `focal_distances()`
-**Signature:** `focal_distances(focal, community)`
-
-Computes taxonomic distances from a single focal taxon to all members of a community vector. This is equivalent to pulling a single row of a complete distance matrix, but operates with higher execution efficiency.
-
-* **Returns:** `named numeric vector` (R) or pandas `Series` (Python).
-
----
-
-### `closest_relative()`
-**Signature:** `closest_relative(query, candidates)`
-
-Identifies and ranks candidate taxa based on their taxonomic proximity to a query taxon. Useful for nearest-neighbor classification or phylogenetic sorting.
-
-* **Returns:** `data.frame` (R) or pandas `DataFrame` (Python) containing columns `taxon` and `distance` (sorted in ascending order).
-
----
-
-### `mrca()`
-**Signature:** `mrca(taxon_a, taxon_b)`
-
-Retrieves the name of the most recent common ancestor of two taxa as recorded in The Taxonomicon classification hierarchy.
-
-* **Returns:** `character string` (R) or `str` (Python).
-
----
-
-## Lineage Utilities
-
-### `get_lineage()`
-**Signature:** `get_lineage(taxon)`
-
-Retrieves the full hierarchical lineage of a taxon by name, from the root node (Biota) down to the taxon itself. This function resolves classifications at any rank, including species, genus, family, order, or named clades. All successfully resolved lineages are stored in the local session cache.
-
-* **Returns:** `character vector` (R) or `list` of strings (Python).
-
----
-
-### `get_lineage_by_id()`
-**Signature:** `get_lineage_by_id(id)`
-
-Retrieves and parses a complete hierarchical lineage using The Taxonomicon's unique numeric identifier instead of a text name. This method bypasses name resolution and is recommended for programmatically resolving homonyms or historical classifications.
-
-* **Returns:** `character vector` (R) or `list` of strings (Python).
-
----
+## Taxon retrieval and search
 
 ### `get_taxonomicon_id()`
-**Signature:** `get_taxonomicon_id(taxon)`
 
-Resolves a text taxon name to its corresponding numeric Taxonomicon database identifier. It returns the identifier of the first valid taxonomic match. For highly ambiguous queries or homonyms, use `taxo_search()` first to inspect all possible matches.
+```text
+R:      get_taxonomicon_id(taxon, verbose = FALSE)
+Python: get_taxonomicon_id(taxon, verbose=False)
+```
 
-* **Returns:** `integer` (R) or `int` (Python).
+Resolves a taxon name to a numeric Taxonomicon identifier. Astronomical entries are excluded. When several valid biological entries remain, the function warns before returning the first candidate.
 
----
+**Returns:** a character string in R or `str` in Python; `NULL`/`None` if no valid identifier is found.
+
+### `get_lineage_by_id()`
+
+```text
+R:      get_lineage_by_id(taxon_id, clean = TRUE, verbose = FALSE)
+Python: get_lineage_by_id(taxon_id, clean=True, verbose=False)
+```
+
+Retrieves an ordered lineage for a numeric Taxonomicon ID. With `clean` enabled, formatting markers and nodes preceding `Biota` are removed when applicable.
+
+**Returns:** a character vector in R or list of strings in Python, ordered from root to queried node; `NULL`/`None` for an invalid or unresolved ID.
+
+### `get_lineage()`
+
+```text
+R:      get_lineage(taxon, clean = TRUE, verbose = FALSE)
+Python: get_lineage(taxon, clean=True, verbose=False)
+```
+
+Convenience wrapper combining name resolution and lineage retrieval. A numeric ID supplied as a string bypasses name search.
+
+**Returns:** a character vector in R or list of strings in Python; `NULL`/`None` if unresolved.
 
 ### `taxo_search()`
-**Signature:** `taxo_search(query)`
 
-Queries The Taxonomicon database for all biological entries matching the specified query string. This is used to resolve homonym ambiguities, evaluate taxonomic synonyms, or locate the precise numeric database ID for a genus or species.
+```text
+R:      taxo_search(taxon, verbose = FALSE)
+Python: taxo_search(taxon, verbose=False)
+```
 
-* **Returns:** `data.frame` (R) or pandas `DataFrame` (Python) containing columns:
-  * `id`: The numeric Taxonomicon ID.
-  * `name`: The full taxon description, including author and publication year annotations.
-  * `rank`: The assigned taxonomic rank.
-  * `accepted_name`: The current accepted name according to Systema Naturae 2000.
+Lists biological Taxonomicon search results after removing astronomical entries and duplicate identifiers.
 
----
+**Returns:** a data frame with columns `id` and `name`, or `NULL`/`None` when no matches are found.
 
-### `compare_lineages()`
-**Signature:** `compare_lineages(taxon_a, taxon_b)`
+::: {.callout-note title="Reproducible name resolution"}
+For ambiguous names, inspect `taxo_search()` and record the selected numeric ID and retrieval date. The Taxonomicon is external to the package and its classifications may change.
+:::
 
-Generates a comparative side-by-side printout of two complete taxonomic lineages. It aligns both hierarchies, isolating the shared ancestral trunk up to their most recent common ancestor, and lists the unique diverging clades for each taxon below the split.
+## Distance computation
 
-* **Returns:** Invisibly returns a `list` (R) or `dict` (Python) containing the following fields:
-  * `shared`: Lineage path shared by both taxa up to the MRCA.
-  * `unique_a`: Unique ancestral nodes for taxon A.
-  * `unique_b`: Unique ancestral nodes for taxon B.
+### `taxo_distance()`
 
----
+```text
+R:      taxo_distance(taxon_a, taxon_b, verbose = FALSE)
+Python: taxo_distance(taxon_a, taxon_b, verbose=False)
+```
 
-### `shared_clades()`
-**Signature:** `shared_clades(taxon_a, taxon_b)`
+Retrieves both ordered lineages and computes
 
-Extracts the shared portion of the taxonomic lineage between two taxa, representing all overlapping hierarchical nodes from the root (Biota) down to and including their MRCA.
+$$
+d(A,B)=
+\begin{cases}
+0, & \text{identical complete lineages}, \\
+1 / \operatorname{depth}(\operatorname{MRCA}(A,B)), & \text{otherwise}.
+\end{cases}
+$$
 
-* **Returns:** `character vector` (R) or `list` of strings (Python).
+MRCA detection uses only the continuous common prefix from the root. Distinct ancestor–descendant nodes therefore retain a positive distance. Lineages without a shared root have infinite distance and no MRCA.
 
----
+**Returns:** an S3 list in R or `dict` in Python with:
 
-### `taxo_path()`
-**Signature:** `taxo_path(taxon_a, taxon_b)`
+| Field | Meaning |
+|---|---|
+| `distance` | Numeric hierarchy distance |
+| `mrca` | MRCA name, or missing when no root is shared |
+| `mrca_depth` | Number of nodes from root through the MRCA |
+| `depth_a`, `depth_b` | Complete lineage depths |
+| `taxon_a`, `taxon_b` | Input labels |
 
-Traces the node-by-node path connecting two taxa through the taxonomic hierarchy, ascending from taxon A up to their MRCA, and then descending down to taxon B. This maps the shortest topological path between both entities.
+Returns `NULL`/`None` if either lineage cannot be retrieved.
 
-* **Returns:** `character vector` (R) or `list` of strings (Python).
+### `mrca()`
 
----
+```text
+R:      mrca(taxon_a, taxon_b, verbose = FALSE)
+Python: mrca(taxon_a, taxon_b, verbose=False)
+```
+
+Returns only the MRCA name from `taxo_distance()`. The result is `NULL`/`None` if retrieval fails or the lineages share no ancestor.
+
+### `distance_matrix()`
+
+```text
+R:      distance_matrix(taxa, verbose = FALSE, progress = TRUE)
+Python: distance_matrix(taxa, verbose=False, progress=True)
+```
+
+Retrieves each lineage once and computes all pairwise distances. Input order and labels are preserved. Unresolved taxa receive missing off-diagonal comparisons; the diagonal is zero.
+
+**Returns:** a `dist` object in R or symmetric `pandas.DataFrame` in Python. Empty input returns a correctly shaped empty object.
+
+### `focal_distances()`
+
+```text
+R:      focal_distances(focal, community, verbose = FALSE, progress = TRUE)
+Python: focal_distances(focal, community, verbose=False, progress=True)
+```
+
+Computes the distance from one focal taxon to each community member and sorts finite results from smallest to largest.
+
+**Returns:** a data frame with columns `taxon`, `distance`, `mrca`, and `mrca_depth`. The focal name is retained as object metadata. Returns `NULL`/`None` if the focal lineage is unavailable.
+
+### `closest_relative()`
+
+```text
+R:      closest_relative(taxon, candidates, verbose = FALSE)
+Python: closest_relative(taxon, candidates, verbose=False)
+```
+
+Ranks candidate taxa by distance from the query taxon.
+
+**Returns:** a data frame with columns `taxon` and `distance`, sorted ascending with missing values last. Returns `NULL`/`None` if the query lineage is unavailable.
 
 ### `lineage_depth()`
-**Signature:** `lineage_depth(taxon)`
 
-Calculates the absolute number of taxonomic nodes present in a taxon's lineage from root to tip. This measures how fully resolved the hierarchy of a given clade is within The Taxonomicon database.
+```text
+R:      lineage_depth(taxon, verbose = FALSE)
+Python: lineage_depth(taxon, verbose=False)
+```
 
-* **Returns:** `integer` (R) or `int` (Python).
-
----
-
-### `is_member()`
-**Signature:** `is_member(taxon, clade)`
-
-Evaluates whether a target taxon is nested within a specified clade. This is determined by verifying whether the target clade name is present in the taxon's hierarchical lineage.
-
-* **Returns:** `logical` (R) or `bool` (Python).
-
----
-
-### `filter_clade()`
-**Signature:** `filter_clade(taxa, clade)`
-
-Filters a vector of taxonomic names, retaining only those individuals that belong to the specified clade. This serves as a set operation tool to isolate specific evolutionary groups from broad ecological communities.
-
-* **Returns:** `character vector` (R) or `list` of strings (Python).
-
----
+Returns the number of nodes in the retrieved lineage, including root and queried node. This is classification resolution, not elapsed time.
 
 ### `check_coverage()`
-**Signature:** `check_coverage(taxa)`
 
-Cross-references a list of taxon names against The Taxonomicon database to verify their presence. This serves as a pre-screening step before executing larger distance computations, as unrecognized taxa will return `NA` distance values.
+```text
+R:      check_coverage(taxa, verbose = FALSE)
+Python: check_coverage(taxa, verbose=False)
+```
 
-* **Returns:** Named `logical vector` (R) or pandas `Series` of booleans (Python).
+Checks whether each input can be resolved to a Taxonomicon identifier.
 
----
+**Returns:** a named logical vector in R or Boolean `pandas.Series` in Python.
 
-## Multivariate Analysis
+## Lineage comparison and membership
+
+### `compare_lineages()`
+
+```text
+R:      compare_lineages(taxon_a, taxon_b, verbose = FALSE)
+Python: compare_lineages(taxon_a, taxon_b, verbose=False)
+```
+
+Prints the common lineage and the nodes unique to each side after divergence.
+
+**Returns:** invisibly in R, and directly in Python, an object containing `lineage_a`, `lineage_b`, and `mrca_depth`.
+
+### `shared_clades()`
+
+```text
+R:      shared_clades(taxon_a, taxon_b, verbose = FALSE)
+Python: shared_clades(taxon_a, taxon_b, verbose=False)
+```
+
+Returns the continuous common prefix from root through the MRCA. A pair with no common ancestor returns an empty vector/list; failed retrieval returns `NULL`/`None`.
+
+### `taxo_path()`
+
+```text
+R:      taxo_path(taxon_a, taxon_b, verbose = FALSE)
+Python: taxo_path(taxon_a, taxon_b, verbose=False)
+```
+
+Constructs the route from taxon A upward to the MRCA and downward to taxon B.
+
+**Returns:** a data frame with one row per node and columns:
+
+- `node`: hierarchy node name;
+- `depth`: depth in the complete lineage;
+- `direction`: `"a"`, `"mrca"`, or `"b"`.
+
+The input labels are retained as object metadata. Returns `NULL`/`None` if retrieval fails or no common ancestor exists.
+
+### `is_member()`
+
+```text
+R:      is_member(taxon, clade, verbose = FALSE)
+Python: is_member(taxon, clade, verbose=False)
+```
+
+Tests whether the complete clade name occurs in the taxon's lineage. Matching is exact, case-insensitive, and ignores surrounding whitespace.
+
+**Returns:** logical/Boolean, or `NULL`/`None` if the taxon cannot be retrieved.
+
+### `filter_clade()`
+
+```text
+R:      filter_clade(taxa, clade, verbose = FALSE)
+Python: filter_clade(taxa, clade, verbose=False)
+```
+
+Returns only input taxa for which `is_member()` is true. Unresolved taxa are omitted.
+
+## Multivariate analysis and visualization
 
 ### `taxo_cluster()`
-**Signature:** `taxo_cluster(taxa, method = "average")`
 
-Executes hierarchical clustering on a calculated taxonomic distance matrix. The default clustering algorithm is UPGMA (`"average"`), which preserves taxonomic distance properties. The output object integrates directly with standard plotting methods and phylogenetics pipelines.
+```text
+R:      taxo_cluster(taxa, method = "average", ...)
+Python: taxo_cluster(taxa, method="average", **kwargs)
+```
 
-* **Returns:** A custom list object containing:
-  * `hclust`: The standard R `hclust` object (which can be cast to a phylogenetic tree via `ape::as.phylo()`).
-  * `dist`: The underlying symmetric taxonomic distance matrix.
+Accepts taxon names or a previously computed distance object. The default is average-linkage hierarchical clustering.
 
----
+**Returns:**
+
+- R: a `taxodist_cluster` list with `hclust` and `dist`;
+- Python: a dictionary with `hclust` (SciPy linkage matrix) and `dist`.
+
+If the matrix contains missing or infinite values, or represents fewer than two taxa, clustering is skipped and `hclust` is `NULL`/`None`.
 
 ### `taxo_ordinate()`
-**Signature:** `taxo_ordinate(taxa_or_dist)`
 
-Applies classical multidimensional scaling (Principal Coordinate Analysis, PCoA) to project a taxonomic distance matrix into a low-dimensional Euclidean space. This function accepts either a raw vector of taxon names or a pre-computed distance matrix of class `"dist"`.
+```text
+R:      taxo_ordinate(taxa, k = 2, ...)
+Python: taxo_ordinate(taxa, k=2, **kwargs)
+```
 
-* **Returns:** A structured list containing:
-  * `points`: A numeric coordinate matrix of dimensions $N \times K$.
-  * `eigenvalues`: Eigenvalues computed for each PCoA axis.
-  * `gof`: Goodness-of-fit statistics.
+Performs classical multidimensional scaling (PCoA). The requested `k` must be a positive integer and is reduced to at most $n-1$.
 
----
+**Returns:** an S3 list or dictionary with `points`, `dist`, `GOF`, and `eig`. Invalid matrices return the same structure with empty analysis components.
 
 ### `taxo_heatmap()`
-**Signature:** `taxo_heatmap(taxa_or_dist)`
 
-Generates a spatial distance heatmap with marginal dendrograms. The rows and columns are automatically reordered based on UPGMA hierarchical clustering. It accepts either a raw list of taxa or a pre-computed distance matrix.
+```text
+R:      taxo_heatmap(taxa, ...)
+Python: taxo_heatmap(taxa, **kwargs)
+```
 
-* **Returns:** Invisibly returns the underlying plot object or active graphical device.
+Plots the distance matrix with clustered rows and columns. R passes additional arguments to `stats::heatmap()`; Python passes them to `seaborn.clustermap()`.
 
----
+**Returns:** the underlying `dist` object invisibly in R or the underlying `pandas.DataFrame` in Python. Plotting is skipped for incomplete, infinite, or undersized matrices.
 
-## Cache Management
+::: {.callout-warning title="Interpretation of analysis output"}
+Clustering, PCoA, and heatmaps summarize the supplied classification-depth distances. They do not infer phylogenetic history or evolutionary branch lengths.
+:::
 
-### `clear_cache()`
-**Signature:** `clear_cache()`
-
-Purges all taxonomic lineages and database identifiers currently preserved in the session-level memory cache. Subsequent calculations will require fresh HTTP queries to the database server.
-
-* **Returns:** Invisibly returns `NULL` (R) or `None` (Python).
-
----
-
-### `save_cache()`
-**Signature:** `save_cache(path)`
-
-Serializes the active in-memory session cache to disk as an `.rds` file (R) or a `.pkl` file (Python). This preserves parsed classifications and avoids repeating network requests in future analytical sessions.
-
-* **Returns:** Invisibly returns the serialized path string.
-
----
-
-### `load_cache()`
-**Signature:** `load_cache(path)`
-
-Restores a serialized cache from disk back into your active programming environment. This merges the stored classifications with your current session cache, preventing redundant network requests.
-
-* **Returns:** Invisibly returns `NULL` (R) or `None` (Python).
-
----
+## Cache management
 
 ### `cache_info()`
-**Signature:** `cache_info()`
 
-Generates a diagnostic report summarizing the active session cache. It reports the total number of cached lineages, resolved database identifiers, active memory consumption (in bytes), and a preview of cached taxonomic names.
+```text
+cache_info()
+```
 
-* **Returns:** Prints structural summary statistics to the console, and invisibly returns a diagnostic `list` (R) or `dict` (Python).
+Prints and returns counts of cached lineages and identifiers, stored lineage keys, and approximate memory use. The return fields are `n_lineages`, `n_ids`, `taxa`, and `size_bytes`.
+
+### `save_cache()`
+
+```text
+R:      save_cache(file)
+Python: save_cache(file)
+```
+
+Serializes the current cache to an R `.rds` file or Python `.pkl` file. Returns invisibly `NULL` in R and `None` in Python.
+
+### `load_cache()`
+
+```text
+R:      load_cache(file)
+Python: load_cache(file)
+```
+
+Validates and restores a previously saved cache. Validation occurs before the active cache is modified. R and Python cache files are not interchangeable.
+
+::: {.callout-warning title="Python cache security"}
+Python cache files use `pickle`. Only load `.pkl` files from trusted sources, because unpickling untrusted data can execute arbitrary code.
+:::
+
+### `clear_cache()`
+
+```text
+clear_cache()
+```
+
+Removes all identifiers and lineages cached in the current session. Returns invisibly `NULL` in R and `None` in Python.
+
+## Packaged reference data
+
+### `taxobase` / `load_taxobase()`
+
+```text
+R:      data(taxobase, package = "taxodist")
+Python: taxobase = load_taxobase()
+```
+
+Loads the fixed reference object distributed with release 0.6.0. Components include taxa, coverage, lineages, pairwise examples, search results, general and statistical distance matrices, and provenance metadata.
+
+R stores distance components as `dist`; Python converts matrix components to labeled `pandas.DataFrame` objects.
+
+## Display helpers
+
+R uses S3 methods for distance results, focal results, paths, clusters, and ordinations. Python exposes corresponding helpers including `print_taxodist_result()`, `print_taxodist_path()`, `plot_taxodist_cluster()`, `plot_taxodist_ord()`, and `summary_taxodist_ord()`.
+
+For complete argument documentation in R, run `help(package = "taxodist")`. In Python, use `help(taxodist.function_name)`.
