@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>taxodist - Statistical Applications of taxodist</title>
+<title>taxodist - Statistical Applications</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -94,7 +94,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit"
   }
 }</script>
+<style>html{ scroll-behavior: smooth; }</style>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -130,8 +133,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">    
         <li>
+    <a class="dropdown-item" href="./methodology.html" rel="" target="">
+ <span class="dropdown-text">Methodology</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="./statistical-applications.html" rel="" target="">
  <span class="dropdown-text">Statistical Applications</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./r-python-compatibility.html" rel="" target="">
+ <span class="dropdown-text">R/Python Compatibility</span></a>
   </li>  
     </ul>
   </li>
@@ -149,11 +160,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/rodrigosqrt3/taxodist" rel="" target=""><i class="bi bi-github" role="img" aria-label="GitHub">
-</i> 
- <span class="menu-text"></span></a>
+  <li class="nav-item">
+    <a class="nav-link" href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/" rel="" target="">
+ <span class="menu-text">Launch App ↗</span></a>
   </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-source" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text">Source</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-source">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/rodrigosqrt3/taxodist" rel="" target="">
+ <span class="dropdown-text">R source</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/rodrigosqrt3/taxodist-py" rel="" target="">
+ <span class="dropdown-text">Python source</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
             <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
@@ -171,15 +198,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#example-dataset-threatened-mammals-of-brazil" id="toc-example-dataset-threatened-mammals-of-brazil" class="nav-link active" data-scroll-target="#example-dataset-threatened-mammals-of-brazil">Example dataset: threatened mammals of Brazil</a></li>
-  <li><a href="#phylogenetic-tree-with-ape" id="toc-phylogenetic-tree-with-ape" class="nav-link" data-scroll-target="#phylogenetic-tree-with-ape">Phylogenetic tree with <code>ape</code></a></li>
-  <li><a href="#taxonomic-diversity-with-vegan" id="toc-taxonomic-diversity-with-vegan" class="nav-link" data-scroll-target="#taxonomic-diversity-with-vegan">Taxonomic diversity with <code>vegan</code></a>
+  <li><a href="#reproducible-example-data" id="toc-reproducible-example-data" class="nav-link active" data-scroll-target="#reproducible-example-data">Reproducible example data</a></li>
+  <li><a href="#hierarchical-clustering" id="toc-hierarchical-clustering" class="nav-link" data-scroll-target="#hierarchical-clustering">Hierarchical clustering</a>
   <ul class="collapse">
-  <li><a href="#clarke-and-warwick-indices-taxondive" id="toc-clarke-and-warwick-indices-taxondive" class="nav-link" data-scroll-target="#clarke-and-warwick-indices-taxondive">Clarke and Warwick indices (<code>taxondive</code>)</a></li>
+  <li><a href="#conversion-to-the-phylo-data-structure" id="toc-conversion-to-the-phylo-data-structure" class="nav-link" data-scroll-target="#conversion-to-the-phylo-data-structure">Conversion to the <code>phylo</code> data structure</a></li>
   </ul></li>
-  <li><a href="#mantel-test-with-vegan" id="toc-mantel-test-with-vegan" class="nav-link" data-scroll-target="#mantel-test-with-vegan">Mantel test with <code>vegan</code></a></li>
-  <li><a href="#permanova-with-vegan" id="toc-permanova-with-vegan" class="nav-link" data-scroll-target="#permanova-with-vegan">PERMANOVA with <code>vegan</code></a></li>
-  <li><a href="#a-complete-workflow" id="toc-a-complete-workflow" class="nav-link" data-scroll-target="#a-complete-workflow">A complete workflow</a></li>
+  <li><a href="#principal-coordinates-analysis" id="toc-principal-coordinates-analysis" class="nav-link" data-scroll-target="#principal-coordinates-analysis">Principal coordinates analysis</a></li>
+  <li><a href="#taxonomic-diversity-and-distinctness" id="toc-taxonomic-diversity-and-distinctness" class="nav-link" data-scroll-target="#taxonomic-diversity-and-distinctness">Taxonomic diversity and distinctness</a></li>
+  <li><a href="#mantel-association-between-distance-matrices" id="toc-mantel-association-between-distance-matrices" class="nav-link" data-scroll-target="#mantel-association-between-distance-matrices">Mantel association between distance matrices</a></li>
+  <li><a href="#permanova" id="toc-permanova" class="nav-link" data-scroll-target="#permanova">PERMANOVA</a>
+  <ul class="collapse">
+  <li><a href="#examine-multivariate-dispersion" id="toc-examine-multivariate-dispersion" class="nav-link" data-scroll-target="#examine-multivariate-dispersion">Examine multivariate dispersion</a></li>
+  </ul></li>
+  <li><a href="#recommended-reporting" id="toc-recommended-reporting" class="nav-link" data-scroll-target="#recommended-reporting">Recommended reporting</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
@@ -189,8 +220,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Statistical Applications of taxodist</h1>
-<p class="subtitle lead">Using taxodist distance matrices with vegan and ape for taxonomic diversity indices, Mantel tests, PERMANOVA, and phylogenetic tree visualization.</p>
+<h1 class="title">Statistical Applications</h1>
+<p class="subtitle lead">Using taxonomic hierarchy distances in clustering, ordination, diversity analysis, and permutation-based models.</p>
 </div>
 
 
@@ -205,203 +236,232 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>The <code>taxodist</code> distance matrix is a standard <code>dist</code> object and integrates directly with the R ecosystem for multivariate analysis. All examples use a set of threatened mammals from Brazil spanning five broad taxonomic groups.</p>
-<div class="grid">
-<section id="phylogenetic-reconstruction" class="level3 g-col-12 g-col-md-6">
-<h3 class="anchored" data-anchor-id="phylogenetic-reconstruction">Phylogenetic Reconstruction</h3>
-<p>Convert a <code>taxo_cluster</code> hierarchical clustering result into a standard <code>phylo</code> object for publication-quality tree plotting using the <code>ape</code> package.</p>
-</section>
-<section id="taxonomic-diversity" class="level3 g-col-12 g-col-md-6">
-<h3 class="anchored" data-anchor-id="taxonomic-diversity">Taxonomic Diversity</h3>
-<p>Compute Clarke &amp; Warwick biodiversity indices (Delta, Delta*, Delta+, and Lambda+) natively using <code>vegan::taxondive()</code>.</p>
-</section>
-<section id="mantel-correlation-tests" class="level3 g-col-12 g-col-md-6">
-<h3 class="anchored" data-anchor-id="mantel-correlation-tests">Mantel Correlation Tests</h3>
-<p>Evaluate the correlation between your taxonomic distance matrix and geographic or phenotypic distance matrices.</p>
-</section>
-<section id="permanova" class="level3 g-col-12 g-col-md-6">
-<h3 class="anchored" data-anchor-id="permanova">PERMANOVA</h3>
-<p>Determine whether pre-defined taxonomic groups occupy significantly distinct regions of your calculated distance space with <code>vegan::adonis2()</code>.</p>
-</section>
-</div>
-<hr>
-<section id="example-dataset-threatened-mammals-of-brazil" class="level2">
-<h2 class="anchored" data-anchor-id="example-dataset-threatened-mammals-of-brazil">Example dataset: threatened mammals of Brazil</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>taxa_brazil <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Priodontes"</span>, <span class="st">"Myrmecophaga"</span>, <span class="st">"Chrysocyon"</span>, <span class="st">"Tapirus"</span>, <span class="st">"Didelphis"</span>,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Leontopithecus"</span>, <span class="st">"Brachyteles"</span>,</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Panthera"</span>, <span class="st">"Pteronura"</span>, <span class="st">"Puma"</span>,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Sotalia"</span>, <span class="st">"Pontoporia"</span>,</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Trichechus"</span>, <span class="st">"Mazama"</span>, <span class="st">"Blastocerus"</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The dataset covers xenarthrans (<code>Priodontes</code>, <code>Myrmecophaga</code>), a marsupial (<code>Didelphis</code>), ungulates (<code>Tapirus</code>, <code>Mazama</code>, <code>Blastocerus</code>), primates (<code>Leontopithecus</code>, <code>Brachyteles</code>), carnivores (<code>Chrysocyon</code>, <code>Panthera</code>, <code>Pteronura</code>, <code>Puma</code>), cetaceans (<code>Sotalia</code>, <code>Pontoporia</code>), and a sirenian (<code>Trichechus</code>).</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(taxodist)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">distance_matrix</span>(taxa_brazil)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mat)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                Priodontes Myrmecophaga Chrysocyon    Tapirus  Didelphis</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Myrmecophaga   0.01639344</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Chrysocyon     0.01694915   0.01694915</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Tapirus        0.01694915   0.01694915 0.01587302</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Didelphis      0.01754386   0.01754386 0.01754386 0.01754386</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Leontopithecus 0.01694915   0.01694915 0.01666667 0.01666667 0.01754386</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>Didelphis</code> shows the largest distances to all other taxa (0.01754), consistent with the early divergence of marsupials from placental mammals. Carnivores (<code>Panthera</code>, <code>Pteronura</code>, <code>Puma</code>) show smaller distances among themselves, reflecting a more recent common ancestor within Carnivora.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
+<p>The R package returns a standard <code>dist</code> object, allowing taxonomic hierarchy distances to be used with established multivariate tools. This page illustrates several possibilities while emphasizing the assumptions required for scientific interpretation.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="Scope of inference">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Caching and Optimization
+Scope of inference
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Retrieved lineages are preserved in a local memory cache, making subsequent operations on those same taxa instantaneous. To persist this cache across sessions, run <code>save_cache()</code> at the end of your run and reload it with <code>load_cache()</code> in future sessions.</p>
+<p><code>taxodist</code> distances encode depth in a classification hierarchy. They are not estimates of evolutionary time, genetic divergence, morphological change, or phylogenetic branch length. Statistical results therefore describe structure in the selected classification, conditional on the lineage source and distance definition.</p>
 </div>
 </div>
-<hr>
+<section id="reproducible-example-data" class="level2">
+<h2 class="anchored" data-anchor-id="reproducible-example-data">Reproducible example data</h2>
+<p>The examples use the fixed matrix distributed in <code>taxobase</code>. This avoids dependence on live network access and ensures that all analyses use the same taxon order and distance values.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(taxodist)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(taxobase, <span class="at">package =</span> <span class="st">"taxodist"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>taxa_brazil <span class="ot">&lt;-</span> taxobase<span class="sc">$</span>statistical_taxa</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> taxobase<span class="sc">$</span>statistical_matrix</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inherits</span>(mat, <span class="st">"dist"</span>),</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">identical</span>(<span class="fu">labels</span>(mat), taxa_brazil),</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">all</span>(<span class="fu">is.finite</span>(mat))</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>taxobase<span class="sc">$</span>metadata</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The reference set contains 15 mammalian genera representing marsupials and several placental lineages. Its role is methodological: it provides a stable matrix with which to demonstrate downstream analyses.</p>
+<p>For an empirical study, create the matrix from the taxa observed in the study and record the package version, resolved Taxonomicon IDs, retrieval date, and any exclusions.</p>
 </section>
-<section id="phylogenetic-tree-with-ape" class="level2">
-<h2 class="anchored" data-anchor-id="phylogenetic-tree-with-ape">Phylogenetic tree with <code>ape</code></h2>
-<p><code>taxo_cluster()</code> performs hierarchical clustering on the distance matrix and returns an object that <code>ape</code> can convert directly to a <code>phylo</code> tree.</p>
+<section id="hierarchical-clustering" class="level2">
+<h2 class="anchored" data-anchor-id="hierarchical-clustering">Hierarchical clustering</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>cluster <span class="ot">&lt;-</span> <span class="fu">taxo_cluster</span>(mat, <span class="at">method =</span> <span class="st">"average"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cluster, <span class="at">main =</span> <span class="st">"Clustering of taxonomic hierarchy distances"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The default method is average linkage (UPGMA). The dendrogram summarizes similarities in the supplied distance matrix. Its topology and heights depend on both the taxonomic classification and the clustering algorithm.</p>
+<section id="conversion-to-the-phylo-data-structure" class="level3">
+<h3 class="anchored" data-anchor-id="conversion-to-the-phylo-data-structure">Conversion to the <code>phylo</code> data structure</h3>
+<p>The <code>ape</code> package can convert the underlying <code>hclust</code> object to class <code>phylo</code> for plotting or exchange with software that reads tree-shaped data.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ape)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>cl   <span class="ot">&lt;-</span> <span class="fu">taxo_cluster</span>(taxa_brazil)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">as.phylo</span>(cl<span class="sc">$</span>hclust)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tree,</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">main      =</span> <span class="st">"Threatened Mammals of Brazil"</span>,</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">cex       =</span> <span class="fl">0.85</span>,</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">tip.color =</span> <span class="st">"gray20"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The <code>phylo</code> object is fully compatible with all <code>ape</code> tree manipulation and plotting functions, including <code>nodelabels()</code>, <code>edgelabels()</code>, and export to Newick format:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ape<span class="sc">::</span><span class="fu">write.tree</span>(tree, <span class="at">file =</span> <span class="st">"taxa_brazil.nwk"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr>
-</section>
-<section id="taxonomic-diversity-with-vegan" class="level2">
-<h2 class="anchored" data-anchor-id="taxonomic-diversity-with-vegan">Taxonomic diversity with <code>vegan</code></h2>
-<section id="clarke-and-warwick-indices-taxondive" class="level3">
-<h3 class="anchored" data-anchor-id="clarke-and-warwick-indices-taxondive">Clarke and Warwick indices (<code>taxondive</code>)</h3>
-<p><code>vegan::taxondive()</code> computes a family of taxonomic diversity indices from a community matrix and a taxonomic distance matrix. These indices capture not just species richness but how distantly related the species in a community are — a community of closely related species scores lower than one spanning multiple orders with the same richness.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>comm <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>,   <span class="co"># xenarthrans + marsupial</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>,   <span class="co"># primates + carnivores</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>    <span class="co"># cetaceans + sirenian + ungulates</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>), <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(comm) <span class="ot">&lt;-</span> taxa_brazil</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(comm) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"community_A"</span>, <span class="st">"community_B"</span>, <span class="st">"community_C"</span>)</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>vegan<span class="sc">::</span><span class="fu">taxondive</span>(comm, mat)</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             Species    Delta   Delta*   Lambda+   Delta+</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; community_A       3 0.01716  0.01716  2.94e-07  0.01716</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; community_B       5 0.01591  0.01591  8.83e-07  0.01591</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; community_C       5 0.01575  0.01575  1.18e-06  0.01575</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The key indices are:</p>
-<ul>
-<li><strong>Delta</strong> (Δ): mean taxonomic distance between all pairs of species in the community.</li>
-<li><strong>Delta*</strong> (Δ*): mean pairwise distance excluding self-comparisons; comparable across community sizes.</li>
-<li><strong>Delta+</strong> (Δ+): mean pairwise distance weighted by abundances. For presence-absence data this equals Δ*.</li>
-<li><strong>Lambda+</strong> (Λ+): variance in taxonomic distances, measuring how evenly a community spans the taxonomic tree.</li>
-</ul>
-<p><code>community_A</code>, dominated by xenarthrans and a marsupial, scores the highest Δ (0.01716), reflecting deeper divergences among its members. <code>community_B</code> (primates and carnivores) scores the lowest (0.01591), as its members share more recent common ancestors within Placentalia.</p>
-<hr>
-</section>
-</section>
-<section id="mantel-test-with-vegan" class="level2">
-<h2 class="anchored" data-anchor-id="mantel-test-with-vegan">Mantel test with <code>vegan</code></h2>
-<p>The Mantel test assesses the correlation between two distance matrices by permutation. A typical application is testing whether taxonomic distance correlates with geographic distance — a signature of phylogeographic structure.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">30</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(coords) <span class="ot">&lt;-</span> taxa_brazil</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>geo_dist <span class="ot">&lt;-</span> <span class="fu">dist</span>(coords)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>vegan<span class="sc">::</span><span class="fu">mantel</span>(mat, geo_dist)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Mantel statistic r: -0.0569</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       Significance: 0.653</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>For non-normal distance distributions, Spearman is more robust:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>vegan<span class="sc">::</span><span class="fu">mantel</span>(mat, geo_dist, <span class="at">method =</span> <span class="st">"spearman"</span>, <span class="at">permutations =</span> <span class="dv">9999</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Mantel statistic r: -0.07405</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       Significance: 0.672</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-note callout-titled">
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>tree_like <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">as.phylo</span>(cluster<span class="sc">$</span>hclust)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tree_like, <span class="at">cex =</span> <span class="fl">0.8</span>, <span class="at">no.margin =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-warning callout-titled" title="A change of class is not phylogenetic inference">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Note
+A change of class is not phylogenetic inference
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The non-significant Mantel test result here is expected because the geographic coordinates used in this example are randomly generated. In standard research workflows, replace these with observed latitude and longitude coordinates from your field collections.</p>
+<p><code>ape::as.phylo()</code> converts the representation of an <code>hclust</code> object. It does not infer ancestry from characters or sequences, estimate evolutionary branch lengths, reconstruct historical splits, or supply support values. The resulting object should be described as a taxonomic-distance dendrogram stored in class <code>phylo</code>, not as an inferred phylogenetic tree.</p>
 </div>
 </div>
-<hr>
+<p>Export is possible when another tool requires Newick syntax:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ape<span class="sc">::</span><span class="fu">write.tree</span>(tree_like, <span class="at">file =</span> <span class="st">"taxonomic-distance-dendrogram.nwk"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The filename and accompanying metadata should retain the distinction between classification-based clustering and phylogenetic inference.</p>
 </section>
-<section id="permanova-with-vegan" class="level2">
-<h2 class="anchored" data-anchor-id="permanova-with-vegan">PERMANOVA with <code>vegan</code></h2>
-<p>PERMANOVA tests whether groups of taxa differ significantly in taxonomic distance space. It partitions total variance in the distance matrix into within-group and between-group components and assesses significance by permutation, with no assumption of multivariate normality.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>groups <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"xenarthra"</span>, <span class="st">"xenarthra"</span>, <span class="st">"carnivore"</span>, <span class="st">"ungulate"</span>,  <span class="st">"marsupial"</span>,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"primate"</span>,   <span class="st">"primate"</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"carnivore"</span>, <span class="st">"carnivore"</span>, <span class="st">"carnivore"</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"cetacean"</span>,  <span class="st">"cetacean"</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"sirenian"</span>,  <span class="st">"ungulate"</span>,  <span class="st">"ungulate"</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>vegan<span class="sc">::</span><span class="fu">adonis2</span>(mat <span class="sc">~</span> groups)</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          Df  SumOfSqs      R2      F Pr(&gt;F)</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model     6 0.00100049 0.52646 1.4823  0.001 ***</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual  8 0.00089992 0.47354</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Total    14 0.00190041 1.00000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The taxonomic grouping explains 52.6% of the total variance in the distance matrix (R² = 0.526, p = 0.001), confirming that the broad mammalian orders occupy distinct regions of taxonomic distance space — consistent with their deep evolutionary divergences.</p>
-<p>For pairwise comparisons after a significant PERMANOVA, see <code>pairwise.adonis2()</code> in the <code>pairwiseAdonis</code> package.</p>
-<hr>
 </section>
-<section id="a-complete-workflow" class="level2">
-<h2 class="anchored" data-anchor-id="a-complete-workflow">A complete workflow</h2>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(taxodist)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ape)</span>
+<section id="principal-coordinates-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="principal-coordinates-analysis">Principal coordinates analysis</h2>
+<p><code>taxo_ordinate()</code> applies classical multidimensional scaling (PCoA) to the distance matrix.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ordination <span class="ot">&lt;-</span> <span class="fu">taxo_ordinate</span>(mat, <span class="at">k =</span> <span class="dv">2</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ordination)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ordination, <span class="at">main =</span> <span class="st">"PCoA of taxonomic hierarchy distances"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The coordinates provide a low-dimensional representation of the pairwise distances. They do not create new evolutionary measurements; proximity in the ordination reflects similarity under the same hierarchy-depth metric.</p>
+<p>Inspect the eigenvalues and goodness-of-fit before interpreting the plot:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ordination<span class="sc">$</span>eig</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ordination<span class="sc">$</span>GOF</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Negative eigenvalues indicate that the dissimilarities are not represented exactly in Euclidean space. The first goodness-of-fit value follows the absolute-eigenvalue denominator used by <code>cmdscale()</code>; the second uses the sum of positive eigenvalues.</p>
+</section>
+<section id="taxonomic-diversity-and-distinctness" class="level2">
+<h2 class="anchored" data-anchor-id="taxonomic-diversity-and-distinctness">Taxonomic diversity and distinctness</h2>
+<p><code>vegan::taxondive()</code> accepts a community matrix and a species-level dissimilarity object. The column names of the community matrix must correspond to the labels of the distance object.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>comm <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">nrow =</span> <span class="dv">3</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">byrow =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">dimnames =</span> <span class="fu">list</span>(</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="st">"community_A"</span>, <span class="st">"community_B"</span>, <span class="st">"community_C"</span>),</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    taxa_brazil</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>diversity <span class="ot">&lt;-</span> vegan<span class="sc">::</span><span class="fu">taxondive</span>(comm, mat, <span class="at">match.force =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>diversity</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(diversity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The principal quantities reported by <code>taxondive()</code> are:</p>
+<ul>
+<li><strong>Delta</strong> (<span class="math inline">\(\Delta\)</span>): taxonomic diversity, incorporating abundance and distances between pairs of taxa;</li>
+<li><strong>Delta*</strong> (<span class="math inline">\(\Delta^*\)</span>): taxonomic distinctness, standardized by the abundance products for pairs of different taxa;</li>
+<li><strong>Delta+</strong> (<span class="math inline">\(\Delta^+\)</span>): average taxonomic distinctness for presence–absence data;</li>
+<li><strong>Lambda+</strong> (<span class="math inline">\(\Lambda^+\)</span>): variation in taxonomic distinctness;</li>
+<li><strong>S Delta+</strong>: species richness multiplied by <span class="math inline">\(\Delta^+\)</span>.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled" title="Distance scaling matters">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Distance scaling matters
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The absolute values of these indices depend on the supplied dissimilarities. Traditional applications often use step distances derived from a rank table. Supplying <code>taxodist</code> values instead answers a different, explicit question based on reciprocal MRCA depth. Comparisons should therefore use the same source, cleaning rules, and distance definition throughout.</p>
+</div>
+</div>
+</section>
+<section id="mantel-association-between-distance-matrices" class="level2">
+<h2 class="anchored" data-anchor-id="mantel-association-between-distance-matrices">Mantel association between distance matrices</h2>
+<p>A Mantel test evaluates association between corresponding entries of two dissimilarity matrices. For example, a taxonomic hierarchy matrix could be compared with an independently measured trait-distance matrix.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># traits must contain numeric measurements for the same taxa.</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The rows are reordered explicitly before distance calculation.</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>traits <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"trait-data.csv"</span>, <span class="at">row.names =</span> <span class="dv">1</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>traits <span class="ot">&lt;-</span> traits[<span class="fu">labels</span>(mat), , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">identical</span>(<span class="fu">rownames</span>(traits), <span class="fu">labels</span>(mat)),</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">all</span>(<span class="fu">vapply</span>(traits, is.numeric, <span class="fu">logical</span>(<span class="dv">1</span>)))</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>trait_dist <span class="ot">&lt;-</span> <span class="fu">dist</span>(<span class="fu">scale</span>(traits))</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>vegan<span class="sc">::</span><span class="fu">mantel</span>(</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  mat,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  trait_dist,</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">"spearman"</span>,</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">permutations =</span> <span class="dv">9999</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The Mantel statistic is a matrix correlation; its permutation procedure accounts for the non-independence of pairwise entries under its null model. The result does not estimate a causal effect.</p>
+<p>By default, <code>vegan::mantel()</code> evaluates positive association. State the correlation method, permutation count, and alternative hypothesis when reporting the analysis.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Use Mantel tests for matrix-association questions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Use Mantel tests for matrix-association questions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Do not use a simple or partial Mantel test as a general substitute for regression, or as an automatic correction for spatial autocorrelation. The hypothesis, permutation design, and dependence structure must match the scientific question. When observations are blocked or stratified, define an appropriate restricted permutation scheme.</p>
+</div>
+</div>
+</section>
+<section id="permanova" class="level2">
+<h2 class="anchored" data-anchor-id="permanova">PERMANOVA</h2>
+<p><code>vegan::adonis2()</code> partitions variation in a dissimilarity matrix among predictors. Metadata rows must be in exactly the same order as the taxa represented by the matrix.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># metadata must be measured independently of the taxonomic distances.</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>metadata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"taxon-metadata.csv"</span>, <span class="at">row.names =</span> <span class="dv">1</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>metadata <span class="ot">&lt;-</span> metadata[<span class="fu">labels</span>(mat), , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Define taxa</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>taxa_brazil <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Priodontes"</span>, <span class="st">"Myrmecophaga"</span>, <span class="st">"Chrysocyon"</span>, <span class="st">"Tapirus"</span>, <span class="st">"Didelphis"</span>,</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Leontopithecus"</span>, <span class="st">"Brachyteles"</span>, <span class="st">"Panthera"</span>, <span class="st">"Pteronura"</span>, <span class="st">"Puma"</span>,</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Sotalia"</span>, <span class="st">"Pontoporia"</span>, <span class="st">"Trichechus"</span>, <span class="st">"Mazama"</span>, <span class="st">"Blastocerus"</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Compute distance matrix</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">distance_matrix</span>(taxa_brazil)</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Phylogenetic tree</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>cl   <span class="ot">&lt;-</span> <span class="fu">taxo_cluster</span>(taxa_brazil)</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">as.phylo</span>(cl<span class="sc">$</span>hclust)</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tree, <span class="at">main =</span> <span class="st">"Threatened Mammals of Brazil"</span>, <span class="at">cex =</span> <span class="fl">0.85</span>)</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. PCoA ordination</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>ord <span class="ot">&lt;-</span> <span class="fu">taxo_ordinate</span>(mat)</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ord, <span class="at">main =</span> <span class="st">"PCoA: Taxonomic Distance Space"</span>)</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. PERMANOVA</span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>groups <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"xenarthra"</span>, <span class="st">"xenarthra"</span>, <span class="st">"carnivore"</span>, <span class="st">"ungulate"</span>, <span class="st">"marsupial"</span>,</span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">"primate"</span>, <span class="st">"primate"</span>, <span class="st">"carnivore"</span>, <span class="st">"carnivore"</span>, <span class="st">"carnivore"</span>,</span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">"cetacean"</span>, <span class="st">"cetacean"</span>, <span class="st">"sirenian"</span>, <span class="st">"ungulate"</span>, <span class="st">"ungulate"</span></span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>vegan<span class="sc">::</span><span class="fu">adonis2</span>(mat <span class="sc">~</span> groups)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">identical</span>(<span class="fu">rownames</span>(metadata), <span class="fu">labels</span>(mat)))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> vegan<span class="sc">::</span><span class="fu">adonis2</span>(</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  mat <span class="sc">~</span> habitat,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> metadata,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">permutations =</span> <span class="dv">9999</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <span class="math inline">\(R^2\)</span> column reports the proportion of the total sum of squares attributed to the model. The permutation <span class="math inline">\(p\)</span>-value evaluates the selected null hypothesis under the specified permutation design.</p>
+<section id="examine-multivariate-dispersion" class="level3">
+<h3 class="anchored" data-anchor-id="examine-multivariate-dispersion">Examine multivariate dispersion</h3>
+<p>PERMANOVA can reflect differences in within-group dispersion as well as differences in group location. Evaluate dispersion using the same distance matrix and grouping variable:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>dispersion <span class="ot">&lt;-</span> vegan<span class="sc">::</span><span class="fu">betadisper</span>(mat, metadata<span class="sc">$</span>habitat)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(dispersion)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">permutest</span>(dispersion, <span class="at">permutations =</span> <span class="dv">9999</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dispersion)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Interpret <code>adonis2()</code> together with the dispersion analysis, sample sizes, design, and ordination. Restricted permutations should be used for blocks, repeated measurements, nested sampling, or other non-exchangeable designs.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="Avoid circular tests">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Avoid circular tests
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Do not use groups extracted from the same classification hierarchy as predictors and then present a significant PERMANOVA on <code>taxodist</code> distances as independent evidence that those taxonomic groups differ. That result is structurally expected. Predictors should represent information external to the distance definition, unless the analysis is explicitly descriptive.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="recommended-reporting" class="level2">
+<h2 class="anchored" data-anchor-id="recommended-reporting">Recommended reporting</h2>
+<p>A reproducible analysis should state:</p>
+<ol type="1">
+<li>the <code>taxodist</code> version and programming language;</li>
+<li>the lineage source and retrieval date;</li>
+<li>resolved Taxonomicon IDs and treatment of homonyms;</li>
+<li>taxa excluded because of missing or disconnected lineages;</li>
+<li>the distance definition and classification-depth interpretation;</li>
+<li>clustering or ordination settings;</li>
+<li>the permutation scheme and number of permutations;</li>
+<li>checks for multivariate dispersion where PERMANOVA is used;</li>
+<li>whether analyses used live lineages or the fixed <code>taxobase</code> object.</li>
+</ol>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
 <p>Anderson, M.J. (2001). A new method for non-parametric multivariate analysis of variance. <em>Austral Ecology</em>, 26, 32–46.</p>
 <p>Clarke, K.R. and Warwick, R.M. (1998). A taxonomic distinctness index and its statistical properties. <em>Journal of Applied Ecology</em>, 35, 523–531.</p>
+<p>Clarke, K.R. and Warwick, R.M. (1999). The taxonomic distinctness measure of biodiversity: weighting of step lengths between hierarchical levels. <em>Marine Ecology Progress Series</em>, 184, 21–29.</p>
 <p>Clarke, K.R. and Warwick, R.M. (2001). A further biodiversity index applicable to species lists: variation in taxonomic distinctness. <em>Marine Ecology Progress Series</em>, 216, 265–278.</p>
+<p>Legendre, P. and Anderson, M.J. (1999). Distance-based redundancy analysis: testing multispecies responses in multifactorial ecological experiments. <em>Ecological Monographs</em>, 69, 1–24.</p>
+<p>Warton, D.I., Wright, T.W., and Wang, Y. (2012). Distance-based multivariate analyses confound location and dispersion effects. <em>Methods in Ecology and Evolution</em>, 3, 89–101.</p>
 <p>Brands, S.J. (1989 onwards). <em>Systema Naturae 2000</em>. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, <a href="http://taxonomicon.taxonomy.nl" class="uri">http://taxonomicon.taxonomy.nl</a>.</p>
-<hr>
-<p><a href="./getting-started.html" class="btn btn-outline-secondary" role="button">← Return to Getting Started</a> &nbsp; <a href="./reference.html" class="btn btn-outline-primary" role="button">Go to API Reference →</a></p>
+<p><a href="./methodology.html" class="btn btn-outline-secondary" role="button">← Methodology</a> <a href="./r-python-compatibility.html" class="btn btn-outline-primary" role="button">R/Python Compatibility →</a></p>
 
 
 </section>
@@ -756,7 +816,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">taxodist 0.6.0</div>   
+    <div class="nav-footer-center">Taxonomic hierarchy distances — not evolutionary time or branch length.</div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://cran.r-project.org/package=taxodist">R</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://pypi.org/project/taxodist/">Python</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/">App</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
 
 
 
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

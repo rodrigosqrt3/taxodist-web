@@ -4,7 +4,7 @@
     "href": "about.html",
     "title": "About taxodist",
     "section": "",
-    "text": "The taxodist project was developed to provide researchers in ecology, evolutionary biology, and taxonomy with a reliable, high-resolution tool for computing taxonomic dissimilarity.\nBy programmatically bridging R and Python workflows with the extensive classification database of The Taxonomicon, the package enables standardized, reproducible community and phylogenetic analyses that are robust to varying taxonomic resolution and server-level queries."
+    "text": "taxodist is an open-source project for retrieving ordered taxonomic lineages and measuring separation between nodes in a classification hierarchy. It is available as coordinated R and Python packages and through an interactive web application.\nThe project addresses a practical need: a reproducible way to resolve taxon names, inspect their lineages, identify their most recent common ancestor, and construct labeled distance objects for downstream analysis.\nThe current implementation uses lineage data from The Taxonomicon, based on Systema Naturae 2000. The external source remains responsible for the underlying classification; taxodist retrieves, cleans, organizes, and compares those records."
   },
   {
     "objectID": "Articles.html",
@@ -18,14 +18,14 @@
     "href": "getting-started.html",
     "title": "Introduction to taxodist",
     "section": "",
-    "text": "taxodist answers a simple question: how related are any two living things?\nGiven any two taxon names — a pair of dinosaurs, a dinosaur and a fungus, two species of fly, or an oak tree and a human — taxodist retrieves their full hierarchical lineages from The Taxonomicon and computes a dissimilarity index between them.\nThe Taxonomicon is based on Systema Naturae 2000 (Brands, 1989 onwards) and provides exceptionally deep lineage resolution, substantially exceeding other programmatic sources.\nSearches work at any taxonomic level: genus, species, family, order, or any clade. Both \"Tyrannosaurus\" and \"Tyrannosaurus rex\" are valid inputs, as are \"Drosophila melanogaster\", \"Homo sapiens\", or \"Araucaria angustifolia\"."
+    "text": "taxodist compares taxa through their positions in a taxonomic classification. Given a scientific name or a Taxonomicon numeric ID, it retrieves the corresponding ordered lineage from The Taxonomicon.\nYou can then use those lineages to:\n\ncalculate the distance between two hierarchy nodes;\nidentify their most recent common ancestor (MRCA);\nconstruct pairwise distance matrices for communities;\ninspect shared and divergent portions of lineages;\ntest or filter clade membership;\nperform hierarchical clustering and principal coordinates analysis (PCoA);\nsave retrieved lineages for later reuse.\n\nNames at different taxonomic levels are accepted. Examples include \"Tyrannosaurus\", \"Tyrannosaurus rex\", \"Dinosauria\", \"Homo sapiens\", and \"Drosophilidae\".\n\n\n\n\n\n\nTerminology\n\n\n\nThroughout this site, distance means distance between nodes in a taxonomic hierarchy. It does not mean phylogenetic branch length or elapsed evolutionary time."
   },
   {
     "objectID": "getting-started.html#what-is-taxodist",
     "href": "getting-started.html#what-is-taxodist",
     "title": "Introduction to taxodist",
     "section": "",
-    "text": "taxodist answers a simple question: how related are any two living things?\nGiven any two taxon names — a pair of dinosaurs, a dinosaur and a fungus, two species of fly, or an oak tree and a human — taxodist retrieves their full hierarchical lineages from The Taxonomicon and computes a dissimilarity index between them.\nThe Taxonomicon is based on Systema Naturae 2000 (Brands, 1989 onwards) and provides exceptionally deep lineage resolution, substantially exceeding other programmatic sources.\nSearches work at any taxonomic level: genus, species, family, order, or any clade. Both \"Tyrannosaurus\" and \"Tyrannosaurus rex\" are valid inputs, as are \"Drosophila melanogaster\", \"Homo sapiens\", or \"Araucaria angustifolia\"."
+    "text": "taxodist compares taxa through their positions in a taxonomic classification. Given a scientific name or a Taxonomicon numeric ID, it retrieves the corresponding ordered lineage from The Taxonomicon.\nYou can then use those lineages to:\n\ncalculate the distance between two hierarchy nodes;\nidentify their most recent common ancestor (MRCA);\nconstruct pairwise distance matrices for communities;\ninspect shared and divergent portions of lineages;\ntest or filter clade membership;\nperform hierarchical clustering and principal coordinates analysis (PCoA);\nsave retrieved lineages for later reuse.\n\nNames at different taxonomic levels are accepted. Examples include \"Tyrannosaurus\", \"Tyrannosaurus rex\", \"Dinosauria\", \"Homo sapiens\", and \"Drosophilidae\".\n\n\n\n\n\n\nTerminology\n\n\n\nThroughout this site, distance means distance between nodes in a taxonomic hierarchy. It does not mean phylogenetic branch length or elapsed evolutionary time."
   },
   {
     "objectID": "getting-started.html#the-distance-metric",
@@ -39,7 +39,7 @@
     "href": "getting-started.html#installation",
     "title": "Introduction to taxodist",
     "section": "Installation",
-    "text": "Installation\n\nRPython\n\n\ninstall.packages(\"taxodist\")\nlibrary(taxodist)\n\n\npip install taxodist\nimport taxodist as td"
+    "text": "Installation\n\nRPython\n\n\nInstall the released package from CRAN:\ninstall.packages(\"taxodist\")\nlibrary(taxodist)\nInstall the development version from GitHub:\n# install.packages(\"remotes\")\nremotes::install_github(\"rodrigosqrt3/taxodist\")\n\n\nInstall the released package from PyPI:\npip install taxodist\nThen import it:\nimport taxodist as td\nInstall the development version from GitHub:\npip install git+https://github.com/rodrigosqrt3/taxodist-py.git"
   },
   {
     "objectID": "getting-started.html#basic-usage",
@@ -81,14 +81,14 @@
     "href": "getting-started.html#data-source-and-citation",
     "title": "Introduction to taxodist",
     "section": "Data source and citation",
-    "text": "Data source and citation\nAll lineage data is sourced from The Taxonomicon (taxonomy.nl), based on Systema Naturae 2000:\n\nBrands, S.J. (1989 onwards). Systema Naturae 2000. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, http://taxonomicon.taxonomy.nl.\n\nPlease cite this resource in any published work using taxodist.\n\nContinue to Statistical Applications →"
+    "text": "Data source and citation\nAll live lineage data originate from The Taxonomicon, based on Systema Naturae 2000:\n\nBrands, S.J. (1989 onwards). Systema Naturae 2000. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, http://taxonomicon.taxonomy.nl.\n\nPublished analyses should cite both the taxodist software and the underlying classification source.\nRead the Methodology → Continue to Statistical Applications →"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "\ntaxodist\n",
+    "title": "taxodist",
     "section": "",
-    "text": "taxodist is an R and Python package for computing phylogenetic distances between any two taxa. Given two taxon names, taxodist retrieves their full hierarchical lineages from The Taxonomicon database and computes a dissimilarity index based on the depth of their most recent common ancestor (MRCA)."
+    "text": "Taxonomic hierarchy distances and lineage analysis in R and Python\ntaxodist retrieves ordered taxonomic lineages from The Taxonomicon and compares hierarchy nodes through the depth of their most recent common ancestor (MRCA). The R and Python packages implement the same distance definition and lineage semantics.\nGet started Launch the web app ↗ Browse the API"
   },
   {
     "objectID": "index.html#core-functionality",
@@ -121,16 +121,16 @@
   {
     "objectID": "index.html#data-source-and-citation",
     "href": "index.html#data-source-and-citation",
-    "title": "\ntaxodist\n",
-    "section": "Data Source and Citation",
-    "text": "Data Source and Citation\nAll lineage data is sourced from The Taxonomicon, based on Systema Naturae 2000 (Brands, S.J., 1989 onwards). Please cite this resource in any published work that uses taxodist:\n\nBrands, S.J. (1989 onwards). Systema Naturae 2000. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, http://taxonomicon.taxonomy.nl."
+    "title": "taxodist",
+    "section": "Data source and citation",
+    "text": "Data source and citation\nAll retrieved lineage data originate from The Taxonomicon, based on Systema Naturae 2000. Published analyses should cite both the taxodist software and the underlying classification source:\n\nBrands, S.J. (1989 onwards). Systema Naturae 2000. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, http://taxonomicon.taxonomy.nl.\n\nStart with the full guide →"
   },
   {
     "objectID": "news.html",
     "href": "news.html",
     "title": "Changelog",
     "section": "",
-    "text": "taxobase: Built-in reference dataset of 50 taxonomic clades with pre-computed distance matrices, lineage paths, search outputs, and coverage vectors. Acts as a complete offline fallback — examples, vignettes, and unit tests run without a network connection.\n\n\n\n\n\nFixed taxa whose names contain the substring “planet” (e.g. Periplaneta) being incorrectly discarded by the astronomical homonym filter. The filter now uses word boundaries (\\bplanet\\b).\nFixed a lineage parsing bug affecting genera whose Taxonomicon page does not link back to the genus itself (e.g. Periplaneta). The lineage is now correctly truncated before child species entries and the genus name is appended if absent.\nAdded \"Epifamily\" to the bare rank token filter.\nFixed a lineage parsing bug where the superscript type-marker ᵀ (U+1D40) immediately following a taxon name prevented word-boundary matching, causing the lineage to overshoot the target node and include descendant taxa as ancestors. This bug disproportionately affected higher-rank taxa within deep clades like Dinosauria.\nFixed a lineage parsing bug where navigation header text could contain the target taxon name, causing the lineage cutoff to land in junk content rather than the taxonomic tree (Drosophila, ID 28940, was one affected case)."
+    "text": "Introduced taxonomic distance calculations using lineage data from The Taxonomicon.\nAdded session-level lineage caching to reduce repeated network requests.\nInitial functions: taxo_distance(), mrca(), distance_matrix(), closest_relative(), compare_lineages(), shared_clades(), is_member(), filter_clade(), lineage_depth(), check_coverage(), and clear_cache()."
   },
   {
     "objectID": "news.html#taxodist-0.5.0-latest",
@@ -144,7 +144,7 @@
     "href": "news.html#taxodist-0.4.0",
     "title": "Changelog",
     "section": "taxodist 0.4.0",
-    "text": "taxodist 0.4.0\n\nNew features\n\ncache_info(): Inspects the current session cache, reporting the number of cached lineages and IDs, total memory used, and cached taxon names. Returns a named list invisibly for programmatic use.\nfocal_distances(): Computes distances from a single focal taxon to all members of a community vector. Returns a sorted data frame with columns taxon, distance, mrca, and mrca_depth.\n\n\n\nBug fixes\n\nFixed a lineage parsing bug where taxa with Subphylum and Infraphylum rank prefixes (e.g. Craniata, Vertebrata) were incorrectly discarded. The dagger symbol (†) is now stripped before rank-prefix removal.\nFixed parsing of auct. author annotations preventing rank-prefixed names from being correctly cleaned.\nFixed intermediate clades being silently dropped when author strings contained ampersands, hyphens (e.g. Cavalier-Smith), or trailing commas without a year.\nFixed a bug where the dagger extinction marker (†) appearing between a rank prefix and a taxon name (e.g. Family † Dromaeosauridae) caused the taxon to be lost entirely."
+    "text": "taxodist 0.4.0\n\nNew functions\n\nAdded cache_info() to report cached lineages, identifiers, and memory use.\nAdded focal_distances() to compare one focal taxon with every member of a community while reporting distance, MRCA, and MRCA depth.\n\n\n\nLineage parsing\n\nCorrected handling of Subphylum and Infraphylum prefixes.\nImproved removal of extinction markers, auct. annotations, author strings, ampersands, hyphenated names, and incomplete trailing citations."
   },
   {
     "objectID": "news.html#taxodist-0.3.0-first-python-release",
@@ -158,28 +158,28 @@
     "href": "news.html#taxodist-0.2.0",
     "title": "Changelog",
     "section": "taxodist 0.2.0",
-    "text": "taxodist 0.2.0\n\nNew functions\n\ntaxo_cluster(): Hierarchical clustering of taxa by taxonomic distance.\ntaxo_ordinate(): Ordination (PCoA) of taxa in taxonomic distance space.\nsave_cache(): Serializes the session lineage cache to an .rds file.\nload_cache(): Restores a previously saved cache, avoiding redundant network requests.\ntaxo_path(): Returns the full node-by-node path between two taxa as a tidy data frame, ascending from taxon A to their MRCA and descending to taxon B.\n\n\n\nDocumentation\n\nAdded a new vignette (Statistical Applications of taxodist) demonstrating integration with ape (tree plotting) and vegan (taxonomic distinctness, Mantel tests, and PERMANOVA).\n\n\n\nMinor improvements\n\nAdded vegan to Suggests in DESCRIPTION.\nDocumented compatibility of distance_matrix() output with vegan functions (taxondive(), mantel(), adonis2()).\nDocumented conversion of taxo_cluster() results into phylo objects using ape::as.phylo().\n\n\n\nBug fixes\n\nFixed incorrect MRCA computation caused by unnamed crown nodes ([crown]) being matched across different lineages as if they were the same ancestor.\nFixed parsing of Taxonomicon rank prefixes (Cohort, Subcohort, Magnorder, Grandorder, Parvorder, Legion) that were being retained as bare rank names instead of the actual clade names."
+    "text": "taxodist 0.2.0\n\nNew functions\n\nAdded taxo_cluster() for hierarchical clustering of taxonomic distances.\nAdded taxo_ordinate() for principal coordinates analysis (PCoA).\nAdded save_cache() and load_cache() for persistence across sessions.\nAdded taxo_path(), which represents the node-by-node route from taxon A through the MRCA to taxon B.\n\n\n\nDocumentation and integration\n\nAdded statistical examples using vegan for taxonomic distinctness, Mantel tests, and PERMANOVA.\nDocumented conversion of taxo_cluster() results to the phylo storage class with ape::as.phylo().\n\n\n\nCorrections\n\nPrevented unnamed crown markers from being interpreted as common ancestry across unrelated lineages.\nExpanded cleaning of rank prefixes such as cohort, magnorder, grandorder, parvorder, and legion."
   },
   {
     "objectID": "news.html#taxodist-0.1.0-initial-release",
     "href": "news.html#taxodist-0.1.0-initial-release",
     "title": "Changelog",
-    "section": "taxodist 0.1.0 Initial release",
-    "text": "taxodist 0.1.0 Initial release\n\nCompute taxonomic distances between any two taxa using The Taxonomicon.\nSession-level caching for lineage data to minimize network requests.\nInitial function set: taxo_distance(), mrca(), distance_matrix(), closest_relative(), compare_lineages(), shared_clades(), is_member(), filter_clade(), lineage_depth(), check_coverage(), clear_cache()."
+    "section": "",
+    "text": "Introduced taxonomic distance calculations using lineage data from The Taxonomicon.\nAdded session-level lineage caching to reduce repeated network requests.\nInitial functions: taxo_distance(), mrca(), distance_matrix(), closest_relative(), compare_lineages(), shared_clades(), is_member(), filter_clade(), lineage_depth(), check_coverage(), and clear_cache()."
   },
   {
     "objectID": "reference.html",
     "href": "reference.html",
     "title": "Function Reference",
     "section": "",
-    "text": "Signature: taxo_distance(taxon_a, taxon_b)\nComputes the taxonomic distance between two taxa. Retrieves both lineages from The Taxonomicon, finds their most recent common ancestor (MRCA), and calculates the distance as \\(1 / \\text{depth}(\\text{MRCA})\\).\n\nReturns: named list (R) or dict (Python) containing the following fields:\n\ndistance: Numeric taxonomic distance.\nmrca: Name of the most recent common ancestor.\nmrca_depth: Hierarchical node depth of the MRCA.\ndepth_a / depth_b: Absolute lineage depths of both input taxa.\n\n\n\n\n\n\nSignature: distance_matrix(taxa)\nComputes the full symmetric pairwise distance matrix for a vector of taxon names. Lineages are cached in memory after first retrieval to avoid redundant network requests.\n\nReturns: Standard dist object in R, or a scipy-compatible distance matrix (NumPy ndarray) in Python, with zeros on the diagonal. Taxa not present in the database are populated with NA / None distances.\n\n\n\n\n\nSignature: focal_distances(focal, community)\nComputes taxonomic distances from a single focal taxon to all members of a community vector. This is equivalent to pulling a single row of a complete distance matrix, but operates with higher execution efficiency.\n\nReturns: named numeric vector (R) or pandas Series (Python).\n\n\n\n\n\nSignature: closest_relative(query, candidates)\nIdentifies and ranks candidate taxa based on their taxonomic proximity to a query taxon. Useful for nearest-neighbor classification or phylogenetic sorting.\n\nReturns: data.frame (R) or pandas DataFrame (Python) containing columns taxon and distance (sorted in ascending order).\n\n\n\n\n\nSignature: mrca(taxon_a, taxon_b)\nRetrieves the name of the most recent common ancestor of two taxa as recorded in The Taxonomicon classification hierarchy.\n\nReturns: character string (R) or str (Python)."
+    "text": "The R and Python implementations share the same distance semantics and principal function names. Native return types follow the conventions of each language.\nUnless stated otherwise, retrieval functions accept verbose = FALSE in R and verbose=False in Python."
   },
   {
     "objectID": "statistical-applications.html",
     "href": "statistical-applications.html",
-    "title": "Statistical Applications of taxodist",
+    "title": "Statistical Applications",
     "section": "",
-    "text": "The taxodist distance matrix is a standard dist object and integrates directly with the R ecosystem for multivariate analysis. All examples use a set of threatened mammals from Brazil spanning five broad taxonomic groups."
+    "text": "The R package returns a standard dist object, allowing taxonomic hierarchy distances to be used with established multivariate tools. This page illustrates several possibilities while emphasizing the assumptions required for scientific interpretation."
   },
   {
     "objectID": "statistical-applications.html#example-dataset-threatened-mammals-of-brazil",
@@ -226,16 +226,16 @@
   {
     "objectID": "statistical-applications.html#references",
     "href": "statistical-applications.html#references",
-    "title": "Statistical Applications of taxodist",
+    "title": "Statistical Applications",
     "section": "References",
-    "text": "References\nAnderson, M.J. (2001). A new method for non-parametric multivariate analysis of variance. Austral Ecology, 26, 32–46.\nClarke, K.R. and Warwick, R.M. (1998). A taxonomic distinctness index and its statistical properties. Journal of Applied Ecology, 35, 523–531.\nClarke, K.R. and Warwick, R.M. (2001). A further biodiversity index applicable to species lists: variation in taxonomic distinctness. Marine Ecology Progress Series, 216, 265–278.\nBrands, S.J. (1989 onwards). Systema Naturae 2000. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, http://taxonomicon.taxonomy.nl.\n\n← Return to Getting Started   Go to API Reference →"
+    "text": "References\nAnderson, M.J. (2001). A new method for non-parametric multivariate analysis of variance. Austral Ecology, 26, 32–46.\nClarke, K.R. and Warwick, R.M. (1998). A taxonomic distinctness index and its statistical properties. Journal of Applied Ecology, 35, 523–531.\nClarke, K.R. and Warwick, R.M. (1999). The taxonomic distinctness measure of biodiversity: weighting of step lengths between hierarchical levels. Marine Ecology Progress Series, 184, 21–29.\nClarke, K.R. and Warwick, R.M. (2001). A further biodiversity index applicable to species lists: variation in taxonomic distinctness. Marine Ecology Progress Series, 216, 265–278.\nLegendre, P. and Anderson, M.J. (1999). Distance-based redundancy analysis: testing multispecies responses in multifactorial ecological experiments. Ecological Monographs, 69, 1–24.\nWarton, D.I., Wright, T.W., and Wang, Y. (2012). Distance-based multivariate analyses confound location and dispersion effects. Methods in Ecology and Evolution, 3, 89–101.\nBrands, S.J. (1989 onwards). Systema Naturae 2000. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, http://taxonomicon.taxonomy.nl.\n← Methodology R/Python Compatibility →"
   },
   {
     "objectID": "reference.html#distance-computation",
     "href": "reference.html#distance-computation",
     "title": "Function Reference",
-    "section": "",
-    "text": "Signature: taxo_distance(taxon_a, taxon_b)\nComputes the taxonomic distance between two taxa. Retrieves both lineages from The Taxonomicon, finds their most recent common ancestor (MRCA), and calculates the distance as \\(1 / \\text{depth}(\\text{MRCA})\\).\n\nReturns: named list (R) or dict (Python) containing the following fields:\n\ndistance: Numeric taxonomic distance.\nmrca: Name of the most recent common ancestor.\nmrca_depth: Hierarchical node depth of the MRCA.\ndepth_a / depth_b: Absolute lineage depths of both input taxa.\n\n\n\n\n\n\nSignature: distance_matrix(taxa)\nComputes the full symmetric pairwise distance matrix for a vector of taxon names. Lineages are cached in memory after first retrieval to avoid redundant network requests.\n\nReturns: Standard dist object in R, or a scipy-compatible distance matrix (NumPy ndarray) in Python, with zeros on the diagonal. Taxa not present in the database are populated with NA / None distances.\n\n\n\n\n\nSignature: focal_distances(focal, community)\nComputes taxonomic distances from a single focal taxon to all members of a community vector. This is equivalent to pulling a single row of a complete distance matrix, but operates with higher execution efficiency.\n\nReturns: named numeric vector (R) or pandas Series (Python).\n\n\n\n\n\nSignature: closest_relative(query, candidates)\nIdentifies and ranks candidate taxa based on their taxonomic proximity to a query taxon. Useful for nearest-neighbor classification or phylogenetic sorting.\n\nReturns: data.frame (R) or pandas DataFrame (Python) containing columns taxon and distance (sorted in ascending order).\n\n\n\n\n\nSignature: mrca(taxon_a, taxon_b)\nRetrieves the name of the most recent common ancestor of two taxa as recorded in The Taxonomicon classification hierarchy.\n\nReturns: character string (R) or str (Python)."
+    "section": "Distance computation",
+    "text": "Distance computation\n\ntaxo_distance()\nR:      taxo_distance(taxon_a, taxon_b, verbose = FALSE)\nPython: taxo_distance(taxon_a, taxon_b, verbose=False)\nRetrieves both ordered lineages and computes\n\\[\nd(A,B)=\n\\begin{cases}\n0, & \\text{identical complete lineages}, \\\\\n1 / \\operatorname{depth}(\\operatorname{MRCA}(A,B)), & \\text{otherwise}.\n\\end{cases}\n\\]\nMRCA detection uses only the continuous common prefix from the root. Distinct ancestor–descendant nodes therefore retain a positive distance. Lineages without a shared root have infinite distance and no MRCA.\nReturns: an S3 list in R or dict in Python with:\n\n\n\nField\nMeaning\n\n\n\n\ndistance\nNumeric hierarchy distance\n\n\nmrca\nMRCA name, or missing when no root is shared\n\n\nmrca_depth\nNumber of nodes from root through the MRCA\n\n\ndepth_a, depth_b\nComplete lineage depths\n\n\ntaxon_a, taxon_b\nInput labels\n\n\n\nReturns NULL/None if either lineage cannot be retrieved.\n\n\nmrca()\nR:      mrca(taxon_a, taxon_b, verbose = FALSE)\nPython: mrca(taxon_a, taxon_b, verbose=False)\nReturns only the MRCA name from taxo_distance(). The result is NULL/None if retrieval fails or the lineages share no ancestor.\n\n\ndistance_matrix()\nR:      distance_matrix(taxa, verbose = FALSE, progress = TRUE)\nPython: distance_matrix(taxa, verbose=False, progress=True)\nRetrieves each lineage once and computes all pairwise distances. Input order and labels are preserved. Unresolved taxa receive missing off-diagonal comparisons; the diagonal is zero.\nReturns: a dist object in R or symmetric pandas.DataFrame in Python. Empty input returns a correctly shaped empty object.\n\n\nfocal_distances()\nR:      focal_distances(focal, community, verbose = FALSE, progress = TRUE)\nPython: focal_distances(focal, community, verbose=False, progress=True)\nComputes the distance from one focal taxon to each community member and sorts finite results from smallest to largest.\nReturns: a data frame with columns taxon, distance, mrca, and mrca_depth. The focal name is retained as object metadata. Returns NULL/None if the focal lineage is unavailable.\n\n\nclosest_relative()\nR:      closest_relative(taxon, candidates, verbose = FALSE)\nPython: closest_relative(taxon, candidates, verbose=False)\nRanks candidate taxa by distance from the query taxon.\nReturns: a data frame with columns taxon and distance, sorted ascending with missing values last. Returns NULL/None if the query lineage is unavailable.\n\n\nlineage_depth()\nR:      lineage_depth(taxon, verbose = FALSE)\nPython: lineage_depth(taxon, verbose=False)\nReturns the number of nodes in the retrieved lineage, including root and queried node. This is classification resolution, not elapsed time.\n\n\ncheck_coverage()\nR:      check_coverage(taxa, verbose = FALSE)\nPython: check_coverage(taxa, verbose=False)\nChecks whether each input can be resolved to a Taxonomicon identifier.\nReturns: a named logical vector in R or Boolean pandas.Series in Python."
   },
   {
     "objectID": "reference.html#lineage-utilities",
@@ -255,8 +255,8 @@
     "objectID": "reference.html#cache-management",
     "href": "reference.html#cache-management",
     "title": "Function Reference",
-    "section": "Cache Management",
-    "text": "Cache Management\n\nclear_cache()\nSignature: clear_cache()\nPurges all taxonomic lineages and database identifiers currently preserved in the session-level memory cache. Subsequent calculations will require fresh HTTP queries to the database server.\n\nReturns: Invisibly returns NULL (R) or None (Python).\n\n\n\n\nsave_cache()\nSignature: save_cache(path)\nSerializes the active in-memory session cache to disk as an .rds file (R) or a .pkl file (Python). This preserves parsed classifications and avoids repeating network requests in future analytical sessions.\n\nReturns: Invisibly returns the serialized path string.\n\n\n\n\nload_cache()\nSignature: load_cache(path)\nRestores a serialized cache from disk back into your active programming environment. This merges the stored classifications with your current session cache, preventing redundant network requests.\n\nReturns: Invisibly returns NULL (R) or None (Python).\n\n\n\n\ncache_info()\nSignature: cache_info()\nGenerates a diagnostic report summarizing the active session cache. It reports the total number of cached lineages, resolved database identifiers, active memory consumption (in bytes), and a preview of cached taxonomic names.\n\nReturns: Prints structural summary statistics to the console, and invisibly returns a diagnostic list (R) or dict (Python)."
+    "section": "Cache management",
+    "text": "Cache management\n\ncache_info()\ncache_info()\nPrints and returns counts of cached lineages and identifiers, stored lineage keys, and approximate memory use. The return fields are n_lineages, n_ids, taxa, and size_bytes.\n\n\nsave_cache()\nR:      save_cache(file)\nPython: save_cache(file)\nSerializes the current cache to an R .rds file or Python .pkl file. Returns invisibly NULL in R and None in Python.\n\n\nload_cache()\nR:      load_cache(file)\nPython: load_cache(file)\nValidates and restores a previously saved cache. Validation occurs before the active cache is modified. R and Python cache files are not interchangeable.\n\n\n\n\n\n\nPython cache security\n\n\n\nPython cache files use pickle. Only load .pkl files from trusted sources, because unpickling untrusted data can execute arbitrary code.\n\n\n\n\nclear_cache()\nclear_cache()\nRemoves all identifiers and lineages cached in the current session. Returns invisibly NULL in R and None in Python."
   },
   {
     "objectID": "about.html#project-context",
@@ -292,5 +292,460 @@
     "title": "About taxodist",
     "section": "Project Inception",
     "text": "Project Inception\nThe development of taxodist began as a personal curiosity project, driven by a deep interest in evolutionary biology and systematic taxonomy. The core concept emerged from a simple, recurring question: Given any two arbitrary organisms on Earth, how can we programmatically identify their most recent common ancestor (MRCA) and mathematically evaluate their taxonomic proximity?\nWhat started as an informal exploration into taxonomic database architectures and web scraping led to deep research into structural tree metrics, parsing hierarchical data from Systema Naturae 2000, and ultimately building a unified package to standardize these computations. The goal of taxodist is to share this capability with the broader scientific community, turning a personal inquiry into a reliable tool for ecological and evolutionary research."
+  },
+  {
+    "objectID": "getting-started.html#the-distance-definition",
+    "href": "getting-started.html#the-distance-definition",
+    "title": "Introduction to taxodist",
+    "section": "The distance definition",
+    "text": "The distance definition\nFor two ordered lineages, the MRCA is the final node in their continuous common prefix. The metric is\n\\[\nd(A,B)=\n\\begin{cases}\n0, & \\text{if the complete lineages of } A \\text{ and } B \\text{ are identical}, \\\\\n\\dfrac{1}{\\operatorname{depth}(\\operatorname{MRCA}(A,B))}, & \\text{otherwise}.\n\\end{cases}\n\\]\nThe root has depth 1. Consequently, distinct nodes sharing only that root have distance 1, while a deeper MRCA produces a smaller positive value.\nZero is reserved for identical hierarchy nodes. If one queried node is an ancestor of the other, their distance remains positive. Use is_member() when your question is about containment and taxo_path() when you want to inspect the route between nodes.\nWithin a connected hierarchy, this definition is an ultrametric. If two lineages share no root, their distance is infinite. If a lineage cannot be retrieved, the corresponding values are missing (NA in R and NaN in Python matrices).\n\n\n\n\n\n\nInterpretation\n\n\n\nClassification depth depends on the source and on which intermediate clades it records. These distances must not be interpreted as genetic divergence, morphological difference, evolutionary time, or phylogenetic branch length."
+  },
+  {
+    "objectID": "getting-started.html#retrieve-a-lineage",
+    "href": "getting-started.html#retrieve-a-lineage",
+    "title": "Introduction to taxodist",
+    "section": "Retrieve a lineage",
+    "text": "Retrieve a lineage\n\nRPython\n\n\nlineage &lt;- get_lineage(\"Tyrannosaurus\")\nlineage\nlength(lineage)\n\n\nlineage = td.get_lineage(\"Tyrannosaurus\")\nlineage\nlen(lineage)\n\n\n\nThe returned character vector or list is ordered from the root to the queried node. Retrieval results are cached automatically during the session.\nYou can also query a known numeric Taxonomicon ID directly:\n\nRPython\n\n\nget_lineage_by_id(\"50841\")\nget_lineage(\"50841\")\n\n\ntd.get_lineage_by_id(\"50841\")\ntd.get_lineage(\"50841\")"
+  },
+  {
+    "objectID": "getting-started.html#compare-two-taxa",
+    "href": "getting-started.html#compare-two-taxa",
+    "title": "Introduction to taxodist",
+    "section": "Compare two taxa",
+    "text": "Compare two taxa\n\nTaxonomic distance\n\nRPython\n\n\nresult &lt;- taxo_distance(\"Tyrannosaurus\", \"Velociraptor\")\nresult\n\nresult$distance\nresult$mrca\nresult$mrca_depth\nresult$depth_a\nresult$depth_b\n\n\nresult = td.taxo_distance(\"Tyrannosaurus\", \"Velociraptor\")\nresult\n\nresult[\"distance\"]\nresult[\"mrca\"]\nresult[\"mrca_depth\"]\nresult[\"depth_a\"]\nresult[\"depth_b\"]\n\n\n\nExamples on this site do not hard-code live distances or lineage depths. The Taxonomicon is an external, curated source, so classifications may change over time. Accessing the returned fields keeps the workflow valid when the source is updated.\n\n\nMost recent common ancestor\n\nRPython\n\n\nmrca(\"Tyrannosaurus\", \"Velociraptor\")\nmrca(\"Tyrannosaurus\", \"Triceratops\")\nmrca(\"Tyrannosaurus\", \"Homo\")\n\n\ntd.mrca(\"Tyrannosaurus\", \"Velociraptor\")\ntd.mrca(\"Tyrannosaurus\", \"Triceratops\")\ntd.mrca(\"Tyrannosaurus\", \"Homo\")\n\n\n\n\n\nShared lineage and path\nshared_clades() returns the common trunk from the root through the MRCA. taxo_path() returns the route from the first node to the MRCA and then to the second node.\n\nRPython\n\n\nshared_clades(\"Tyrannosaurus\", \"Triceratops\")\ncompare_lineages(\"Tyrannosaurus\", \"Triceratops\")\n\npath &lt;- taxo_path(\"Tyrannosaurus\", \"Triceratops\")\npath\n\n\ntd.shared_clades(\"Tyrannosaurus\", \"Triceratops\")\ntd.compare_lineages(\"Tyrannosaurus\", \"Triceratops\")\n\npath = td.taxo_path(\"Tyrannosaurus\", \"Triceratops\")\npath"
+  },
+  {
+    "objectID": "getting-started.html#test-and-filter-clade-membership",
+    "href": "getting-started.html#test-and-filter-clade-membership",
+    "title": "Introduction to taxodist",
+    "section": "Test and filter clade membership",
+    "text": "Test and filter clade membership\nClade matching is exact, case-insensitive, and ignores surrounding whitespace. A partial string such as \"Dino\" does not match \"Dinosauria\".\n\nRPython\n\n\nis_member(\"Tyrannosaurus\", \"Theropoda\")\nis_member(\"Triceratops\", \"Theropoda\")\n\nfilter_clade(taxa, \"Dinosauria\")\n\n\ntd.is_member(\"Tyrannosaurus\", \"Theropoda\")\ntd.is_member(\"Triceratops\", \"Theropoda\")\n\ntd.filter_clade(taxa, \"Dinosauria\")"
+  },
+  {
+    "objectID": "getting-started.html#clustering-ordination-and-heatmaps",
+    "href": "getting-started.html#clustering-ordination-and-heatmaps",
+    "title": "Introduction to taxodist",
+    "section": "Clustering, ordination, and heatmaps",
+    "text": "Clustering, ordination, and heatmaps\nThe analysis helpers accept taxon names or a previously computed distance object.\n\nRPython\n\n\ndistances &lt;- distance_matrix(taxa)\n\ncluster &lt;- taxo_cluster(distances)\nordination &lt;- taxo_ordinate(distances, k = 2)\n\nplot(cluster)\nsummary(ordination)\nplot(ordination)\ntaxo_heatmap(distances)\n\n\ndistances = td.distance_matrix(taxa)\n\ncluster = td.taxo_cluster(distances)\nordination = td.taxo_ordinate(distances, k=2)\nheatmap_data = td.taxo_heatmap(distances)\n\n\n\n\n\n\n\n\n\nCheck the matrix first\n\n\n\nClustering, ordination, and heatmaps require at least two taxa and a finite, complete distance matrix. The helpers warn and return an empty analysis component when the matrix contains missing or infinite distances.\n\n\nThe clustering dendrogram is a visualization of taxonomic hierarchy distances. It is not a phylogeny inferred from characters, sequences, or branch lengths."
+  },
+  {
+    "objectID": "getting-started.html#coverage-search-and-homonyms",
+    "href": "getting-started.html#coverage-search-and-homonyms",
+    "title": "Introduction to taxodist",
+    "section": "Coverage, search, and homonyms",
+    "text": "Coverage, search, and homonyms\nUse check_coverage() before a large calculation to identify names that cannot be resolved. Use taxo_search() to inspect possible Taxonomicon matches when a name is ambiguous or unexpected.\n\nRPython\n\n\ncheck_coverage(c(\"Tyrannosaurus\", \"Homo sapiens\", \"Fakeosaurus\"))\ntaxo_search(\"Bacteria\")\nget_taxonomicon_id(\"Tyrannosaurus\")\n\n\ntd.check_coverage([\"Tyrannosaurus\", \"Homo sapiens\", \"Fakeosaurus\"])\ntd.taxo_search(\"Bacteria\")\ntd.get_taxonomicon_id(\"Tyrannosaurus\")\n\n\n\nWhen reproducibility matters, record the resolved numeric ID and the retrieval date. This helps distinguish homonyms and documents which external classification was queried."
+  },
+  {
+    "objectID": "getting-started.html#save-and-restore-the-cache",
+    "href": "getting-started.html#save-and-restore-the-cache",
+    "title": "Introduction to taxodist",
+    "section": "Save and restore the cache",
+    "text": "Save and restore the cache\nRetrieved identifiers and lineages are cached in memory. Saving the cache avoids repeating those network requests in a later session.\n\nRPython\n\n\ncache_info()\nsave_cache(\"taxodist-cache.rds\")\n\nclear_cache()\nload_cache(\"taxodist-cache.rds\")\n\n\ntd.cache_info()\ntd.save_cache(\"taxodist-cache.pkl\")\n\ntd.clear_cache()\ntd.load_cache(\"taxodist-cache.pkl\")\n\n\n\nR and Python use different serialization formats, so their cache files are not interchangeable. Python cache files use pickle; only load files from sources you trust."
+  },
+  {
+    "objectID": "getting-started.html#use-the-offline-reference-data",
+    "href": "getting-started.html#use-the-offline-reference-data",
+    "title": "Introduction to taxodist",
+    "section": "Use the offline reference data",
+    "text": "Use the offline reference data\nThe packaged taxobase object provides a fixed, offline dataset for examples, tests, and comparisons that must not depend on the availability or current state of The Taxonomicon.\n\nRPython\n\n\ndata(taxobase, package = \"taxodist\")\nnames(taxobase)\ntaxobase$metadata\n\n\ntaxobase = td.load_taxobase()\ntaxobase.keys()\ntaxobase[\"metadata\"]\n\n\n\nRelease 0.6.0 distributes equivalent reference content in both packages, preserving component names, taxon order, matrices, examples, and provenance metadata. The native serialized package artifacts remain language-specific."
+  },
+  {
+    "objectID": "index.html#what-does-taxodist-measure",
+    "href": "index.html#what-does-taxodist-measure",
+    "title": "taxodist",
+    "section": "What does taxodist measure?",
+    "text": "What does taxodist measure?\nFor two ordered lineages, taxodist finds their continuous common prefix. The final node in that prefix is their MRCA. Distance is then defined as\n\\[\nd(A,B)=\n\\begin{cases}\n0, & \\text{if the complete lineages of } A \\text{ and } B \\text{ are identical}, \\\\\n\\dfrac{1}{\\operatorname{depth}(\\operatorname{MRCA}(A,B))}, & \\text{otherwise}.\n\\end{cases}\n\\]\nA deeper shared ancestor produces a smaller distance. Zero is reserved for identical hierarchy nodes; distinct nodes always have a positive distance, including when one taxon is an ancestor of the other.\n\n\n\n\n\n\nClassification distance, not evolutionary distance\n\n\n\nThe values describe separation in a taxonomic classification. They are not evolutionary time, genetic distance, morphological divergence, or phylogenetic branch length. Dendrograms produced from the matrix summarize these classification distances and must not be interpreted as inferred phylogenetic trees.\n\n\nWithin each connected hierarchy, the definition is an ultrametric. Lineages with no shared root have infinite distance, while taxa whose lineages cannot be retrieved produce missing values in multi-taxon results.\nRead the complete methodology →"
+  },
+  {
+    "objectID": "index.html#three-ways-to-use-taxodist",
+    "href": "index.html#three-ways-to-use-taxodist",
+    "title": "taxodist",
+    "section": "Three ways to use taxodist",
+    "text": "Three ways to use taxodist\n\n\n\nR package\nNative dist objects, S3 print and plot methods, and direct integration with the broader R analysis ecosystem.\ninstall.packages(\"taxodist\")\nR source ↗\n\n\n\nPython package\nLabeled pandas results with matching lineage, distance, clustering, ordination, and cache operations.\npip install taxodist\nPython source ↗\n\n\n\nInteractive app\nExplore taxa, lineages, pairwise distances, matrices, and visualizations without writing code.\nLaunch the app ↗"
+  },
+  {
+    "objectID": "index.html#a-common-workflow",
+    "href": "index.html#a-common-workflow",
+    "title": "taxodist",
+    "section": "A common workflow",
+    "text": "A common workflow\n\nRPython\n\n\nlibrary(taxodist)\n\ntaxa &lt;- c(\n  \"Tyrannosaurus\",\n  \"Velociraptor\",\n  \"Triceratops\",\n  \"Homo sapiens\"\n)\n\n# Retrieve an ordered lineage\nlineage &lt;- get_lineage(\"Tyrannosaurus\")\n\n# Compare two hierarchy nodes\nresult &lt;- taxo_distance(\"Tyrannosaurus\", \"Velociraptor\")\nresult$mrca\nresult$distance\n\n# Build and analyze a community matrix\nmat &lt;- distance_matrix(taxa)\ncluster &lt;- taxo_cluster(mat)\nordination &lt;- taxo_ordinate(mat)\n\nplot(cluster)\nplot(ordination)\n\n\nimport taxodist as td\n\ntaxa = [\n    \"Tyrannosaurus\",\n    \"Velociraptor\",\n    \"Triceratops\",\n    \"Homo sapiens\",\n]\n\n# Retrieve an ordered lineage\nlineage = td.get_lineage(\"Tyrannosaurus\")\n\n# Compare two hierarchy nodes\nresult = td.taxo_distance(\"Tyrannosaurus\", \"Velociraptor\")\nresult[\"mrca\"]\nresult[\"distance\"]\n\n# Build and analyze a community matrix\nmatrix = td.distance_matrix(taxa)\ncluster = td.taxo_cluster(matrix)\nordination = td.taxo_ordinate(matrix)"
+  },
+  {
+    "objectID": "index.html#core-api",
+    "href": "index.html#core-api",
+    "title": "taxodist",
+    "section": "Core API",
+    "text": "Core API\n\n\n\n\n\n\n\nTask\nFunctions\n\n\n\n\nRetrieve and resolve taxa\nget_lineage(), get_lineage_by_id(), get_taxonomicon_id(), taxo_search()\n\n\nCompare two lineages\ntaxo_distance(), mrca(), shared_clades(), compare_lineages(), taxo_path()\n\n\nWork with communities\ndistance_matrix(), focal_distances(), closest_relative(), check_coverage()\n\n\nTest clade membership\nis_member(), filter_clade()\n\n\nAnalyze and visualize\ntaxo_cluster(), taxo_ordinate(), taxo_heatmap()\n\n\nManage retrieval caches\ncache_info(), save_cache(), load_cache(), clear_cache()\n\n\nLoad the offline reference object\nload_taxobase()"
+  },
+  {
+    "objectID": "index.html#reproducible-reference-data",
+    "href": "index.html#reproducible-reference-data",
+    "title": "taxodist",
+    "section": "Reproducible reference data",
+    "text": "Reproducible reference data\nThe R package provides taxobase, and Python provides load_taxobase(), for examples and tests that should not depend on live network access. Release 0.6.0 preserves the same component structure, taxon order, matrices, examples, and provenance metadata across the two implementations, using native containers in each language.\nThis object is useful for demonstrations, tests, and reproducible examples that should not depend on live network access. Live Taxonomicon queries may change as the underlying classification is updated."
+  },
+  {
+    "objectID": "index.html#software-interfaces",
+    "href": "index.html#software-interfaces",
+    "title": "taxodist",
+    "section": "Software interfaces",
+    "text": "Software interfaces\n\n\n\nInterface\nDistribution\nPrincipal output\n\n\n\n\nR\nCRAN and source code\nBase R dist objects and S3 analysis methods\n\n\nPython\nPyPI and source code\nLabeled pandas objects and analysis dictionaries\n\n\nWeb application\nInteractive interface\nBrowser-based lineage and distance exploration"
+  },
+  {
+    "objectID": "getting-started.html#work-with-multiple-taxa",
+    "href": "getting-started.html#work-with-multiple-taxa",
+    "title": "Introduction to taxodist",
+    "section": "Work with multiple taxa",
+    "text": "Work with multiple taxa\nBefore analyzing a large set, inspect name coverage and resolve ambiguous or missing taxa. Each previously unseen taxon may require a network request; repeated retrievals use the session cache.\n\nRPython\n\n\ntaxa &lt;- c(\n  \"Tyrannosaurus\",\n  \"Velociraptor\",\n  \"Triceratops\",\n  \"Brachiosaurus\",\n  \"Homo sapiens\",\n  \"Panthera leo\"\n)\n\ncoverage &lt;- check_coverage(taxa)\ndistances &lt;- distance_matrix(taxa)\n\ncoverage\ndistances\nas.matrix(distances)\n\n\ntaxa = [\n    \"Tyrannosaurus\",\n    \"Velociraptor\",\n    \"Triceratops\",\n    \"Brachiosaurus\",\n    \"Homo sapiens\",\n    \"Panthera leo\",\n]\n\ncoverage = td.check_coverage(taxa)\ndistances = td.distance_matrix(taxa)\n\ncoverage\ndistances\n\n\n\nIn R, distance_matrix() returns a base dist object. Convert it with as.matrix() when a full square matrix is required. In Python, it returns a symmetric pandas.DataFrame with taxon names as row and column labels.\nTaxa that cannot be resolved remain represented in the result, with missing pairwise distances.\n\nDistances from one focal taxon\nfocal_distances() includes the MRCA and its depth for every comparison. closest_relative() provides the simpler taxon-and-distance view.\n\nRPython\n\n\ncommunity &lt;- c(\n  \"Velociraptor\",\n  \"Triceratops\",\n  \"Brachiosaurus\",\n  \"Homo sapiens\"\n)\n\nfocal_distances(\"Tyrannosaurus\", community)\nclosest_relative(\"Tyrannosaurus\", community)\n\n\ncommunity = [\n    \"Velociraptor\",\n    \"Triceratops\",\n    \"Brachiosaurus\",\n    \"Homo sapiens\",\n]\n\ntd.focal_distances(\"Tyrannosaurus\", community)\ntd.closest_relative(\"Tyrannosaurus\", community)"
+  },
+  {
+    "objectID": "about.html#project-scope",
+    "href": "about.html#project-scope",
+    "title": "About taxodist",
+    "section": "",
+    "text": "taxodist is an open-source project for retrieving ordered taxonomic lineages and measuring separation between nodes in a classification hierarchy. It is available as coordinated R and Python packages and through an interactive web application.\nThe project addresses a practical need: a reproducible way to resolve taxon names, inspect their lineages, identify their most recent common ancestor, and construct labeled distance objects for downstream analysis.\nThe current implementation uses lineage data from The Taxonomicon, based on Systema Naturae 2000. The external source remains responsible for the underlying classification; taxodist retrieves, cleans, organizes, and compares those records."
+  },
+  {
+    "objectID": "about.html#methodological-position",
+    "href": "about.html#methodological-position",
+    "title": "About taxodist",
+    "section": "Methodological position",
+    "text": "Methodological position\nThe distance between distinct hierarchy nodes is the reciprocal of MRCA depth. Identical complete lineages receive distance zero. Within a connected hierarchy, this produces an ultrametric.\nThese values measure classification depth. They do not estimate evolutionary time, genetic or morphological divergence, phylogenetic branch length, or statistical support for ancestry. The interpretation of every analysis is conditional on the source classification and the intermediate nodes it records.\nVersion 0.6.0 formalized this distinction across the R package, Python package, application, reference data, and documentation."
+  },
+  {
+    "objectID": "about.html#project-history",
+    "href": "about.html#project-history",
+    "title": "About taxodist",
+    "section": "Project history",
+    "text": "Project history\nThe project began with a general question: how can the shared hierarchical position of any two named organisms be retrieved and compared programmatically?\nEarly development focused on resolving names and parsing the deeply nested classification exposed by The Taxonomicon. Subsequent releases added matrix operations, lineage comparison, cache persistence, visualization, multivariate helpers, offline reference data, and a Python implementation with matching distance semantics.\nThe project remains deliberately focused on classification-based analysis. It does not attempt to replace curated phylogenies, sequence-based inference, divergence-time estimation, or specialized taxonomic name services."
+  },
+  {
+    "objectID": "about.html#reproducibility-and-transparency",
+    "href": "about.html#reproducibility-and-transparency",
+    "title": "About taxodist",
+    "section": "Reproducibility and transparency",
+    "text": "Reproducibility and transparency\nLive taxonomic databases change. Analyses using retrieved lineages should therefore record:\n\nthe taxodist version and implementation;\nthe retrieval date;\nnumeric Taxonomicon IDs, particularly for homonyms;\nunresolved or excluded taxa;\nwhether live data or the packaged taxobase reference object was used;\nthe distance definition and downstream analysis settings.\n\nThe fixed taxobase object is distributed for examples, tests, and comparisons that must not depend on current server availability. It should not be assumed to represent the latest live classification."
+  },
+  {
+    "objectID": "about.html#citation",
+    "href": "about.html#citation",
+    "title": "About taxodist",
+    "section": "Citation",
+    "text": "Citation\nThe R and Python implementations are parts of the same software project and may be cited with a common project-level reference:\n\nVilla, R. F. (2026). taxodist: Taxonomic Hierarchy Distances and Lineage Analysis (version 0.6.0). Open-source software. https://rodrigosqrt3.github.io/taxodist-site/.\n\nIn the methods section, identify the implementation used:\n\nR package: https://cran.r-project.org/package=taxodist\nPython package: https://pypi.org/project/taxodist/\n\nThe R command below returns the citation metadata distributed with the package:\ncitation(\"taxodist\")\nGitHub also reads the CITATION.cff file in the Python repository and provides a Cite this repository interface.\n\nClassification source\nPublished analyses based on live or packaged Taxonomicon lineages should also cite the underlying source:\n\nBrands, S.J. (1989 onwards). Systema Naturae 2000. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, http://taxonomicon.taxonomy.nl.\n\nThe software citation acknowledges the implementation; the Taxonomicon citation acknowledges the classification data. Neither should replace the other."
+  },
+  {
+    "objectID": "about.html#authorship-and-contact",
+    "href": "about.html#authorship-and-contact",
+    "title": "About taxodist",
+    "section": "Authorship and contact",
+    "text": "Authorship and contact\n\nAuthor and maintainer: Rodrigo Fonseca Villa\nORCID: 0009-0005-2938-2270\nEmail: rodrigo03.villa@gmail.com\nR source: https://github.com/rodrigosqrt3/taxodist\nPython source: https://github.com/rodrigosqrt3/taxodist-py\n\nBug reports should include the queried name, numeric Taxonomicon ID when available, retrieval date, package version, operating system, and a minimal reproducible example."
+  },
+  {
+    "objectID": "about.html#license",
+    "href": "about.html#license",
+    "title": "About taxodist",
+    "section": "License",
+    "text": "License\ntaxodist is distributed under the GNU General Public License, version 3 or later (GPL-3.0-or-later). Users may run, study, modify, and redistribute the software under the terms of that license.\nThe software license applies to the package source code. Data retrieved from external services remain subject to the terms and attribution requirements of their respective sources."
+  },
+  {
+    "objectID": "news.html#taxodist-0.3.0",
+    "href": "news.html#taxodist-0.3.0",
+    "title": "Changelog",
+    "section": "taxodist 0.3.0",
+    "text": "taxodist 0.3.0\n\nName resolution and network handling\n\nAdded taxo_search() for inspecting Taxonomicon search results and numeric identifiers.\nAdded direct support for numeric Taxonomicon IDs in get_lineage() and downstream distance functions.\nAdded request timeouts and clearer handling of network failures and non-successful HTTP responses.\nAdded warnings for multiple valid biological entries, making homonym ambiguity explicit.\n\n\n\nLineage parsing\n\nExpanded removal of rank labels and navigation artifacts.\nCollapsed duplicated lineage nodes while preserving their original order.\nImproved taxonomic redirect handling and removal of interface noise.\nRestricted cleaned lineages to nodes beginning at Biota when available.\nAdded validation for non-numeric inputs to get_lineage_by_id().\nCorrected species-level lineages, quoted author names, and genus retention."
+  },
+  {
+    "objectID": "news.html#taxodist-0.5.0",
+    "href": "news.html#taxodist-0.5.0",
+    "title": "Changelog",
+    "section": "taxodist 0.5.0",
+    "text": "taxodist 0.5.0\n\nReference data\n\nAdded taxobase, an offline reference object containing taxa, coverage information, lineages, search examples, pairwise results, and precomputed distance matrices.\n\n\n\nCorrections\n\nPrevented biological names containing the substring planet, such as Periplaneta, from being classified as astronomical entries.\nCorrected lineage truncation when a genus page does not link directly back to the genus itself.\nAdded Epifamily to the rank-token filter.\nCorrected parsing around superscript type markers and target names appearing in page-navigation text."
+  },
+  {
+    "objectID": "news.html#taxodist-0.6.0-latest",
+    "href": "news.html#taxodist-0.6.0-latest",
+    "title": "Changelog",
+    "section": "taxodist 0.6.0 Latest",
+    "text": "taxodist 0.6.0 Latest\n\nDistance definition\n\nZero distance is now reserved for identical complete lineages.\nDistinct ancestor–descendant nodes receive \\(1 / \\operatorname{depth}(\\operatorname{MRCA})\\) rather than zero.\nThe measure is now described consistently as a taxonomic hierarchy distance, not a phylogenetic distance.\nWithin each connected hierarchy, the resulting distance is an ultrametric.\n\n\n\n\n\n\n\nBehavioral change\n\n\n\nAnalyses that relied on version 0.5.0 or earlier should be recomputed when ancestor–descendant pairs are present. Use is_member() for clade containment and taxo_path() to inspect the route between hierarchy nodes.\n\n\n\n\nData and documentation\n\nStandardized taxobase as a documented list with provenance metadata and offline matrices used by reproducible examples.\nAligned the R and Python reference data, taxon ordering, distance definition, and principal API behavior.\nAdded explicit methodological documentation, limitations, and separate citations for the software and The Taxonomicon.\nRevised statistical examples to distinguish taxonomic dendrograms from inferred phylogenetic trees.\n\n\n\nRobustness\n\nMRCA detection now uses only the continuous common prefix of the two ordered lineages.\nis_member() now uses exact, case-insensitive matching.\ntaxo_path() now handles identical nodes, ancestor–descendant pairs, full lineage depths, path direction, and lineages without a common ancestor.\nEmpty and single-taxon inputs are handled consistently across matrix, nearest-relative, focal-distance, clustering, ordination, and heatmap functions.\nClustering, ordination, and heatmap helpers detect missing and infinite distances before downstream analysis.\ntaxo_ordinate() validates and, when necessary, reduces the requested number of dimensions.\nload_cache() validates names and value types before modifying the active cache."
+  },
+  {
+    "objectID": "news.html#compatibility-note",
+    "href": "news.html#compatibility-note",
+    "title": "Changelog",
+    "section": "Compatibility note",
+    "text": "Compatibility note\nThe R and Python implementations follow the same version 0.6.0 distance semantics. Their native containers differ: R uses dist, S3 objects, and .rds cache files; Python uses labeled pandas objects, dictionaries, and .pkl cache files."
+  },
+  {
+    "objectID": "reference.html#taxon-retrieval-and-search",
+    "href": "reference.html#taxon-retrieval-and-search",
+    "title": "Function Reference",
+    "section": "Taxon retrieval and search",
+    "text": "Taxon retrieval and search\n\nget_taxonomicon_id()\nR:      get_taxonomicon_id(taxon, verbose = FALSE)\nPython: get_taxonomicon_id(taxon, verbose=False)\nResolves a taxon name to a numeric Taxonomicon identifier. Astronomical entries are excluded. When several valid biological entries remain, the function warns before returning the first candidate.\nReturns: a character string in R or str in Python; NULL/None if no valid identifier is found.\n\n\nget_lineage_by_id()\nR:      get_lineage_by_id(taxon_id, clean = TRUE, verbose = FALSE)\nPython: get_lineage_by_id(taxon_id, clean=True, verbose=False)\nRetrieves an ordered lineage for a numeric Taxonomicon ID. With clean enabled, formatting markers and nodes preceding Biota are removed when applicable.\nReturns: a character vector in R or list of strings in Python, ordered from root to queried node; NULL/None for an invalid or unresolved ID.\n\n\nget_lineage()\nR:      get_lineage(taxon, clean = TRUE, verbose = FALSE)\nPython: get_lineage(taxon, clean=True, verbose=False)\nConvenience wrapper combining name resolution and lineage retrieval. A numeric ID supplied as a string bypasses name search.\nReturns: a character vector in R or list of strings in Python; NULL/None if unresolved.\n\n\ntaxo_search()\nR:      taxo_search(taxon, verbose = FALSE)\nPython: taxo_search(taxon, verbose=False)\nLists biological Taxonomicon search results after removing astronomical entries and duplicate identifiers.\nReturns: a data frame with columns id and name, or NULL/None when no matches are found.\n\n\n\n\n\n\nReproducible name resolution\n\n\n\nFor ambiguous names, inspect taxo_search() and record the selected numeric ID and retrieval date. The Taxonomicon is external to the package and its classifications may change."
+  },
+  {
+    "objectID": "reference.html#lineage-comparison-and-membership",
+    "href": "reference.html#lineage-comparison-and-membership",
+    "title": "Function Reference",
+    "section": "Lineage comparison and membership",
+    "text": "Lineage comparison and membership\n\ncompare_lineages()\nR:      compare_lineages(taxon_a, taxon_b, verbose = FALSE)\nPython: compare_lineages(taxon_a, taxon_b, verbose=False)\nPrints the common lineage and the nodes unique to each side after divergence.\nReturns: invisibly in R, and directly in Python, an object containing lineage_a, lineage_b, and mrca_depth.\n\n\nshared_clades()\nR:      shared_clades(taxon_a, taxon_b, verbose = FALSE)\nPython: shared_clades(taxon_a, taxon_b, verbose=False)\nReturns the continuous common prefix from root through the MRCA. A pair with no common ancestor returns an empty vector/list; failed retrieval returns NULL/None.\n\n\ntaxo_path()\nR:      taxo_path(taxon_a, taxon_b, verbose = FALSE)\nPython: taxo_path(taxon_a, taxon_b, verbose=False)\nConstructs the route from taxon A upward to the MRCA and downward to taxon B.\nReturns: a data frame with one row per node and columns:\n\nnode: hierarchy node name;\ndepth: depth in the complete lineage;\ndirection: \"a\", \"mrca\", or \"b\".\n\nThe input labels are retained as object metadata. Returns NULL/None if retrieval fails or no common ancestor exists.\n\n\nis_member()\nR:      is_member(taxon, clade, verbose = FALSE)\nPython: is_member(taxon, clade, verbose=False)\nTests whether the complete clade name occurs in the taxon’s lineage. Matching is exact, case-insensitive, and ignores surrounding whitespace.\nReturns: logical/Boolean, or NULL/None if the taxon cannot be retrieved.\n\n\nfilter_clade()\nR:      filter_clade(taxa, clade, verbose = FALSE)\nPython: filter_clade(taxa, clade, verbose=False)\nReturns only input taxa for which is_member() is true. Unresolved taxa are omitted."
+  },
+  {
+    "objectID": "reference.html#multivariate-analysis-and-visualization",
+    "href": "reference.html#multivariate-analysis-and-visualization",
+    "title": "Function Reference",
+    "section": "Multivariate analysis and visualization",
+    "text": "Multivariate analysis and visualization\n\ntaxo_cluster()\nR:      taxo_cluster(taxa, method = \"average\", ...)\nPython: taxo_cluster(taxa, method=\"average\", **kwargs)\nAccepts taxon names or a previously computed distance object. The default is average-linkage hierarchical clustering.\nReturns:\n\nR: a taxodist_cluster list with hclust and dist;\nPython: a dictionary with hclust (SciPy linkage matrix) and dist.\n\nIf the matrix contains missing or infinite values, or represents fewer than two taxa, clustering is skipped and hclust is NULL/None.\n\n\ntaxo_ordinate()\nR:      taxo_ordinate(taxa, k = 2, ...)\nPython: taxo_ordinate(taxa, k=2, **kwargs)\nPerforms classical multidimensional scaling (PCoA). The requested k must be a positive integer and is reduced to at most \\(n-1\\).\nReturns: an S3 list or dictionary with points, dist, GOF, and eig. Invalid matrices return the same structure with empty analysis components.\n\n\ntaxo_heatmap()\nR:      taxo_heatmap(taxa, ...)\nPython: taxo_heatmap(taxa, **kwargs)\nPlots the distance matrix with clustered rows and columns. R passes additional arguments to stats::heatmap(); Python passes them to seaborn.clustermap().\nReturns: the underlying dist object invisibly in R or the underlying pandas.DataFrame in Python. Plotting is skipped for incomplete, infinite, or undersized matrices.\n\n\n\n\n\n\nInterpretation of analysis output\n\n\n\nClustering, PCoA, and heatmaps summarize the supplied classification-depth distances. They do not infer phylogenetic history or evolutionary branch lengths."
+  },
+  {
+    "objectID": "reference.html#packaged-reference-data",
+    "href": "reference.html#packaged-reference-data",
+    "title": "Function Reference",
+    "section": "Packaged reference data",
+    "text": "Packaged reference data\n\ntaxobase / load_taxobase()\nR:      data(taxobase, package = \"taxodist\")\nPython: taxobase = load_taxobase()\nLoads the fixed reference object distributed with release 0.6.0. Components include taxa, coverage, lineages, pairwise examples, search results, general and statistical distance matrices, and provenance metadata.\nR stores distance components as dist; Python converts matrix components to labeled pandas.DataFrame objects."
+  },
+  {
+    "objectID": "reference.html#display-helpers",
+    "href": "reference.html#display-helpers",
+    "title": "Function Reference",
+    "section": "Display helpers",
+    "text": "Display helpers\nR uses S3 methods for distance results, focal results, paths, clusters, and ordinations. Python exposes corresponding helpers including print_taxodist_result(), print_taxodist_path(), plot_taxodist_cluster(), plot_taxodist_ord(), and summary_taxodist_ord().\nFor complete argument documentation in R, run help(package = \"taxodist\"). In Python, use help(taxodist.function_name)."
+  },
+  {
+    "objectID": "statistical-applications.html#reproducible-example-data",
+    "href": "statistical-applications.html#reproducible-example-data",
+    "title": "Statistical Applications",
+    "section": "Reproducible example data",
+    "text": "Reproducible example data\nThe examples use the fixed matrix distributed in taxobase. This avoids dependence on live network access and ensures that all analyses use the same taxon order and distance values.\nlibrary(taxodist)\n\ndata(taxobase, package = \"taxodist\")\n\ntaxa_brazil &lt;- taxobase$statistical_taxa\nmat &lt;- taxobase$statistical_matrix\n\nstopifnot(\n  inherits(mat, \"dist\"),\n  identical(labels(mat), taxa_brazil),\n  all(is.finite(mat))\n)\n\ntaxobase$metadata\nThe reference set contains 15 mammalian genera representing marsupials and several placental lineages. Its role is methodological: it provides a stable matrix with which to demonstrate downstream analyses.\nFor an empirical study, create the matrix from the taxa observed in the study and record the package version, resolved Taxonomicon IDs, retrieval date, and any exclusions."
+  },
+  {
+    "objectID": "statistical-applications.html#hierarchical-clustering",
+    "href": "statistical-applications.html#hierarchical-clustering",
+    "title": "Statistical Applications",
+    "section": "Hierarchical clustering",
+    "text": "Hierarchical clustering\ncluster &lt;- taxo_cluster(mat, method = \"average\")\nplot(cluster, main = \"Clustering of taxonomic hierarchy distances\")\nThe default method is average linkage (UPGMA). The dendrogram summarizes similarities in the supplied distance matrix. Its topology and heights depend on both the taxonomic classification and the clustering algorithm.\n\nConversion to the phylo data structure\nThe ape package can convert the underlying hclust object to class phylo for plotting or exchange with software that reads tree-shaped data.\nlibrary(ape)\n\ntree_like &lt;- ape::as.phylo(cluster$hclust)\nplot(tree_like, cex = 0.8, no.margin = TRUE)\n\n\n\n\n\n\nA change of class is not phylogenetic inference\n\n\n\nape::as.phylo() converts the representation of an hclust object. It does not infer ancestry from characters or sequences, estimate evolutionary branch lengths, reconstruct historical splits, or supply support values. The resulting object should be described as a taxonomic-distance dendrogram stored in class phylo, not as an inferred phylogenetic tree.\n\n\nExport is possible when another tool requires Newick syntax:\nape::write.tree(tree_like, file = \"taxonomic-distance-dendrogram.nwk\")\nThe filename and accompanying metadata should retain the distinction between classification-based clustering and phylogenetic inference."
+  },
+  {
+    "objectID": "statistical-applications.html#principal-coordinates-analysis",
+    "href": "statistical-applications.html#principal-coordinates-analysis",
+    "title": "Statistical Applications",
+    "section": "Principal coordinates analysis",
+    "text": "Principal coordinates analysis\ntaxo_ordinate() applies classical multidimensional scaling (PCoA) to the distance matrix.\nordination &lt;- taxo_ordinate(mat, k = 2)\n\nsummary(ordination)\nplot(ordination, main = \"PCoA of taxonomic hierarchy distances\")\nThe coordinates provide a low-dimensional representation of the pairwise distances. They do not create new evolutionary measurements; proximity in the ordination reflects similarity under the same hierarchy-depth metric.\nInspect the eigenvalues and goodness-of-fit before interpreting the plot:\nordination$eig\nordination$GOF\nNegative eigenvalues indicate that the dissimilarities are not represented exactly in Euclidean space. The first goodness-of-fit value follows the absolute-eigenvalue denominator used by cmdscale(); the second uses the sum of positive eigenvalues."
+  },
+  {
+    "objectID": "statistical-applications.html#taxonomic-diversity-and-distinctness",
+    "href": "statistical-applications.html#taxonomic-diversity-and-distinctness",
+    "title": "Statistical Applications",
+    "section": "Taxonomic diversity and distinctness",
+    "text": "Taxonomic diversity and distinctness\nvegan::taxondive() accepts a community matrix and a species-level dissimilarity object. The column names of the community matrix must correspond to the labels of the distance object.\nlibrary(vegan)\n\ncomm &lt;- matrix(\n  c(\n    1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,\n    0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,\n    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1\n  ),\n  nrow = 3,\n  byrow = TRUE,\n  dimnames = list(\n    c(\"community_A\", \"community_B\", \"community_C\"),\n    taxa_brazil\n  )\n)\n\ndiversity &lt;- vegan::taxondive(comm, mat, match.force = TRUE)\ndiversity\nsummary(diversity)\nThe principal quantities reported by taxondive() are:\n\nDelta (\\(\\Delta\\)): taxonomic diversity, incorporating abundance and distances between pairs of taxa;\nDelta* (\\(\\Delta^*\\)): taxonomic distinctness, standardized by the abundance products for pairs of different taxa;\nDelta+ (\\(\\Delta^+\\)): average taxonomic distinctness for presence–absence data;\nLambda+ (\\(\\Lambda^+\\)): variation in taxonomic distinctness;\nS Delta+: species richness multiplied by \\(\\Delta^+\\).\n\n\n\n\n\n\n\nDistance scaling matters\n\n\n\nThe absolute values of these indices depend on the supplied dissimilarities. Traditional applications often use step distances derived from a rank table. Supplying taxodist values instead answers a different, explicit question based on reciprocal MRCA depth. Comparisons should therefore use the same source, cleaning rules, and distance definition throughout."
+  },
+  {
+    "objectID": "statistical-applications.html#mantel-association-between-distance-matrices",
+    "href": "statistical-applications.html#mantel-association-between-distance-matrices",
+    "title": "Statistical Applications",
+    "section": "Mantel association between distance matrices",
+    "text": "Mantel association between distance matrices\nA Mantel test evaluates association between corresponding entries of two dissimilarity matrices. For example, a taxonomic hierarchy matrix could be compared with an independently measured trait-distance matrix.\n# traits must contain numeric measurements for the same taxa.\n# The rows are reordered explicitly before distance calculation.\ntraits &lt;- read.csv(\"trait-data.csv\", row.names = 1)\ntraits &lt;- traits[labels(mat), , drop = FALSE]\n\nstopifnot(\n  identical(rownames(traits), labels(mat)),\n  all(vapply(traits, is.numeric, logical(1)))\n)\n\ntrait_dist &lt;- dist(scale(traits))\n\nset.seed(42)\nvegan::mantel(\n  mat,\n  trait_dist,\n  method = \"spearman\",\n  permutations = 9999\n)\nThe Mantel statistic is a matrix correlation; its permutation procedure accounts for the non-independence of pairwise entries under its null model. The result does not estimate a causal effect.\nBy default, vegan::mantel() evaluates positive association. State the correlation method, permutation count, and alternative hypothesis when reporting the analysis.\n\n\n\n\n\n\nUse Mantel tests for matrix-association questions\n\n\n\nDo not use a simple or partial Mantel test as a general substitute for regression, or as an automatic correction for spatial autocorrelation. The hypothesis, permutation design, and dependence structure must match the scientific question. When observations are blocked or stratified, define an appropriate restricted permutation scheme."
+  },
+  {
+    "objectID": "statistical-applications.html#permanova",
+    "href": "statistical-applications.html#permanova",
+    "title": "Statistical Applications",
+    "section": "PERMANOVA",
+    "text": "PERMANOVA\nvegan::adonis2() partitions variation in a dissimilarity matrix among predictors. Metadata rows must be in exactly the same order as the taxa represented by the matrix.\n# metadata must be measured independently of the taxonomic distances.\nmetadata &lt;- read.csv(\"taxon-metadata.csv\", row.names = 1)\nmetadata &lt;- metadata[labels(mat), , drop = FALSE]\n\nstopifnot(identical(rownames(metadata), labels(mat)))\n\nset.seed(42)\nfit &lt;- vegan::adonis2(\n  mat ~ habitat,\n  data = metadata,\n  permutations = 9999\n)\n\nfit\nThe \\(R^2\\) column reports the proportion of the total sum of squares attributed to the model. The permutation \\(p\\)-value evaluates the selected null hypothesis under the specified permutation design.\n\nExamine multivariate dispersion\nPERMANOVA can reflect differences in within-group dispersion as well as differences in group location. Evaluate dispersion using the same distance matrix and grouping variable:\ndispersion &lt;- vegan::betadisper(mat, metadata$habitat)\n\nanova(dispersion)\npermutest(dispersion, permutations = 9999)\nboxplot(dispersion)\nInterpret adonis2() together with the dispersion analysis, sample sizes, design, and ordination. Restricted permutations should be used for blocks, repeated measurements, nested sampling, or other non-exchangeable designs.\n\n\n\n\n\n\nAvoid circular tests\n\n\n\nDo not use groups extracted from the same classification hierarchy as predictors and then present a significant PERMANOVA on taxodist distances as independent evidence that those taxonomic groups differ. That result is structurally expected. Predictors should represent information external to the distance definition, unless the analysis is explicitly descriptive."
+  },
+  {
+    "objectID": "statistical-applications.html#recommended-reporting",
+    "href": "statistical-applications.html#recommended-reporting",
+    "title": "Statistical Applications",
+    "section": "Recommended reporting",
+    "text": "Recommended reporting\nA reproducible analysis should state:\n\nthe taxodist version and programming language;\nthe lineage source and retrieval date;\nresolved Taxonomicon IDs and treatment of homonyms;\ntaxa excluded because of missing or disconnected lineages;\nthe distance definition and classification-depth interpretation;\nclustering or ordination settings;\nthe permutation scheme and number of permutations;\nchecks for multivariate dispersion where PERMANOVA is used;\nwhether analyses used live lineages or the fixed taxobase object."
+  },
+  {
+    "objectID": "r-python-compatibility.html",
+    "href": "r-python-compatibility.html",
+    "title": "R and Python Compatibility",
+    "section": "",
+    "text": "The R and Python packages are separate implementations of the same taxonomic hierarchy distance. Version 0.6.0 aligns their core behavioral contract:\n\nordered lineages are compared through their continuous common prefix;\nidentical complete lineages receive distance zero;\ndistinct nodes receive \\(1 / \\operatorname{depth}(\\operatorname{MRCA})\\);\nlineages without a common root receive infinite distance;\nunresolved lineages produce missing values in multi-taxon results;\nancestor–descendant pairs retain positive distance;\nclade membership uses exact, case-insensitive matching;\nthe packaged reference data preserve the same component structure, taxa, order, values, and provenance.\n\nCompatibility means equivalent scientific semantics and labeled results. It does not mean that every object has the same internal representation or printed appearance."
+  },
+  {
+    "objectID": "r-python-compatibility.html#compatibility-contract",
+    "href": "r-python-compatibility.html#compatibility-contract",
+    "title": "R and Python Compatibility",
+    "section": "",
+    "text": "The R and Python packages are separate implementations of the same taxonomic hierarchy distance. Version 0.6.0 aligns their core behavioral contract:\n\nordered lineages are compared through their continuous common prefix;\nidentical complete lineages receive distance zero;\ndistinct nodes receive \\(1 / \\operatorname{depth}(\\operatorname{MRCA})\\);\nlineages without a common root receive infinite distance;\nunresolved lineages produce missing values in multi-taxon results;\nancestor–descendant pairs retain positive distance;\nclade membership uses exact, case-insensitive matching;\nthe packaged reference data preserve the same component structure, taxa, order, values, and provenance.\n\nCompatibility means equivalent scientific semantics and labeled results. It does not mean that every object has the same internal representation or printed appearance."
+  },
+  {
+    "objectID": "r-python-compatibility.html#equivalent-basic-workflow",
+    "href": "r-python-compatibility.html#equivalent-basic-workflow",
+    "title": "R and Python Compatibility",
+    "section": "Equivalent basic workflow",
+    "text": "Equivalent basic workflow\n\nRPython\n\n\nlibrary(taxodist)\n\ntaxa &lt;- c(\n  \"Tyrannosaurus\",\n  \"Velociraptor\",\n  \"Triceratops\",\n  \"Homo sapiens\"\n)\n\nlineage &lt;- get_lineage(\"Tyrannosaurus\")\npair &lt;- taxo_distance(\"Tyrannosaurus\", \"Velociraptor\")\nmatrix &lt;- distance_matrix(taxa, progress = FALSE)\n\npair$mrca\npair$distance\nas.matrix(matrix)\n\n\nimport taxodist as td\n\ntaxa = [\n    \"Tyrannosaurus\",\n    \"Velociraptor\",\n    \"Triceratops\",\n    \"Homo sapiens\",\n]\n\nlineage = td.get_lineage(\"Tyrannosaurus\")\npair = td.taxo_distance(\"Tyrannosaurus\", \"Velociraptor\")\nmatrix = td.distance_matrix(taxa, progress=False)\n\npair[\"mrca\"]\npair[\"distance\"]\nmatrix\n\n\n\nFor lineages retrieved from the same Taxonomicon record and processed under the same version, the MRCA depth and distance should agree."
+  },
+  {
+    "objectID": "r-python-compatibility.html#function-correspondence",
+    "href": "r-python-compatibility.html#function-correspondence",
+    "title": "R and Python Compatibility",
+    "section": "Function correspondence",
+    "text": "Function correspondence\n\n\n\n\n\n\n\nTask\nR and Python function\n\n\n\n\nResolve a name\nget_taxonomicon_id()\n\n\nSearch candidates\ntaxo_search()\n\n\nRetrieve a lineage\nget_lineage(), get_lineage_by_id()\n\n\nCompare two nodes\ntaxo_distance(), mrca()\n\n\nConstruct a matrix\ndistance_matrix()\n\n\nCompare a focal taxon\nfocal_distances(), closest_relative()\n\n\nInspect lineages\ncompare_lineages(), shared_clades(), taxo_path()\n\n\nTest membership\nis_member(), filter_clade()\n\n\nCheck availability\ncheck_coverage(), lineage_depth()\n\n\nAnalyze a matrix\ntaxo_cluster(), taxo_ordinate(), taxo_heatmap()\n\n\nManage the cache\ncache_info(), save_cache(), load_cache(), clear_cache()\n\n\nLoad reference data\nR: data(taxobase); Python: load_taxobase()\n\n\n\nArgument names and defaults are matched where language conventions permit. Both implementations support verbose; matrix and focal operations also support progress."
+  },
+  {
+    "objectID": "r-python-compatibility.html#native-object-differences",
+    "href": "r-python-compatibility.html#native-object-differences",
+    "title": "R and Python Compatibility",
+    "section": "Native object differences",
+    "text": "Native object differences\n\n\n\n\n\n\n\n\nResult\nR\nPython\n\n\n\n\nLineage\nCharacter vector\nList of strings\n\n\nPairwise distance\nS3 list, class taxodist_result\nDictionary\n\n\nDistance matrix\nBase R dist\nLabeled pandas.DataFrame\n\n\nCoverage\nNamed logical vector\nBoolean pandas.Series\n\n\nClosest/focal results\nData frame, with S3 class for focal results\npandas.DataFrame with attributes\n\n\nTaxonomic path\nData frame, class taxodist_path\npandas.DataFrame with attributes\n\n\nClustering\nhclust inside taxodist_cluster\nSciPy linkage matrix inside a dictionary\n\n\nOrdination coordinates\nNumeric matrix\nLabeled pandas.DataFrame\n\n\nCache\nEnvironment serialized to .rds\nDictionary serialized to .pkl\n\n\nMissing numeric value\nNA_real_\nNaN\n\n\nMissing object\nNULL\nNone\n\n\n\nThese differences are intentional. They allow results to integrate naturally with each language rather than imitating the other language’s object system."
+  },
+  {
+    "objectID": "r-python-compatibility.html#pairwise-result-fields",
+    "href": "r-python-compatibility.html#pairwise-result-fields",
+    "title": "R and Python Compatibility",
+    "section": "Pairwise result fields",
+    "text": "Pairwise result fields\nBoth implementations return the same named information from taxo_distance():\n\n\n\nField\nMeaning\n\n\n\n\ndistance\nHierarchy distance\n\n\nmrca\nName of the MRCA\n\n\nmrca_depth\nDepth of the MRCA\n\n\ndepth_a\nComplete depth of lineage A\n\n\ndepth_b\nComplete depth of lineage B\n\n\ntaxon_a\nFirst input label\n\n\ntaxon_b\nSecond input label\n\n\n\nR uses $ and Python uses dictionary indexing:\nR:      result$mrca\nPython: result[\"mrca\"]"
+  },
+  {
+    "objectID": "r-python-compatibility.html#distance-matrices",
+    "href": "r-python-compatibility.html#distance-matrices",
+    "title": "R and Python Compatibility",
+    "section": "Distance matrices",
+    "text": "Distance matrices\nR stores only the lower triangle in a compact dist object. Convert it when a square matrix is required:\nd &lt;- distance_matrix(taxa)\nm &lt;- as.matrix(d)\nPython returns the square labeled matrix directly:\nd = td.distance_matrix(taxa)\nm = d.to_numpy()\nBoth preserve input taxon order. Unresolved taxa remain labeled and have missing off-diagonal distances."
+  },
+  {
+    "objectID": "r-python-compatibility.html#clustering-and-ordination",
+    "href": "r-python-compatibility.html#clustering-and-ordination",
+    "title": "R and Python Compatibility",
+    "section": "Clustering and ordination",
+    "text": "Clustering and ordination\nThe analysis results are semantically aligned but use different numerical ecosystems.\n\nClustering\nR delegates to stats::hclust(). Python delegates to SciPy hierarchical clustering. With the same complete finite matrix and equivalent method, both summarize the same dissimilarities, although internal merge representations and plotting defaults differ.\n\n\nOrdination\nBoth implementations perform classical multidimensional scaling and return:\n\npoints;\nthe underlying dist or distance DataFrame;\nGOF goodness-of-fit values;\neig eigenvalues.\n\nCoordinate signs may differ between numerical implementations because eigenvectors are defined only up to sign. A sign reversal of an axis does not change the represented geometry or pairwise distances.\n\n\n\n\n\n\nCompare geometry, not axis orientation\n\n\n\nWhen validating ordinations across languages, compare eigenvalues and Euclidean distances among coordinates. Do not require every coordinate column to have the same sign."
+  },
+  {
+    "objectID": "r-python-compatibility.html#plotting-and-console-output",
+    "href": "r-python-compatibility.html#plotting-and-console-output",
+    "title": "R and Python Compatibility",
+    "section": "Plotting and console output",
+    "text": "Plotting and console output\nR uses S3 methods such as print(), plot(), and summary(). Python exposes explicit helpers such as print_taxodist_result(), plot_taxodist_cluster(), plot_taxodist_ord(), and summary_taxodist_ord().\nTypography, plotting backends, colors, dendrogram orientation, and console formatting are not part of the cross-language compatibility contract. Scientific values, labels, and structural fields are."
+  },
+  {
+    "objectID": "r-python-compatibility.html#packaged-reference-data",
+    "href": "r-python-compatibility.html#packaged-reference-data",
+    "title": "R and Python Compatibility",
+    "section": "Packaged reference data",
+    "text": "Packaged reference data\nBoth implementations expose packaged reference objects, but their serialized artifacts and optional components must be inspected explicitly. Cross-language compatibility should be established from labels and values, not inferred from a shared object name.\n\nRPython\n\n\ndata(taxobase, package = \"taxodist\")\n\nnames(taxobase)\ntaxobase$metadata\nlabels(taxobase$statistical_matrix)\n\n\ntaxobase = td.load_taxobase()\n\ntaxobase.keys()\ntaxobase[\"metadata\"]\ntaxobase[\"statistical_matrix\"].index.tolist()\n\n\n\nBefore comparison, check component names, matrix dimensions, row and column labels, package-version metadata, and the documented distance definition."
+  },
+  {
+    "objectID": "r-python-compatibility.html#cross-language-matrix-verification",
+    "href": "r-python-compatibility.html#cross-language-matrix-verification",
+    "title": "R and Python Compatibility",
+    "section": "Cross-language matrix verification",
+    "text": "Cross-language matrix verification\nA simple independent comparison can be performed through a neutral CSV representation.\n\nExport from R\ndata(taxobase, package = \"taxodist\")\n\nwrite.csv(\n  as.matrix(taxobase$statistical_matrix),\n  \"taxobase-statistical-matrix.csv\",\n  quote = FALSE\n)\n\n\nCompare in Python\nimport numpy as np\nimport pandas as pd\nimport taxodist as td\n\nfrom_r = pd.read_csv(\n    \"taxobase-statistical-matrix.csv\",\n    index_col=0,\n)\nfrom_python = td.load_taxobase()[\"statistical_matrix\"]\n\nassert from_r.index.tolist() == from_python.index.tolist()\nassert from_r.columns.tolist() == from_python.columns.tolist()\nassert np.allclose(\n    from_r.to_numpy(),\n    from_python.to_numpy(),\n    rtol=0,\n    atol=1e-12,\n)\nThis checks labels, order, and numerical values without depending on language-specific serialization."
+  },
+  {
+    "objectID": "r-python-compatibility.html#cache-compatibility",
+    "href": "r-python-compatibility.html#cache-compatibility",
+    "title": "R and Python Compatibility",
+    "section": "Cache compatibility",
+    "text": "Cache compatibility\nCache contents have the same conceptual keys—resolved IDs and lineages—but the files are intentionally not interchangeable:\n\nR uses saveRDS() and .rds files;\nPython uses pickle and .pkl files.\n\nDo not rename one format to imitate the other. For a cross-language archival record, export resolved numeric IDs and lineages to a neutral format such as CSV or JSON.\n\n\n\n\n\n\nUntrusted Python cache files\n\n\n\nOnly load .pkl files from trusted sources. Python’s pickle format can execute code during deserialization."
+  },
+  {
+    "objectID": "r-python-compatibility.html#live-retrieval-may-differ-over-time",
+    "href": "r-python-compatibility.html#live-retrieval-may-differ-over-time",
+    "title": "R and Python Compatibility",
+    "section": "Live retrieval may differ over time",
+    "text": "Live retrieval may differ over time\nThe packages query an external website. Two runs can differ if they occur at different times, resolve different homonyms, encounter different network responses, or use different package versions.\nFor reproducible comparisons:\n\nuse the same taxodist version;\nquery the same numeric Taxonomicon IDs;\nrecord the retrieval date;\nverify lineage equality before comparing distances;\nsave language-specific caches when live records must be retained;\nuse taxobase for fixed examples and regression tests."
+  },
+  {
+    "objectID": "r-python-compatibility.html#what-compatibility-does-not-guarantee",
+    "href": "r-python-compatibility.html#what-compatibility-does-not-guarantee",
+    "title": "R and Python Compatibility",
+    "section": "What compatibility does not guarantee",
+    "text": "What compatibility does not guarantee\nThe project does not guarantee:\n\nbyte-identical serialized files;\nidentical console messages;\nidentical plot appearance;\nidentical internal clustering arrays;\nidentical eigenvector signs;\nidentical live results obtained from different source revisions.\n\nIt does guarantee a shared versioned definition and aims to preserve equivalent labels, distances, MRCA logic, edge-case handling, and reference data."
+  },
+  {
+    "objectID": "r-python-compatibility.html#version-reporting",
+    "href": "r-python-compatibility.html#version-reporting",
+    "title": "R and Python Compatibility",
+    "section": "Version reporting",
+    "text": "Version reporting\n\nRPython\n\n\npackageVersion(\"taxodist\")\nsessionInfo()\n\n\nimport platform\nimport taxodist as td\n\ntd.__version__\nplatform.python_version()\n\n\n\nReport these values whenever results are exchanged between languages.\n← Methodology API Reference →"
+  },
+  {
+    "objectID": "methodology.html",
+    "href": "methodology.html",
+    "title": "Methodology",
+    "section": "",
+    "text": "taxodist represents a taxon as an ordered sequence of hierarchy nodes retrieved from The Taxonomicon. The first element is the retained root and the final element is the queried node.\nThe distance is defined from the position of the most recent common ancestor (MRCA) in those ordered lineages. It is therefore a property of a taxonomic classification, not a direct measurement of evolutionary process."
+  },
+  {
+    "objectID": "methodology.html#scope",
+    "href": "methodology.html#scope",
+    "title": "Methodology",
+    "section": "",
+    "text": "taxodist represents a taxon as an ordered sequence of hierarchy nodes retrieved from The Taxonomicon. The first element is the retained root and the final element is the queried node.\nThe distance is defined from the position of the most recent common ancestor (MRCA) in those ordered lineages. It is therefore a property of a taxonomic classification, not a direct measurement of evolutionary process."
+  },
+  {
+    "objectID": "methodology.html#formal-definition",
+    "href": "methodology.html#formal-definition",
+    "title": "Methodology",
+    "section": "Formal definition",
+    "text": "Formal definition\nLet\n\\[\nL_A = (a_1, a_2, \\ldots, a_m)\n\\qquad\\text{and}\\qquad\nL_B = (b_1, b_2, \\ldots, b_n)\n\\]\nbe the ordered lineages of nodes \\(A\\) and \\(B\\). Define the common-prefix depth as\n\\[\nh(A,B) = \\max\\left\\{k : a_i=b_i \\text{ for every } i \\leq k\\right\\}.\n\\]\nWhen \\(h(A,B)&gt;0\\), the node \\(a_{h(A,B)}=b_{h(A,B)}\\) is the MRCA under the source classification. The distance is\n\\[\nd(A,B)=\n\\begin{cases}\n0, & L_A=L_B, \\\\\n\\dfrac{1}{h(A,B)}, & L_A\\neq L_B \\text{ and } h(A,B)&gt;0, \\\\\n\\infty, & h(A,B)=0.\n\\end{cases}\n\\]\nDepth is counted from 1 at the retained root. Consequently, finite distances between distinct nodes lie in \\((0,1]\\).\n\nWhy the continuous prefix matters\nShared ancestry must be continuous from the root. A name that occurs in both lineages after their first disagreement is not treated as a shared ancestor. This prevents homonyms or repeated labels below different branches from producing an incorrect MRCA.\nFor example, consider\nBiota → Animalia → Alpha → Homonym → A\nBiota → Animalia → Beta  → Homonym → B\nThe MRCA is Animalia, not Homonym, because the lineages diverge before the repeated label."
+  },
+  {
+    "objectID": "methodology.html#identity-and-ancestordescendant-pairs",
+    "href": "methodology.html#identity-and-ancestordescendant-pairs",
+    "title": "Methodology",
+    "section": "Identity and ancestor–descendant pairs",
+    "text": "Identity and ancestor–descendant pairs\nZero is reserved for identical complete lineages. Two different nodes always have positive finite distance when they belong to the same connected hierarchy.\nSuppose \\(A\\) is an ancestor of \\(B\\). Then \\(L_A\\) is a proper prefix of \\(L_B\\), so the MRCA is \\(A\\) and\n\\[\nd(A,B)=\\frac{1}{\\operatorname{depth}(A)}&gt;0.\n\\]\nThis choice distinguishes node identity from containment:\n\nuse taxo_distance() to compare hierarchy nodes;\nuse is_member() to test whether a taxon belongs to a clade;\nuse taxo_path() to inspect the route connecting two nodes."
+  },
+  {
+    "objectID": "methodology.html#ultrametric-property",
+    "href": "methodology.html#ultrametric-property",
+    "title": "Methodology",
+    "section": "Ultrametric property",
+    "text": "Ultrametric property\nWithin one connected hierarchy, the distance is non-negative, symmetric, and satisfies identity of indiscernibles. It also satisfies the strong triangle inequality\n\\[\nd(A,C) \\leq \\max\\{d(A,B),d(B,C)\\}.\n\\]\n\nProof\nIf \\(A\\), \\(B\\), and \\(C\\) belong to the same connected hierarchy, the common prefix of \\(A\\) and \\(C\\) must be at least as long as the shorter of the common prefixes of \\((A,B)\\) and \\((B,C)\\):\n\\[\nh(A,C) \\geq \\min\\{h(A,B),h(B,C)\\}.\n\\]\nFor distinct nodes, taking positive reciprocals reverses the inequality:\n\\[\n\\frac{1}{h(A,C)}\n\\leq\n\\frac{1}{\\min\\{h(A,B),h(B,C)\\}}\n=\n\\max\\left\\{\\frac{1}{h(A,B)},\\frac{1}{h(B,C)}\\right\\}.\n\\]\nCases involving identical nodes follow immediately because their distance is zero. Thus the strong triangle inequality holds.\n\n\nConsequence\nIf two pairs of taxa share an MRCA at the same depth, both pairs receive the same distance. Differences in the number of recorded nodes below that MRCA do not affect their pairwise distance.\nThis produces tied distance levels corresponding to shared positions in the hierarchy. Such ties are an expected property of the measure, not numerical imprecision."
+  },
+  {
+    "objectID": "methodology.html#verification-with-the-offline-reference-matrix",
+    "href": "methodology.html#verification-with-the-offline-reference-matrix",
+    "title": "Methodology",
+    "section": "Verification with the offline reference matrix",
+    "text": "Verification with the offline reference matrix\nThe ultrametric inequality can be checked using the fixed taxobase object.\n\nRPython\n\n\nlibrary(taxodist)\ndata(taxobase, package = \"taxodist\")\n\nm &lt;- as.matrix(taxobase$statistical_matrix)\ntol &lt;- sqrt(.Machine$double.eps)\n\ncheck_triplet &lt;- function(index) {\n  i &lt;- index[1]\n  j &lt;- index[2]\n  k &lt;- index[3]\n\n  d &lt;- c(m[i, j], m[i, k], m[j, k])\n  max(d) &lt;= sort(d, decreasing = TRUE)[2] + tol\n}\n\nall(combn(seq_len(nrow(m)), 3, FUN = check_triplet))\n\n\nfrom itertools import combinations\nimport numpy as np\nimport taxodist as td\n\ntaxobase = td.load_taxobase()\nmatrix = taxobase[\"statistical_matrix\"]\nif matrix.empty:\n    matrix = taxobase[\"matrix\"]\nm = matrix.to_numpy()\ntol = np.sqrt(np.finfo(float).eps)\n\ndef check_triplet(index):\n    i, j, k = index\n    distances = sorted(\n        [m[i, j], m[i, k], m[j, k]],\n        reverse=True,\n    )\n    return distances[0] &lt;= distances[1] + tol\n\nall(check_triplet(x) for x in combinations(range(len(m)), 3))\n\n\n\nFor an ultrametric triangle, the two largest pairwise distances are equal. The checks above allow a small numerical tolerance."
+  },
+  {
+    "objectID": "methodology.html#dependence-on-the-source-classification",
+    "href": "methodology.html#dependence-on-the-source-classification",
+    "title": "Methodology",
+    "section": "Dependence on the source classification",
+    "text": "Dependence on the source classification\nThe distance depends on the number and arrangement of nodes recorded before the MRCA. It is therefore sensitive to:\n\ntaxonomic revision;\nalternative classification systems;\ninsertion or removal of intermediate clades;\nunequal resolution among taxonomic groups;\nlineage-cleaning decisions;\nambiguous name resolution.\n\nAdding an intermediate node to the shared prefix increases MRCA depth and decreases the numerical distance. Adding nodes only below the MRCA does not affect that pair.\nDistances should consequently be compared only when derived from compatible lineage sources and processing rules."
+  },
+  {
+    "objectID": "methodology.html#ambiguous-missing-and-disconnected-lineages",
+    "href": "methodology.html#ambiguous-missing-and-disconnected-lineages",
+    "title": "Methodology",
+    "section": "Ambiguous, missing, and disconnected lineages",
+    "text": "Ambiguous, missing, and disconnected lineages\n\nAmbiguous names\nA scientific name may correspond to several biological entries. Use taxo_search() to inspect candidates and supply a numeric Taxonomicon ID when a particular taxonomic concept is required.\n\n\nMissing lineages\nIf a lineage cannot be retrieved, pairwise matrices retain the taxon label and use NA in R or NaN in Python for affected comparisons. Coverage should be examined before analysis.\n\n\nDisconnected roots\nIf the cleaned lineages have no common initial node, the distance is infinite and the MRCA is absent. This differs from a missing lineage: both lineages exist, but they are not connected under the retained representation.\nClustering, ordination, and heatmap methods require a finite, complete matrix. Version 0.6.0 checks these conditions and returns an informative fallback object when they are not satisfied."
+  },
+  {
+    "objectID": "methodology.html#interpretation",
+    "href": "methodology.html#interpretation",
+    "title": "Methodology",
+    "section": "Interpretation",
+    "text": "Interpretation\nA smaller finite value indicates a deeper shared node in the selected classification. It does not quantify:\n\nelapsed evolutionary time;\nnucleotide or amino-acid substitution;\nmorphological divergence;\nphylogenetic branch length;\nprobability or support for common ancestry;\necological or functional similarity.\n\nA clustering dendrogram constructed from these values summarizes the classification-depth matrix. Conversion to class phylo changes the data representation, not the evidential basis of the tree."
+  },
+  {
+    "objectID": "methodology.html#reproducibility",
+    "href": "methodology.html#reproducibility",
+    "title": "Methodology",
+    "section": "Reproducibility",
+    "text": "Reproducibility\nLive lineages may change when The Taxonomicon is updated. For empirical work, record:\n\ntaxodist version and implementation;\nretrieval date;\nqueried names and resolved numeric IDs;\ntreatment of homonyms and redirects;\nmissing or excluded taxa;\nlineage source and cleaning settings;\nthe distance definition;\ndownstream clustering, ordination, or permutation settings.\n\nUse save_cache() when the exact retrieved lineages must be reused. Cache files are language-specific. Use taxobase when a fixed, packaged example is preferable to a live query."
+  },
+  {
+    "objectID": "methodology.html#recommended-methods-statement",
+    "href": "methodology.html#recommended-methods-statement",
+    "title": "Methodology",
+    "section": "Recommended methods statement",
+    "text": "Recommended methods statement\nA concise description may be adapted as follows:\n\nOrdered taxonomic lineages were retrieved from The Taxonomicon using taxodist version 0.6.0. For distinct nodes, distance was defined as the reciprocal of the depth of their most recent common ancestor in the continuous common lineage prefix; identical complete lineages received distance zero. The resulting values represent classification depth rather than evolutionary time or phylogenetic branch length.\n\nReport retrieval dates, unresolved taxa, and downstream analysis details separately.\nContinue to Statistical Applications →"
+  },
+  {
+    "objectID": "r-python-compatibility.html#reference-data-parity",
+    "href": "r-python-compatibility.html#reference-data-parity",
+    "title": "R and Python Compatibility",
+    "section": "Reference data parity",
+    "text": "Reference data parity\nRelease 0.6.0 distributes equivalent taxobase content in both packages. The Python JSON contains the same component structure and converts matrices and coverage values to native labeled pandas objects during loading.\n\nRPython\n\n\ndata(taxobase, package = \"taxodist\")\n\nnames(taxobase)\ntaxobase$metadata\nlabels(taxobase$statistical_matrix)\n\n\ntaxobase = td.load_taxobase()\n\ntaxobase.keys()\ntaxobase[\"metadata\"]\ntaxobase[\"statistical_matrix\"].index.tolist()\n\n\n\nThe corresponding objects preserve component names, taxon order, coverage values, pairwise metadata, lineage examples, general and statistical matrices, package version, and distance-definition metadata."
   }
 ]

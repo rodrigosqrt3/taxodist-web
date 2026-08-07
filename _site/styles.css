@@ -1,102 +1,252 @@
-/* ── Light Mode Variables ────────────────────────────────────── */
+/* ── Theme variables ─────────────────────────────────────────── */
 .quarto-light {
-  --bg:          #faf6ee;
-  --border:      #5c3d1e;
-  --branch:      #8b5e3c;
-  --tip:         #b8865a;
-  --ink:         #3d2510;
-  --muted:       #6b4c30;
-  --rule:        #d9c9b0;
-  --card-bg:     #f3ede0;
-  --code-bg:     #ede5d0;
-  --nav-bg:      #5c3d1e;
-  --nav-border:  #8b5e3c;
+  --bg:         #faf6ee;
+  --ink:        #342416;
+  --muted:      #6d5948;
+  --accent:     #69431f;
+  --accent-2:   #8b5e3c;
+  --rule:       #d9c9b0;
+  --surface:    #f3ede0;
+  --code-bg:    #ede5d0;
+  --nav-bg:     #5c3d1e;
+  --nav-border: #8b5e3c;
 }
 
-/* ── Dark Mode Variables ───────── */
 .quarto-dark {
-  --bg:          #1a1a1a;  
-  --border:      #e5c19d;  
-  --branch:      #c2946d;  
-  --tip:         #ede5d0;  
-  --ink:         #f4f1ea;  
-  --muted:       #b0a290;  
-  --rule:        #3d362e;  
-  --card-bg:     #26211c;
-  --code-bg:     #2d2620; 
-  --nav-bg:      #2a231d; 
-  --nav-border:  #3d362e;
+  --bg:         #1a1a1a;
+  --ink:        #f2eee7;
+  --muted:      #b9ac9d;
+  --accent:     #e5c19d;
+  --accent-2:   #c2946d;
+  --rule:       #453d35;
+  --surface:    #26211c;
+  --code-bg:    #2d2620;
+  --nav-bg:     #2a231d;
+  --nav-border: #453d35;
 }
 
-/* ── Base ─────────────────────────────────────────────────────── */
+/* ── Base typography ─────────────────────────────────────────── */
 body {
   background-color: var(--bg);
   color: var(--ink);
+  line-height: 1.65;
 }
 
-/* ── Navbar ───────────────────────────────────────────────────── */
+p,
+li {
+  max-width: 78ch;
+}
+
+.quarto-title .subtitle,
+.description {
+  color: var(--muted);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--ink);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+}
+
+h2 {
+  margin-top: 2.4rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+h3 {
+  margin-top: 1.8rem;
+}
+
+/* ── Navbar and footer ───────────────────────────────────────── */
 .navbar {
   background-color: var(--nav-bg) !important;
   border-bottom: 1px solid var(--nav-border);
 }
+
 .navbar-brand,
 .navbar .nav-link {
   color: #faf6ee !important;
 }
-.navbar .nav-link:hover {
-  color: var(--rule) !important;
+
+.navbar .nav-link:hover,
+.navbar .nav-link:focus {
+  color: #e5d6c5 !important;
 }
 
-/* ── TOC ──────────────────────────────────────────────────────── */
+.nav-footer {
+  border-top: 1px solid var(--rule);
+  color: var(--muted);
+}
+
+/* ── Links and keyboard focus ────────────────────────────────── */
+a {
+  color: var(--accent);
+  text-underline-offset: 0.16em;
+}
+
+a:hover {
+  color: var(--accent-2);
+}
+
+a:focus-visible,
+button:focus-visible,
+.nav-link:focus-visible {
+  outline: 3px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
+/* ── Table of contents ───────────────────────────────────────── */
 #TOC .nav-link {
   color: var(--muted);
-  font-size: 0.85rem;
+  font-size: 0.86rem;
 }
+
 #TOC .nav-link:hover,
 #TOC .nav-link.active {
-  color: var(--border);
+  color: var(--accent);
 }
+
 #TOC .nav-link.active {
-  border-left: 2px solid var(--branch);
+  border-left: 2px solid var(--accent-2);
   padding-left: 0.5rem;
 }
 
-/* ── Links ────────────────────────────────────────────────────── */
-a { color: var(--border); }
-a:hover { color: var(--ink); }
-
-/* ── Code ─────────────────────────────────────────────────────── */
-pre, code {
+/* ── Code ────────────────────────────────────────────────────── */
+pre {
   background-color: var(--code-bg);
-  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 0.35rem;
+  padding: 1rem;
 }
 
-/* ── Headings ─────────────────────────────────────────────────── */
-h1, h2, h3, h4, h5, h6 {
+pre code {
   color: var(--ink);
+  background: transparent;
 }
 
-/* ── Tabset ───────────────────────────────────────────────────── */
+code:not(pre code) {
+  color: var(--ink);
+  background-color: var(--code-bg);
+  border-radius: 0.2rem;
+  padding: 0.08rem 0.28rem;
+}
+
+/* ── Tables ──────────────────────────────────────────────────── */
+table {
+  width: 100%;
+  margin: 1.2rem 0 1.6rem;
+  border-color: var(--rule);
+}
+
+thead {
+  background-color: var(--surface);
+}
+
+th {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+th,
+td {
+  border-color: var(--rule) !important;
+  vertical-align: top;
+}
+
+/* ── Callouts ────────────────────────────────────────────────── */
+.callout {
+  background-color: var(--surface);
+  border-top-color: var(--rule);
+  border-right-color: var(--rule);
+  border-bottom-color: var(--rule);
+}
+
+.callout-title-container {
+  font-weight: 600;
+}
+
+/* ── Tabsets ─────────────────────────────────────────────────── */
 .panel-tabset .nav-tabs {
   border-bottom: 1px solid var(--rule);
 }
+
 .panel-tabset .nav-tabs .nav-link {
   color: var(--muted);
   border: none;
   border-bottom: 2px solid transparent;
   border-radius: 0;
 }
+
+.panel-tabset .nav-tabs .nav-link:hover {
+  color: var(--accent);
+}
+
 .panel-tabset .nav-tabs .nav-link.active {
-  color: var(--border);
-  border-bottom: 2px solid var(--border);
+  color: var(--accent);
+  border-bottom-color: var(--accent);
   background: transparent;
 }
 
-/* ── Theme-Sensitive Homepage Logo ───────────────────────────── */
+.panel-tabset .tab-content {
+  padding-top: 0.8rem;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────── */
+.btn-primary {
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-2);
+  border-color: var(--accent-2);
+}
+
+.btn-outline-primary {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn-outline-primary:hover {
+  color: var(--bg);
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ── Theme-sensitive homepage logo ───────────────────────────── */
+.homepage-logo {
+  display: block;
+  max-width: 160px;
+  height: auto;
+  margin: 0 auto;
+}
+
 .quarto-light .homepage-logo {
   content: url("images/taxodist_sepia.png");
 }
 
 .quarto-dark .homepage-logo {
   content: url("images/taxodist_dark.png");
+}
+
+/* ── Small screens ───────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+  .homepage-logo {
+    max-width: 125px;
+    margin-top: 0.5rem;
+  }
+
+  h1 {
+    font-size: 2.25rem;
+  }
+
+  .btn {
+    margin-bottom: 0.35rem;
+  }
 }

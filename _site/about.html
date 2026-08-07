@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -137,15 +171,16 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#project-context" id="toc-project-context" class="nav-link active" data-scroll-target="#project-context">Project Context</a></li>
-  <li><a href="#project-inception" id="toc-project-inception" class="nav-link" data-scroll-target="#project-inception">Project Inception</a></li>
-  <li><a href="#citing-taxodist" id="toc-citing-taxodist" class="nav-link" data-scroll-target="#citing-taxodist">Citing taxodist</a>
+  <li><a href="#project-scope" id="toc-project-scope" class="nav-link active" data-scroll-target="#project-scope">Project scope</a></li>
+  <li><a href="#methodological-position" id="toc-methodological-position" class="nav-link" data-scroll-target="#methodological-position">Methodological position</a></li>
+  <li><a href="#project-history" id="toc-project-history" class="nav-link" data-scroll-target="#project-history">Project history</a></li>
+  <li><a href="#reproducibility-and-transparency" id="toc-reproducibility-and-transparency" class="nav-link" data-scroll-target="#reproducibility-and-transparency">Reproducibility and transparency</a></li>
+  <li><a href="#citation" id="toc-citation" class="nav-link" data-scroll-target="#citation">Citation</a>
   <ul class="collapse">
-  <li><a href="#citing-the-package" id="toc-citing-the-package" class="nav-link" data-scroll-target="#citing-the-package">Citing the Package</a></li>
-  <li><a href="#citing-the-data-source-the-taxonomicon" id="toc-citing-the-data-source-the-taxonomicon" class="nav-link" data-scroll-target="#citing-the-data-source-the-taxonomicon">Citing the Data Source (The Taxonomicon)</a></li>
+  <li><a href="#classification-source" id="toc-classification-source" class="nav-link" data-scroll-target="#classification-source">Classification source</a></li>
   </ul></li>
-  <li><a href="#authorship-and-maintainer" id="toc-authorship-and-maintainer" class="nav-link" data-scroll-target="#authorship-and-maintainer">Authorship and Maintainer</a></li>
-  <li><a href="#licensing-and-open-source" id="toc-licensing-and-open-source" class="nav-link" data-scroll-target="#licensing-and-open-source">Licensing and Open Source</a></li>
+  <li><a href="#authorship-and-contact" id="toc-authorship-and-contact" class="nav-link" data-scroll-target="#authorship-and-contact">Authorship and contact</a></li>
+  <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license">License</a></li>
   </ul>
 </nav>
     </div>
@@ -155,7 +190,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">About taxodist</h1>
-<p class="subtitle lead">Project background, licensing, and citation metadata.</p>
+<p class="subtitle lead">Project scope, authorship, citation, and licensing.</p>
 </div>
 
 
@@ -170,47 +205,75 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="project-context" class="level2">
-<h2 class="anchored" data-anchor-id="project-context">Project Context</h2>
-<p>The <code>taxodist</code> project was developed to provide researchers in ecology, evolutionary biology, and taxonomy with a reliable, high-resolution tool for computing taxonomic dissimilarity.</p>
-<p>By programmatically bridging R and Python workflows with the extensive classification database of <em>The Taxonomicon</em>, the package enables standardized, reproducible community and phylogenetic analyses that are robust to varying taxonomic resolution and server-level queries.</p>
+<section id="project-scope" class="level2">
+<h2 class="anchored" data-anchor-id="project-scope">Project scope</h2>
+<p><code>taxodist</code> is an open-source project for retrieving ordered taxonomic lineages and measuring separation between nodes in a classification hierarchy. It is available as coordinated R and Python packages and through an interactive web application.</p>
+<p>The project addresses a practical need: a reproducible way to resolve taxon names, inspect their lineages, identify their most recent common ancestor, and construct labeled distance objects for downstream analysis.</p>
+<p>The current implementation uses lineage data from <a href="http://taxonomicon.taxonomy.nl">The Taxonomicon</a>, based on <em>Systema Naturae 2000</em>. The external source remains responsible for the underlying classification; <code>taxodist</code> retrieves, cleans, organizes, and compares those records.</p>
 </section>
-<section id="project-inception" class="level2">
-<h2 class="anchored" data-anchor-id="project-inception">Project Inception</h2>
-<p>The development of <code>taxodist</code> began as a personal curiosity project, driven by a deep interest in evolutionary biology and systematic taxonomy. The core concept emerged from a simple, recurring question: <em>Given any two arbitrary organisms on Earth, how can we programmatically identify their most recent common ancestor (MRCA) and mathematically evaluate their taxonomic proximity?</em></p>
-<p>What started as an informal exploration into taxonomic database architectures and web scraping led to deep research into structural tree metrics, parsing hierarchical data from <em>Systema Naturae 2000</em>, and ultimately building a unified package to standardize these computations. The goal of <code>taxodist</code> is to share this capability with the broader scientific community, turning a personal inquiry into a reliable tool for ecological and evolutionary research.</p>
+<section id="methodological-position" class="level2">
+<h2 class="anchored" data-anchor-id="methodological-position">Methodological position</h2>
+<p>The distance between distinct hierarchy nodes is the reciprocal of MRCA depth. Identical complete lineages receive distance zero. Within a connected hierarchy, this produces an ultrametric.</p>
+<p>These values measure classification depth. They do not estimate evolutionary time, genetic or morphological divergence, phylogenetic branch length, or statistical support for ancestry. The interpretation of every analysis is conditional on the source classification and the intermediate nodes it records.</p>
+<p>Version 0.6.0 formalized this distinction across the R package, Python package, application, reference data, and documentation.</p>
 </section>
-<section id="citing-taxodist" class="level2">
-<h2 class="anchored" data-anchor-id="citing-taxodist">Citing taxodist</h2>
-<p>If you use <code>taxodist</code> in a scientific publication, report, or presentation, please cite the package and the underlying data source:</p>
-<section id="citing-the-package" class="level3">
-<h3 class="anchored" data-anchor-id="citing-the-package">Citing the Package</h3>
+<section id="project-history" class="level2">
+<h2 class="anchored" data-anchor-id="project-history">Project history</h2>
+<p>The project began with a general question: how can the shared hierarchical position of any two named organisms be retrieved and compared programmatically?</p>
+<p>Early development focused on resolving names and parsing the deeply nested classification exposed by The Taxonomicon. Subsequent releases added matrix operations, lineage comparison, cache persistence, visualization, multivariate helpers, offline reference data, and a Python implementation with matching distance semantics.</p>
+<p>The project remains deliberately focused on classification-based analysis. It does not attempt to replace curated phylogenies, sequence-based inference, divergence-time estimation, or specialized taxonomic name services.</p>
+</section>
+<section id="reproducibility-and-transparency" class="level2">
+<h2 class="anchored" data-anchor-id="reproducibility-and-transparency">Reproducibility and transparency</h2>
+<p>Live taxonomic databases change. Analyses using retrieved lineages should therefore record:</p>
+<ul>
+<li>the <code>taxodist</code> version and implementation;</li>
+<li>the retrieval date;</li>
+<li>numeric Taxonomicon IDs, particularly for homonyms;</li>
+<li>unresolved or excluded taxa;</li>
+<li>whether live data or the packaged <code>taxobase</code> reference object was used;</li>
+<li>the distance definition and downstream analysis settings.</li>
+</ul>
+<p>The fixed <code>taxobase</code> object is distributed for examples, tests, and comparisons that must not depend on current server availability. It should not be assumed to represent the latest live classification.</p>
+</section>
+<section id="citation" class="level2">
+<h2 class="anchored" data-anchor-id="citation">Citation</h2>
+<p>The R and Python implementations are parts of the same software project and may be cited with a common project-level reference:</p>
 <blockquote class="blockquote">
-<p>Villa, R. F. (2026). <em>taxodist: Taxonomic Distance and Phylogenetic Lineage Computation</em>. R package version 0.5.0. Available at <a href="https://github.com/rodrigosqrt3/taxodist" class="uri">https://github.com/rodrigosqrt3/taxodist</a>.</p>
+<p>Villa, R. F. (2026). <em>taxodist: Taxonomic Hierarchy Distances and Lineage Analysis</em> (version 0.6.0). Open-source software. <a href="https://rodrigosqrt3.github.io/taxodist-site/" class="uri">https://rodrigosqrt3.github.io/taxodist-site/</a>.</p>
 </blockquote>
-</section>
-<section id="citing-the-data-source-the-taxonomicon" class="level3">
-<h3 class="anchored" data-anchor-id="citing-the-data-source-the-taxonomicon">Citing the Data Source (The Taxonomicon)</h3>
+<p>In the methods section, identify the implementation used:</p>
+<ul>
+<li>R package: <a href="https://cran.r-project.org/package=taxodist" class="uri">https://cran.r-project.org/package=taxodist</a></li>
+<li>Python package: <a href="https://pypi.org/project/taxodist/" class="uri">https://pypi.org/project/taxodist/</a></li>
+</ul>
+<p>The R command below returns the citation metadata distributed with the package:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>(<span class="st">"taxodist"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>GitHub also reads the <code>CITATION.cff</code> file in the Python repository and provides a <strong>Cite this repository</strong> interface.</p>
+<section id="classification-source" class="level3">
+<h3 class="anchored" data-anchor-id="classification-source">Classification source</h3>
+<p>Published analyses based on live or packaged Taxonomicon lineages should also cite the underlying source:</p>
 <blockquote class="blockquote">
 <p>Brands, S.J. (1989 onwards). <em>Systema Naturae 2000</em>. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, <a href="http://taxonomicon.taxonomy.nl" class="uri">http://taxonomicon.taxonomy.nl</a>.</p>
 </blockquote>
-<hr>
+<p>The software citation acknowledges the implementation; the Taxonomicon citation acknowledges the classification data. Neither should replace the other.</p>
 </section>
 </section>
-<section id="authorship-and-maintainer" class="level2">
-<h2 class="anchored" data-anchor-id="authorship-and-maintainer">Authorship and Maintainer</h2>
+<section id="authorship-and-contact" class="level2">
+<h2 class="anchored" data-anchor-id="authorship-and-contact">Authorship and contact</h2>
 <ul>
-<li><strong>Author &amp; Maintainer:</strong> Rodrigo Fonseca Villa</li>
-<li><strong>Contact Email:</strong> <a href="mailto:rodrigo03.villa@gmail.com">rodrigo03.villa@gmail.com</a></li>
+<li><strong>Author and maintainer:</strong> Rodrigo Fonseca Villa</li>
 <li><strong>ORCID:</strong> <a href="https://orcid.org/0009-0005-2938-2270">0009-0005-2938-2270</a></li>
-<li><strong>Source Code:</strong> <a href="https://github.com/rodrigosqrt3/taxodist" class="uri">https://github.com/rodrigosqrt3/taxodist</a></li>
+<li><strong>Email:</strong> <a href="mailto:rodrigo03.villa@gmail.com">rodrigo03.villa@gmail.com</a></li>
+<li><strong>R source:</strong> <a href="https://github.com/rodrigosqrt3/taxodist" class="uri">https://github.com/rodrigosqrt3/taxodist</a></li>
+<li><strong>Python source:</strong> <a href="https://github.com/rodrigosqrt3/taxodist-py" class="uri">https://github.com/rodrigosqrt3/taxodist-py</a></li>
 </ul>
-<hr>
+<p>Bug reports should include the queried name, numeric Taxonomicon ID when available, retrieval date, package version, operating system, and a minimal reproducible example.</p>
 </section>
-<section id="licensing-and-open-source" class="level2">
-<h2 class="anchored" data-anchor-id="licensing-and-open-source">Licensing and Open Source</h2>
-<p>This package is distributed as free, open-source software under the <strong>GNU General Public License (GPL &gt;= 3)</strong>.</p>
-<p>You are free to use, modify, and redistribute this software in accordance with the terms of the license. The source code is hosted publicly on GitHub, and bug reports, feature requests, or contributions can be submitted directly via the <a href="https://github.com/rodrigosqrt3/taxodist/issues">GitHub Issues tracker</a>.</p>
+<section id="license" class="level2">
+<h2 class="anchored" data-anchor-id="license">License</h2>
+<p><code>taxodist</code> is distributed under the GNU General Public License, version 3 or later (GPL-3.0-or-later). Users may run, study, modify, and redistribute the software under the terms of that license.</p>
+<p>The software license applies to the package source code. Data retrieved from external services remain subject to the terms and attribution requirements of their respective sources.</p>
 
 
 </section>

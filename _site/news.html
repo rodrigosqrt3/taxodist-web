@@ -60,7 +60,10 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit"
   }
 }</script>
+<style>html{ scroll-behavior: smooth; }</style>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -96,8 +99,16 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">    
         <li>
+    <a class="dropdown-item" href="./methodology.html" rel="" target="">
+ <span class="dropdown-text">Methodology</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="./statistical-applications.html" rel="" target="">
  <span class="dropdown-text">Statistical Applications</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./r-python-compatibility.html" rel="" target="">
+ <span class="dropdown-text">R/Python Compatibility</span></a>
   </li>  
     </ul>
   </li>
@@ -115,11 +126,27 @@ ul.task-list li input[type="checkbox"] {
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/rodrigosqrt3/taxodist" rel="" target=""><i class="bi bi-github" role="img" aria-label="GitHub">
-</i> 
- <span class="menu-text"></span></a>
+  <li class="nav-item">
+    <a class="nav-link" href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/" rel="" target="">
+ <span class="menu-text">Launch App ↗</span></a>
   </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-source" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text">Source</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-source">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/rodrigosqrt3/taxodist" rel="" target="">
+ <span class="dropdown-text">R source</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/rodrigosqrt3/taxodist-py" rel="" target="">
+ <span class="dropdown-text">Python source</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
             <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
@@ -137,30 +164,35 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#taxodist-0.5.0-latest" id="toc-taxodist-0.5.0-latest" class="nav-link active" data-scroll-target="#taxodist-0.5.0-latest">taxodist 0.5.0 <span class="badge bg-primary">Latest</span></a>
-  <ul class="collapse">
-  <li><a href="#new-features" id="toc-new-features" class="nav-link" data-scroll-target="#new-features">New features</a></li>
-  <li><a href="#bug-fixes" id="toc-bug-fixes" class="nav-link" data-scroll-target="#bug-fixes">Bug fixes</a></li>
-  </ul></li>
-  <li><a href="#taxodist-0.4.0" id="toc-taxodist-0.4.0" class="nav-link" data-scroll-target="#taxodist-0.4.0">taxodist 0.4.0</a>
-  <ul class="collapse">
-  <li><a href="#new-features-1" id="toc-new-features-1" class="nav-link" data-scroll-target="#new-features-1">New features</a></li>
-  <li><a href="#bug-fixes-1" id="toc-bug-fixes-1" class="nav-link" data-scroll-target="#bug-fixes-1">Bug fixes</a></li>
-  </ul></li>
-  <li><a href="#taxodist-0.3.0-first-python-release" id="toc-taxodist-0.3.0-first-python-release" class="nav-link" data-scroll-target="#taxodist-0.3.0-first-python-release">taxodist 0.3.0 <span class="badge bg-secondary">First Python release</span></a>
-  <ul class="collapse">
-  <li><a href="#new-features-2" id="toc-new-features-2" class="nav-link" data-scroll-target="#new-features-2">New features</a></li>
-  <li><a href="#network-handling" id="toc-network-handling" class="nav-link" data-scroll-target="#network-handling">Network handling</a></li>
-  <li><a href="#bug-fixes-2" id="toc-bug-fixes-2" class="nav-link" data-scroll-target="#bug-fixes-2">Bug fixes</a></li>
-  </ul></li>
+  <li><a href="#taxodist-0.1.0-initial-release" id="toc-taxodist-0.1.0-initial-release" class="nav-link active" data-scroll-target="#taxodist-0.1.0-initial-release">taxodist 0.1.0 — Initial release</a></li>
   <li><a href="#taxodist-0.2.0" id="toc-taxodist-0.2.0" class="nav-link" data-scroll-target="#taxodist-0.2.0">taxodist 0.2.0</a>
   <ul class="collapse">
   <li><a href="#new-functions" id="toc-new-functions" class="nav-link" data-scroll-target="#new-functions">New functions</a></li>
-  <li><a href="#documentation" id="toc-documentation" class="nav-link" data-scroll-target="#documentation">Documentation</a></li>
-  <li><a href="#minor-improvements" id="toc-minor-improvements" class="nav-link" data-scroll-target="#minor-improvements">Minor improvements</a></li>
-  <li><a href="#bug-fixes-3" id="toc-bug-fixes-3" class="nav-link" data-scroll-target="#bug-fixes-3">Bug fixes</a></li>
+  <li><a href="#documentation-and-integration" id="toc-documentation-and-integration" class="nav-link" data-scroll-target="#documentation-and-integration">Documentation and integration</a></li>
+  <li><a href="#corrections" id="toc-corrections" class="nav-link" data-scroll-target="#corrections">Corrections</a></li>
   </ul></li>
-  <li><a href="#taxodist-0.1.0-initial-release" id="toc-taxodist-0.1.0-initial-release" class="nav-link" data-scroll-target="#taxodist-0.1.0-initial-release">taxodist 0.1.0 <span class="badge bg-secondary">Initial release</span></a></li>
+  <li><a href="#taxodist-0.3.0" id="toc-taxodist-0.3.0" class="nav-link" data-scroll-target="#taxodist-0.3.0">taxodist 0.3.0</a>
+  <ul class="collapse">
+  <li><a href="#name-resolution-and-network-handling" id="toc-name-resolution-and-network-handling" class="nav-link" data-scroll-target="#name-resolution-and-network-handling">Name resolution and network handling</a></li>
+  <li><a href="#lineage-parsing" id="toc-lineage-parsing" class="nav-link" data-scroll-target="#lineage-parsing">Lineage parsing</a></li>
+  </ul></li>
+  <li><a href="#taxodist-0.4.0" id="toc-taxodist-0.4.0" class="nav-link" data-scroll-target="#taxodist-0.4.0">taxodist 0.4.0</a>
+  <ul class="collapse">
+  <li><a href="#new-functions-1" id="toc-new-functions-1" class="nav-link" data-scroll-target="#new-functions-1">New functions</a></li>
+  <li><a href="#lineage-parsing-1" id="toc-lineage-parsing-1" class="nav-link" data-scroll-target="#lineage-parsing-1">Lineage parsing</a></li>
+  </ul></li>
+  <li><a href="#taxodist-0.5.0" id="toc-taxodist-0.5.0" class="nav-link" data-scroll-target="#taxodist-0.5.0">taxodist 0.5.0</a>
+  <ul class="collapse">
+  <li><a href="#reference-data" id="toc-reference-data" class="nav-link" data-scroll-target="#reference-data">Reference data</a></li>
+  <li><a href="#corrections-1" id="toc-corrections-1" class="nav-link" data-scroll-target="#corrections-1">Corrections</a></li>
+  </ul></li>
+  <li><a href="#taxodist-0.6.0-latest" id="toc-taxodist-0.6.0-latest" class="nav-link" data-scroll-target="#taxodist-0.6.0-latest">taxodist 0.6.0 <span class="badge bg-primary">Latest</span></a>
+  <ul class="collapse">
+  <li><a href="#distance-definition" id="toc-distance-definition" class="nav-link" data-scroll-target="#distance-definition">Distance definition</a></li>
+  <li><a href="#data-and-documentation" id="toc-data-and-documentation" class="nav-link" data-scroll-target="#data-and-documentation">Data and documentation</a></li>
+  <li><a href="#robustness" id="toc-robustness" class="nav-link" data-scroll-target="#robustness">Robustness</a></li>
+  </ul></li>
+  <li><a href="#compatibility-note" id="toc-compatibility-note" class="nav-link" data-scroll-target="#compatibility-note">Compatibility note</a></li>
   </ul>
 </nav>
     </div>
@@ -170,6 +202,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Changelog</h1>
+<p class="subtitle lead">Release history for taxodist, from version 0.1.0 through 0.6.0.</p>
 </div>
 
 
@@ -184,119 +217,147 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="taxodist-0.5.0-latest" class="level2">
-<h2 class="anchored" data-anchor-id="taxodist-0.5.0-latest">taxodist 0.5.0 <span class="badge bg-primary">Latest</span></h2>
-<section id="new-features" class="level3">
-<h3 class="anchored" data-anchor-id="new-features">New features</h3>
+<section id="taxodist-0.1.0-initial-release" class="level2">
+<h2 class="anchored" data-anchor-id="taxodist-0.1.0-initial-release">taxodist 0.1.0 — Initial release</h2>
 <ul>
-<li><code>taxobase</code>: Built-in reference dataset of 50 taxonomic clades with pre-computed distance matrices, lineage paths, search outputs, and coverage vectors. Acts as a complete offline fallback — examples, vignettes, and unit tests run without a network connection.</li>
+<li>Introduced taxonomic distance calculations using lineage data from The Taxonomicon.</li>
+<li>Added session-level lineage caching to reduce repeated network requests.</li>
+<li>Initial functions: <code>taxo_distance()</code>, <code>mrca()</code>, <code>distance_matrix()</code>, <code>closest_relative()</code>, <code>compare_lineages()</code>, <code>shared_clades()</code>, <code>is_member()</code>, <code>filter_clade()</code>, <code>lineage_depth()</code>, <code>check_coverage()</code>, and <code>clear_cache()</code>.</li>
 </ul>
-</section>
-<section id="bug-fixes" class="level3">
-<h3 class="anchored" data-anchor-id="bug-fixes">Bug fixes</h3>
-<ul>
-<li>Fixed taxa whose names contain the substring “planet” (e.g.&nbsp;<em>Periplaneta</em>) being incorrectly discarded by the astronomical homonym filter. The filter now uses word boundaries (<code>\bplanet\b</code>).</li>
-<li>Fixed a lineage parsing bug affecting genera whose Taxonomicon page does not link back to the genus itself (e.g.&nbsp;<em>Periplaneta</em>). The lineage is now correctly truncated before child species entries and the genus name is appended if absent.</li>
-<li>Added <code>"Epifamily"</code> to the bare rank token filter.</li>
-<li>Fixed a lineage parsing bug where the superscript type-marker <code>ᵀ</code> (U+1D40) immediately following a taxon name prevented word-boundary matching, causing the lineage to overshoot the target node and include descendant taxa as ancestors. This bug disproportionately affected higher-rank taxa within deep clades like <em>Dinosauria</em>.</li>
-<li>Fixed a lineage parsing bug where navigation header text could contain the target taxon name, causing the lineage cutoff to land in junk content rather than the taxonomic tree (<em>Drosophila</em>, ID 28940, was one affected case).</li>
-</ul>
-<hr>
-</section>
-</section>
-<section id="taxodist-0.4.0" class="level2">
-<h2 class="anchored" data-anchor-id="taxodist-0.4.0">taxodist 0.4.0</h2>
-<section id="new-features-1" class="level3">
-<h3 class="anchored" data-anchor-id="new-features-1">New features</h3>
-<ul>
-<li><code>cache_info()</code>: Inspects the current session cache, reporting the number of cached lineages and IDs, total memory used, and cached taxon names. Returns a named list invisibly for programmatic use.</li>
-<li><code>focal_distances()</code>: Computes distances from a single focal taxon to all members of a community vector. Returns a sorted data frame with columns <code>taxon</code>, <code>distance</code>, <code>mrca</code>, and <code>mrca_depth</code>.</li>
-</ul>
-</section>
-<section id="bug-fixes-1" class="level3">
-<h3 class="anchored" data-anchor-id="bug-fixes-1">Bug fixes</h3>
-<ul>
-<li>Fixed a lineage parsing bug where taxa with <code>Subphylum</code> and <code>Infraphylum</code> rank prefixes (e.g.&nbsp;Craniata, Vertebrata) were incorrectly discarded. The dagger symbol (<code>†</code>) is now stripped before rank-prefix removal.</li>
-<li>Fixed parsing of <code>auct.</code> author annotations preventing rank-prefixed names from being correctly cleaned.</li>
-<li>Fixed intermediate clades being silently dropped when author strings contained ampersands, hyphens (e.g.&nbsp;Cavalier-Smith), or trailing commas without a year.</li>
-<li>Fixed a bug where the dagger extinction marker (<code>†</code>) appearing between a rank prefix and a taxon name (e.g.&nbsp;<code>Family † Dromaeosauridae</code>) caused the taxon to be lost entirely.</li>
-</ul>
-<hr>
-</section>
-</section>
-<section id="taxodist-0.3.0-first-python-release" class="level2">
-<h2 class="anchored" data-anchor-id="taxodist-0.3.0-first-python-release">taxodist 0.3.0 <span class="badge bg-secondary">First Python release</span></h2>
-<section id="new-features-2" class="level3">
-<h3 class="anchored" data-anchor-id="new-features-2">New features</h3>
-<ul>
-<li><code>taxo_search()</code>: Interactive search function that queries The Taxonomicon and returns a tidy data frame of all available IDs, ranks, and authors for a given taxon name.</li>
-<li>Direct ID support: <code>get_lineage()</code> and all distance functions now accept Taxonomicon numeric IDs as a fallback for homonyms and historical ranks that cannot be disambiguated by name alone.</li>
-</ul>
-</section>
-<section id="network-handling" class="level3">
-<h3 class="anchored" data-anchor-id="network-handling">Network handling</h3>
-<ul>
-<li>Added a 30-second timeout to all HTTP requests to prevent the session from hanging when The Taxonomicon servers are overloaded.</li>
-<li>Network failures, offline servers, and bad HTTP statuses now emit a clear, informative warning rather than failing silently.</li>
-</ul>
-</section>
-<section id="bug-fixes-2" class="level3">
-<h3 class="anchored" data-anchor-id="bug-fixes-2">Bug fixes</h3>
-<ul>
-<li>Extended rank-prefix filter to cover additional bare rank tokens: <code>Subgenus</code>, <code>Section</code>, <code>Division</code>, <code>Subdivision</code>, <code>Supercohort</code>, <code>Infracohort</code>, <code>Subsection</code>, <code>Candidatus</code>, <code>Parvphylum</code>, <code>Branch</code>, and the navigation artefact <code>Go to</code>.</li>
-<li>Duplicate lineage nodes from data-quality issues in The Taxonomicon are now collapsed to a single occurrence. A warning is emitted when deduplication occurs.</li>
-<li><code>get_taxonomicon_id()</code> now collects all biological matches before returning and emits a warning when multiple valid entries are found, surfacing homonym ambiguity (e.g.&nbsp;<em>Nereis</em> matching both a polychaete worm and a butterfly genus).</li>
-<li><code>get_taxonomicon_id()</code> now properly follows taxonomic redirects and removes interface noise from warnings.</li>
-<li>Lineage parsing is now stricter, truncating philosophical or pre-basal nodes (e.g.&nbsp;<code>organisms</code>) appearing before <code>Biota</code>.</li>
-<li>Added validation to <code>get_lineage_by_id()</code> to silently return <code>NULL</code> for non-numeric strings.</li>
-<li>Fixed erroneous truncation of the parent <code>Genus</code> from species-level queries. Distances and MRCAs between congeneric species are now computed accurately.</li>
-<li>Fixed an issue where author names enclosed in double quotes were evading the lineage cleaning pipeline and being retained as part of the clade name.</li>
-</ul>
-<hr>
-</section>
 </section>
 <section id="taxodist-0.2.0" class="level2">
 <h2 class="anchored" data-anchor-id="taxodist-0.2.0">taxodist 0.2.0</h2>
 <section id="new-functions" class="level3">
 <h3 class="anchored" data-anchor-id="new-functions">New functions</h3>
 <ul>
-<li><code>taxo_cluster()</code>: Hierarchical clustering of taxa by taxonomic distance.</li>
-<li><code>taxo_ordinate()</code>: Ordination (PCoA) of taxa in taxonomic distance space.</li>
-<li><code>save_cache()</code>: Serializes the session lineage cache to an <code>.rds</code> file.</li>
-<li><code>load_cache()</code>: Restores a previously saved cache, avoiding redundant network requests.</li>
-<li><code>taxo_path()</code>: Returns the full node-by-node path between two taxa as a tidy data frame, ascending from taxon A to their MRCA and descending to taxon B.</li>
+<li>Added <code>taxo_cluster()</code> for hierarchical clustering of taxonomic distances.</li>
+<li>Added <code>taxo_ordinate()</code> for principal coordinates analysis (PCoA).</li>
+<li>Added <code>save_cache()</code> and <code>load_cache()</code> for persistence across sessions.</li>
+<li>Added <code>taxo_path()</code>, which represents the node-by-node route from taxon A through the MRCA to taxon B.</li>
 </ul>
 </section>
-<section id="documentation" class="level3">
-<h3 class="anchored" data-anchor-id="documentation">Documentation</h3>
+<section id="documentation-and-integration" class="level3">
+<h3 class="anchored" data-anchor-id="documentation-and-integration">Documentation and integration</h3>
 <ul>
-<li>Added a new vignette (<em>Statistical Applications of taxodist</em>) demonstrating integration with <code>ape</code> (tree plotting) and <code>vegan</code> (taxonomic distinctness, Mantel tests, and PERMANOVA).</li>
+<li>Added statistical examples using <code>vegan</code> for taxonomic distinctness, Mantel tests, and PERMANOVA.</li>
+<li>Documented conversion of <code>taxo_cluster()</code> results to the <code>phylo</code> storage class with <code>ape::as.phylo()</code>.</li>
 </ul>
 </section>
-<section id="minor-improvements" class="level3">
-<h3 class="anchored" data-anchor-id="minor-improvements">Minor improvements</h3>
+<section id="corrections" class="level3">
+<h3 class="anchored" data-anchor-id="corrections">Corrections</h3>
 <ul>
-<li>Added <code>vegan</code> to <code>Suggests</code> in <code>DESCRIPTION</code>.</li>
-<li>Documented compatibility of <code>distance_matrix()</code> output with <code>vegan</code> functions (<code>taxondive()</code>, <code>mantel()</code>, <code>adonis2()</code>).</li>
-<li>Documented conversion of <code>taxo_cluster()</code> results into <code>phylo</code> objects using <code>ape::as.phylo()</code>.</li>
+<li>Prevented unnamed crown markers from being interpreted as common ancestry across unrelated lineages.</li>
+<li>Expanded cleaning of rank prefixes such as cohort, magnorder, grandorder, parvorder, and legion.</li>
 </ul>
 </section>
-<section id="bug-fixes-3" class="level3">
-<h3 class="anchored" data-anchor-id="bug-fixes-3">Bug fixes</h3>
+</section>
+<section id="taxodist-0.3.0" class="level2">
+<h2 class="anchored" data-anchor-id="taxodist-0.3.0">taxodist 0.3.0</h2>
+<section id="name-resolution-and-network-handling" class="level3">
+<h3 class="anchored" data-anchor-id="name-resolution-and-network-handling">Name resolution and network handling</h3>
 <ul>
-<li>Fixed incorrect MRCA computation caused by unnamed crown nodes (<code>[crown]</code>) being matched across different lineages as if they were the same ancestor.</li>
-<li>Fixed parsing of Taxonomicon rank prefixes (<code>Cohort</code>, <code>Subcohort</code>, <code>Magnorder</code>, <code>Grandorder</code>, <code>Parvorder</code>, <code>Legion</code>) that were being retained as bare rank names instead of the actual clade names.</li>
+<li>Added <code>taxo_search()</code> for inspecting Taxonomicon search results and numeric identifiers.</li>
+<li>Added direct support for numeric Taxonomicon IDs in <code>get_lineage()</code> and downstream distance functions.</li>
+<li>Added request timeouts and clearer handling of network failures and non-successful HTTP responses.</li>
+<li>Added warnings for multiple valid biological entries, making homonym ambiguity explicit.</li>
 </ul>
-<hr>
 </section>
-</section>
-<section id="taxodist-0.1.0-initial-release" class="level2">
-<h2 class="anchored" data-anchor-id="taxodist-0.1.0-initial-release">taxodist 0.1.0 <span class="badge bg-secondary">Initial release</span></h2>
+<section id="lineage-parsing" class="level3">
+<h3 class="anchored" data-anchor-id="lineage-parsing">Lineage parsing</h3>
 <ul>
-<li>Compute taxonomic distances between any two taxa using The Taxonomicon.</li>
-<li>Session-level caching for lineage data to minimize network requests.</li>
-<li>Initial function set: <code>taxo_distance()</code>, <code>mrca()</code>, <code>distance_matrix()</code>, <code>closest_relative()</code>, <code>compare_lineages()</code>, <code>shared_clades()</code>, <code>is_member()</code>, <code>filter_clade()</code>, <code>lineage_depth()</code>, <code>check_coverage()</code>, <code>clear_cache()</code>.</li>
+<li>Expanded removal of rank labels and navigation artifacts.</li>
+<li>Collapsed duplicated lineage nodes while preserving their original order.</li>
+<li>Improved taxonomic redirect handling and removal of interface noise.</li>
+<li>Restricted cleaned lineages to nodes beginning at <code>Biota</code> when available.</li>
+<li>Added validation for non-numeric inputs to <code>get_lineage_by_id()</code>.</li>
+<li>Corrected species-level lineages, quoted author names, and genus retention.</li>
 </ul>
+</section>
+</section>
+<section id="taxodist-0.4.0" class="level2">
+<h2 class="anchored" data-anchor-id="taxodist-0.4.0">taxodist 0.4.0</h2>
+<section id="new-functions-1" class="level3">
+<h3 class="anchored" data-anchor-id="new-functions-1">New functions</h3>
+<ul>
+<li>Added <code>cache_info()</code> to report cached lineages, identifiers, and memory use.</li>
+<li>Added <code>focal_distances()</code> to compare one focal taxon with every member of a community while reporting distance, MRCA, and MRCA depth.</li>
+</ul>
+</section>
+<section id="lineage-parsing-1" class="level3">
+<h3 class="anchored" data-anchor-id="lineage-parsing-1">Lineage parsing</h3>
+<ul>
+<li>Corrected handling of <code>Subphylum</code> and <code>Infraphylum</code> prefixes.</li>
+<li>Improved removal of extinction markers, <code>auct.</code> annotations, author strings, ampersands, hyphenated names, and incomplete trailing citations.</li>
+</ul>
+</section>
+</section>
+<section id="taxodist-0.5.0" class="level2">
+<h2 class="anchored" data-anchor-id="taxodist-0.5.0">taxodist 0.5.0</h2>
+<section id="reference-data" class="level3">
+<h3 class="anchored" data-anchor-id="reference-data">Reference data</h3>
+<ul>
+<li>Added <code>taxobase</code>, an offline reference object containing taxa, coverage information, lineages, search examples, pairwise results, and precomputed distance matrices.</li>
+</ul>
+</section>
+<section id="corrections-1" class="level3">
+<h3 class="anchored" data-anchor-id="corrections-1">Corrections</h3>
+<ul>
+<li>Prevented biological names containing the substring <code>planet</code>, such as <em>Periplaneta</em>, from being classified as astronomical entries.</li>
+<li>Corrected lineage truncation when a genus page does not link directly back to the genus itself.</li>
+<li>Added <code>Epifamily</code> to the rank-token filter.</li>
+<li>Corrected parsing around superscript type markers and target names appearing in page-navigation text.</li>
+</ul>
+</section>
+</section>
+<section id="taxodist-0.6.0-latest" class="level2">
+<h2 class="anchored" data-anchor-id="taxodist-0.6.0-latest">taxodist 0.6.0 <span class="badge bg-primary">Latest</span></h2>
+<section id="distance-definition" class="level3">
+<h3 class="anchored" data-anchor-id="distance-definition">Distance definition</h3>
+<ul>
+<li>Zero distance is now reserved for identical complete lineages.</li>
+<li>Distinct ancestor–descendant nodes receive <span class="math inline">\(1 / \operatorname{depth}(\operatorname{MRCA})\)</span> rather than zero.</li>
+<li>The measure is now described consistently as a <strong>taxonomic hierarchy distance</strong>, not a phylogenetic distance.</li>
+<li>Within each connected hierarchy, the resulting distance is an ultrametric.</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled" title="Behavioral change">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Behavioral change
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Analyses that relied on version 0.5.0 or earlier should be recomputed when ancestor–descendant pairs are present. Use <code>is_member()</code> for clade containment and <code>taxo_path()</code> to inspect the route between hierarchy nodes.</p>
+</div>
+</div>
+</section>
+<section id="data-and-documentation" class="level3">
+<h3 class="anchored" data-anchor-id="data-and-documentation">Data and documentation</h3>
+<ul>
+<li>Standardized <code>taxobase</code> as a documented list with provenance metadata and offline matrices used by reproducible examples.</li>
+<li>Aligned the R and Python reference data, taxon ordering, distance definition, and principal API behavior.</li>
+<li>Added explicit methodological documentation, limitations, and separate citations for the software and The Taxonomicon.</li>
+<li>Revised statistical examples to distinguish taxonomic dendrograms from inferred phylogenetic trees.</li>
+</ul>
+</section>
+<section id="robustness" class="level3">
+<h3 class="anchored" data-anchor-id="robustness">Robustness</h3>
+<ul>
+<li>MRCA detection now uses only the continuous common prefix of the two ordered lineages.</li>
+<li><code>is_member()</code> now uses exact, case-insensitive matching.</li>
+<li><code>taxo_path()</code> now handles identical nodes, ancestor–descendant pairs, full lineage depths, path direction, and lineages without a common ancestor.</li>
+<li>Empty and single-taxon inputs are handled consistently across matrix, nearest-relative, focal-distance, clustering, ordination, and heatmap functions.</li>
+<li>Clustering, ordination, and heatmap helpers detect missing and infinite distances before downstream analysis.</li>
+<li><code>taxo_ordinate()</code> validates and, when necessary, reduces the requested number of dimensions.</li>
+<li><code>load_cache()</code> validates names and value types before modifying the active cache.</li>
+</ul>
+</section>
+</section>
+<section id="compatibility-note" class="level2">
+<h2 class="anchored" data-anchor-id="compatibility-note">Compatibility note</h2>
+<p>The R and Python implementations follow the same version 0.6.0 distance semantics. Their native containers differ: R uses <code>dist</code>, S3 objects, and <code>.rds</code> cache files; Python uses labeled <code>pandas</code> objects, dictionaries, and <code>.pkl</code> cache files.</p>
 
 
 </section>
@@ -651,7 +712,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">taxodist 0.6.0</div>   
+    <div class="nav-footer-center">Taxonomic hierarchy distances — not evolutionary time or branch length.</div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://cran.r-project.org/package=taxodist">R</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://pypi.org/project/taxodist/">Python</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/">App</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
 
 
 
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

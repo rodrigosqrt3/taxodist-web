@@ -94,6 +94,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit"
   }
 }</script>
+<style>html{ scroll-behavior: smooth; }</style>
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -132,8 +133,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">    
         <li>
+    <a class="dropdown-item" href="./methodology.html" rel="" target="">
+ <span class="dropdown-text">Methodology</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="./statistical-applications.html" rel="" target="">
  <span class="dropdown-text">Statistical Applications</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./r-python-compatibility.html" rel="" target="">
+ <span class="dropdown-text">R/Python Compatibility</span></a>
   </li>  
     </ul>
   </li>
@@ -151,11 +160,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/rodrigosqrt3/taxodist" rel="" target=""><i class="bi bi-github" role="img" aria-label="GitHub">
-</i> 
- <span class="menu-text"></span></a>
+  <li class="nav-item">
+    <a class="nav-link" href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/" rel="" target="">
+ <span class="menu-text">Launch App ↗</span></a>
   </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-source" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text">Source</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-source">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/rodrigosqrt3/taxodist" rel="" target="">
+ <span class="dropdown-text">R source</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/rodrigosqrt3/taxodist-py" rel="" target="">
+ <span class="dropdown-text">Python source</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
             <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
@@ -174,33 +199,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#what-is-taxodist" id="toc-what-is-taxodist" class="nav-link active" data-scroll-target="#what-is-taxodist">What is taxodist?</a></li>
-  <li><a href="#the-distance-metric" id="toc-the-distance-metric" class="nav-link" data-scroll-target="#the-distance-metric">The distance metric</a></li>
+  <li><a href="#the-distance-definition" id="toc-the-distance-definition" class="nav-link" data-scroll-target="#the-distance-definition">The distance definition</a></li>
   <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a></li>
-  <li><a href="#basic-usage" id="toc-basic-usage" class="nav-link" data-scroll-target="#basic-usage">Basic usage</a>
+  <li><a href="#retrieve-a-lineage" id="toc-retrieve-a-lineage" class="nav-link" data-scroll-target="#retrieve-a-lineage">Retrieve a lineage</a></li>
+  <li><a href="#compare-two-taxa" id="toc-compare-two-taxa" class="nav-link" data-scroll-target="#compare-two-taxa">Compare two taxa</a>
   <ul class="collapse">
-  <li><a href="#getting-a-lineage" id="toc-getting-a-lineage" class="nav-link" data-scroll-target="#getting-a-lineage">Getting a lineage</a></li>
-  <li><a href="#computing-distance-between-two-taxa" id="toc-computing-distance-between-two-taxa" class="nav-link" data-scroll-target="#computing-distance-between-two-taxa">Computing distance between two taxa</a></li>
-  <li><a href="#finding-the-most-recent-common-ancestor" id="toc-finding-the-most-recent-common-ancestor" class="nav-link" data-scroll-target="#finding-the-most-recent-common-ancestor">Finding the most recent common ancestor</a></li>
+  <li><a href="#taxonomic-distance" id="toc-taxonomic-distance" class="nav-link" data-scroll-target="#taxonomic-distance">Taxonomic distance</a></li>
+  <li><a href="#most-recent-common-ancestor" id="toc-most-recent-common-ancestor" class="nav-link" data-scroll-target="#most-recent-common-ancestor">Most recent common ancestor</a></li>
+  <li><a href="#shared-lineage-and-path" id="toc-shared-lineage-and-path" class="nav-link" data-scroll-target="#shared-lineage-and-path">Shared lineage and path</a></li>
   </ul></li>
-  <li><a href="#working-with-multiple-taxa" id="toc-working-with-multiple-taxa" class="nav-link" data-scroll-target="#working-with-multiple-taxa">Working with multiple taxa</a>
+  <li><a href="#work-with-multiple-taxa" id="toc-work-with-multiple-taxa" class="nav-link" data-scroll-target="#work-with-multiple-taxa">Work with multiple taxa</a>
   <ul class="collapse">
-  <li><a href="#pairwise-distance-matrix" id="toc-pairwise-distance-matrix" class="nav-link" data-scroll-target="#pairwise-distance-matrix">Pairwise distance matrix</a></li>
-  <li><a href="#hierarchical-clustering" id="toc-hierarchical-clustering" class="nav-link" data-scroll-target="#hierarchical-clustering">Hierarchical clustering</a></li>
-  <li><a href="#pcoa-ordination" id="toc-pcoa-ordination" class="nav-link" data-scroll-target="#pcoa-ordination">PCoA ordination</a></li>
-  <li><a href="#heatmap" id="toc-heatmap" class="nav-link" data-scroll-target="#heatmap">Heatmap</a></li>
-  <li><a href="#finding-the-closest-relative" id="toc-finding-the-closest-relative" class="nav-link" data-scroll-target="#finding-the-closest-relative">Finding the closest relative</a></li>
+  <li><a href="#distances-from-one-focal-taxon" id="toc-distances-from-one-focal-taxon" class="nav-link" data-scroll-target="#distances-from-one-focal-taxon">Distances from one focal taxon</a></li>
   </ul></li>
-  <li><a href="#lineage-utilities" id="toc-lineage-utilities" class="nav-link" data-scroll-target="#lineage-utilities">Lineage utilities</a>
-  <ul class="collapse">
-  <li><a href="#comparing-lineages-side-by-side" id="toc-comparing-lineages-side-by-side" class="nav-link" data-scroll-target="#comparing-lineages-side-by-side">Comparing lineages side by side</a></li>
-  <li><a href="#testing-and-filtering-by-clade" id="toc-testing-and-filtering-by-clade" class="nav-link" data-scroll-target="#testing-and-filtering-by-clade">Testing and filtering by clade</a></li>
-  </ul></li>
-  <li><a href="#coverage-and-caching" id="toc-coverage-and-caching" class="nav-link" data-scroll-target="#coverage-and-caching">Coverage and caching</a>
-  <ul class="collapse">
-  <li><a href="#checking-coverage-before-a-large-run" id="toc-checking-coverage-before-a-large-run" class="nav-link" data-scroll-target="#checking-coverage-before-a-large-run">Checking coverage before a large run</a></li>
-  <li><a href="#persisting-the-cache-across-sessions" id="toc-persisting-the-cache-across-sessions" class="nav-link" data-scroll-target="#persisting-the-cache-across-sessions">Persisting the cache across sessions</a></li>
-  </ul></li>
-  <li><a href="#a-note-on-lineage-depth" id="toc-a-note-on-lineage-depth" class="nav-link" data-scroll-target="#a-note-on-lineage-depth">A note on lineage depth</a></li>
+  <li><a href="#test-and-filter-clade-membership" id="toc-test-and-filter-clade-membership" class="nav-link" data-scroll-target="#test-and-filter-clade-membership">Test and filter clade membership</a></li>
+  <li><a href="#clustering-ordination-and-heatmaps" id="toc-clustering-ordination-and-heatmaps" class="nav-link" data-scroll-target="#clustering-ordination-and-heatmaps">Clustering, ordination, and heatmaps</a></li>
+  <li><a href="#coverage-search-and-homonyms" id="toc-coverage-search-and-homonyms" class="nav-link" data-scroll-target="#coverage-search-and-homonyms">Coverage, search, and homonyms</a></li>
+  <li><a href="#save-and-restore-the-cache" id="toc-save-and-restore-the-cache" class="nav-link" data-scroll-target="#save-and-restore-the-cache">Save and restore the cache</a></li>
+  <li><a href="#use-the-offline-reference-data" id="toc-use-the-offline-reference-data" class="nav-link" data-scroll-target="#use-the-offline-reference-data">Use the offline reference data</a></li>
   <li><a href="#data-source-and-citation" id="toc-data-source-and-citation" class="nav-link" data-scroll-target="#data-source-and-citation">Data source and citation</a></li>
   </ul>
 </nav>
@@ -211,7 +227,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Introduction to taxodist</h1>
-<p class="subtitle lead">Learn how to compute taxonomic distances and retrieve phylogenetic lineages for any pair of taxa, from dinosaurs to bacteria.</p>
+<p class="subtitle lead">Retrieve ordered taxonomic lineages and compare hierarchy nodes in R or Python.</p>
 </div>
 
 
@@ -228,33 +244,58 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="what-is-taxodist" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-taxodist">What is taxodist?</h2>
-<p><code>taxodist</code> answers a simple question: <em>how related are any two living things?</em></p>
-<p>Given any two taxon names — a pair of dinosaurs, a dinosaur and a fungus, two species of fly, or an oak tree and a human — <code>taxodist</code> retrieves their full hierarchical lineages from <a href="http://taxonomicon.taxonomy.nl">The Taxonomicon</a> and computes a dissimilarity index between them.</p>
-<p>The Taxonomicon is based on <em>Systema Naturae 2000</em> (Brands, 1989 onwards) and provides exceptionally deep lineage resolution, substantially exceeding other programmatic sources.</p>
-<p>Searches work at any taxonomic level: genus, species, family, order, or any clade. Both <code>"Tyrannosaurus"</code> and <code>"Tyrannosaurus rex"</code> are valid inputs, as are <code>"Drosophila melanogaster"</code>, <code>"Homo sapiens"</code>, or <code>"Araucaria angustifolia"</code>.</p>
-<hr>
-</section>
-<section id="the-distance-metric" class="level2">
-<h2 class="anchored" data-anchor-id="the-distance-metric">The distance metric</h2>
-<p><code>taxodist</code> measures relatedness by asking a single question: <em>how deep is their most recent common ancestor?</em></p>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
+<p><code>taxodist</code> compares taxa through their positions in a taxonomic classification. Given a scientific name or a Taxonomicon numeric ID, it retrieves the corresponding ordered lineage from <a href="http://taxonomicon.taxonomy.nl">The Taxonomicon</a>.</p>
+<p>You can then use those lineages to:</p>
+<ul>
+<li>calculate the distance between two hierarchy nodes;</li>
+<li>identify their most recent common ancestor (MRCA);</li>
+<li>construct pairwise distance matrices for communities;</li>
+<li>inspect shared and divergent portions of lineages;</li>
+<li>test or filter clade membership;</li>
+<li>perform hierarchical clustering and principal coordinates analysis (PCoA);</li>
+<li>save retrieved lineages for later reuse.</li>
+</ul>
+<p>Names at different taxonomic levels are accepted. Examples include <code>"Tyrannosaurus"</code>, <code>"Tyrannosaurus rex"</code>, <code>"Dinosauria"</code>, <code>"Homo sapiens"</code>, and <code>"Drosophilidae"</code>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Terminology">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-body-container">
-<p>The deeper the shared ancestor, the smaller the distance — meaning the more related the two taxa are. A shallow MRCA (close to the root) means the two taxa diverged early; a deep MRCA means they share a long common history:</p>
-<p><span class="math display">\[d(A,B) = \frac{1}{\text{depth}(\text{MRCA}(A, B))}\]</span></p>
+<div class="callout-title-container flex-fill">
+Terminology
 </div>
 </div>
+<div class="callout-body-container callout-body">
+<p>Throughout this site, <strong>distance</strong> means distance between nodes in a taxonomic hierarchy. It does not mean phylogenetic branch length or elapsed evolutionary time.</p>
 </div>
-<p>This has a key property: taxa that diverged at the same point in the tree are always equidistant from any third taxon, regardless of how many nodes each has in its lineage below the split. For example:</p>
-<ul>
-<li><p><em>Tyrannosaurus</em> and <em>Velociraptor</em> are both Tetanurae: they diverged from <em>Carnotaurus</em> (Ceratosauria) at the same node (Averostra), so both have exactly the same distance to Carnotaurus.</p></li>
-<li><p>All dinosaurs diverged from the mammal lineage at the same node (Amniota), so <em>Homo sapiens</em> is equally distant from <em>Tyrannosaurus</em>, <em>Triceratops</em>, <em>Carnotaurus</em>, and <em>Cyanocorax</em>.</p></li>
-</ul>
-<p>The distance is bounded to <span class="math inline">\([0, 1]\)</span>, where 0 means identical taxa, 1 means the taxa share only the root as their most recent common ancestor, and smaller values reflect increasingly recent shared ancestry.</p>
-<hr>
+</div>
+</section>
+<section id="the-distance-definition" class="level2">
+<h2 class="anchored" data-anchor-id="the-distance-definition">The distance definition</h2>
+<p>For two ordered lineages, the MRCA is the final node in their continuous common prefix. The metric is</p>
+<p><span class="math display">\[
+d(A,B)=
+\begin{cases}
+0, &amp; \text{if the complete lineages of } A \text{ and } B \text{ are identical}, \\
+\dfrac{1}{\operatorname{depth}(\operatorname{MRCA}(A,B))}, &amp; \text{otherwise}.
+\end{cases}
+\]</span></p>
+<p>The root has depth 1. Consequently, distinct nodes sharing only that root have distance 1, while a deeper MRCA produces a smaller positive value.</p>
+<p>Zero is reserved for identical hierarchy nodes. If one queried node is an ancestor of the other, their distance remains positive. Use <code>is_member()</code> when your question is about containment and <code>taxo_path()</code> when you want to inspect the route between nodes.</p>
+<p>Within a connected hierarchy, this definition is an ultrametric. If two lineages share no root, their distance is infinite. If a lineage cannot be retrieved, the corresponding values are missing (<code>NA</code> in R and <code>NaN</code> in Python matrices).</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Interpretation">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Classification depth depends on the source and on which intermediate clades it records. These distances must not be interpreted as genetic divergence, morphological difference, evolutionary time, or phylogenetic branch length.</p>
+</div>
+</div>
 </section>
 <section id="installation" class="level2">
 <h2 class="anchored" data-anchor-id="installation">Installation</h2>
@@ -262,199 +303,339 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>Install the released package from CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"taxodist"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(taxodist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Install the development version from GitHub:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("remotes")</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"rodrigosqrt3/taxodist"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pip install taxodist</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> taxodist <span class="im">as</span> td</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Install the released package from PyPI:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install taxodist</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then import it:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> taxodist <span class="im">as</span> td</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Install the development version from GitHub:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install git+https://github.com/rodrigosqrt3/taxodist-py.git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
-<hr>
 </section>
-<section id="basic-usage" class="level2">
-<h2 class="anchored" data-anchor-id="basic-usage">Basic usage</h2>
-<section id="getting-a-lineage" class="level3">
-<h3 class="anchored" data-anchor-id="getting-a-lineage">Getting a lineage</h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>lin <span class="ot">&lt;-</span> <span class="fu">get_lineage</span>(<span class="st">"Tyrannosaurus"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(lin, <span class="dv">8</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "Avetheropoda"     "Coelurosauria"    "Tyrannoraptora"   "Tyrannosauroidea"</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] "Tyrannosauridae"  "Tyrannosaurinae"  "Tyrannosaurini"   "Tyrannosaurus"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Species-level searches also work:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>lin <span class="ot">&lt;-</span> <span class="fu">get_lineage</span>(<span class="st">"Drosophila melanogaster"</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(lin, <span class="dv">4</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "Ephydroidea"             "Drosophilidae"           "Drosophilinae"</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4] "Drosophila melanogaster"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="retrieve-a-lineage" class="level2">
+<h2 class="anchored" data-anchor-id="retrieve-a-lineage">Retrieve a lineage</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>lineage <span class="ot">&lt;-</span> <span class="fu">get_lineage</span>(<span class="st">"Tyrannosaurus"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>lineage</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(lineage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>lineage <span class="op">=</span> td.get_lineage(<span class="st">"Tyrannosaurus"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>lineage</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(lineage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<p>The returned character vector or list is ordered from the root to the queried node. Retrieval results are cached automatically during the session.</p>
+<p>You can also query a known numeric Taxonomicon ID directly:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_lineage_by_id</span>(<span class="st">"50841"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_lineage</span>(<span class="st">"50841"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>td.get_lineage_by_id(<span class="st">"50841"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>td.get_lineage(<span class="st">"50841"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
 </section>
-<section id="computing-distance-between-two-taxa" class="level3">
-<h3 class="anchored" data-anchor-id="computing-distance-between-two-taxa">Computing distance between two taxa</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">taxo_distance</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Velociraptor"</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(result)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -- Taxonomic Distance --</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Tyrannosaurus vs Velociraptor</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Distance : 0.0153846153846154</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   MRCA : Tyrannoraptora (depth 65)</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Depth A : 70</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Depth B : 73</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The distance grows as taxa become more distantly related:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">taxo_distance</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Homo"</span>)<span class="sc">$</span>distance        <span class="co"># 0.02777778</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">taxo_distance</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Drosophila"</span>)<span class="sc">$</span>distance  <span class="co"># 0.06666667</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">taxo_distance</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Quercus"</span>)<span class="sc">$</span>distance     <span class="co"># 0.25</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">taxo_distance</span>(<span class="st">"Escherichia"</span>, <span class="st">"Homo"</span>)<span class="sc">$</span>distance          <span class="co"># 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="compare-two-taxa" class="level2">
+<h2 class="anchored" data-anchor-id="compare-two-taxa">Compare two taxa</h2>
+<section id="taxonomic-distance" class="level3">
+<h3 class="anchored" data-anchor-id="taxonomic-distance">Taxonomic distance</h3>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">taxo_distance</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Velociraptor"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>result</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>distance</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>mrca</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>mrca_depth</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>depth_a</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>depth_b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> td.taxo_distance(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Velociraptor"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>result</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>result[<span class="st">"distance"</span>]</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>result[<span class="st">"mrca"</span>]</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>result[<span class="st">"mrca_depth"</span>]</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>result[<span class="st">"depth_a"</span>]</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>result[<span class="st">"depth_b"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<p>Examples on this site do not hard-code live distances or lineage depths. The Taxonomicon is an external, curated source, so classifications may change over time. Accessing the returned fields keeps the workflow valid when the source is updated.</p>
 </section>
-<section id="finding-the-most-recent-common-ancestor" class="level3">
-<h3 class="anchored" data-anchor-id="finding-the-most-recent-common-ancestor">Finding the most recent common ancestor</h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mrca</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Velociraptor"</span>)  <span class="co"># "Tyrannoraptora"</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mrca</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Triceratops"</span>)   <span class="co"># "Dinosauria"</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mrca</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Homo"</span>)          <span class="co"># "Amniota"</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mrca</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Drosophila"</span>)    <span class="co"># "Nephrozoa"</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mrca</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Quercus"</span>)       <span class="co"># "discaria"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr>
+<section id="most-recent-common-ancestor" class="level3">
+<h3 class="anchored" data-anchor-id="most-recent-common-ancestor">Most recent common ancestor</h3>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mrca</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Velociraptor"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mrca</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Triceratops"</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mrca</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Homo"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>td.mrca(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Velociraptor"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>td.mrca(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Triceratops"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>td.mrca(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Homo"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
 </section>
-</section>
-<section id="working-with-multiple-taxa" class="level2">
-<h2 class="anchored" data-anchor-id="working-with-multiple-taxa">Working with multiple taxa</h2>
-<section id="pairwise-distance-matrix" class="level3">
-<h3 class="anchored" data-anchor-id="pairwise-distance-matrix">Pairwise distance matrix</h3>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>taxa <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Tyrannosaurus"</span>, <span class="st">"Carnotaurus"</span>, <span class="st">"Triceratops"</span>,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Parasaurolophus"</span>, <span class="st">"Stegosaurus"</span>, <span class="st">"Brachiosaurus"</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Homo sapiens"</span>, <span class="st">"Homo neanderthalensis"</span>, <span class="st">"Pan troglodytes"</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Panthera leo"</span>, <span class="st">"Canis lupus"</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ornithorhynchus anatinus"</span>,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Loxodonta africana"</span>,</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Struthio camelus"</span>,</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Aptenodytes forsteri"</span>,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ara ararauna"</span>,</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Crocodylus niloticus"</span>,</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Chelonia mydas"</span>,</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ambystoma mexicanum"</span>,</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Octopus vulgaris"</span>,</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Carcharodon carcharias"</span>,</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Balaenoptera musculus"</span>,</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Drosophila melanogaster"</span>,</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Apis mellifera"</span>,</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Arabidopsis thaliana"</span>,</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Quercus robur"</span>,</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ginkgo biloba"</span>,</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Welwitschia mirabilis"</span>,</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Saccharomyces cerevisiae"</span>,</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Escherichia coli"</span>,</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Bacillus subtilis"</span>,</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Plasmodium falciparum"</span></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">distance_matrix</span>(taxa)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The matrix is symmetric with zeros on the diagonal.</p>
-</section>
-<section id="hierarchical-clustering" class="level3">
-<h3 class="anchored" data-anchor-id="hierarchical-clustering">Hierarchical clustering</h3>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cl <span class="ot">&lt;-</span> <span class="fu">taxo_cluster</span>(taxa)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="pcoa-ordination" class="level3">
-<h3 class="anchored" data-anchor-id="pcoa-ordination">PCoA ordination</h3>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ord <span class="ot">&lt;-</span> <span class="fu">taxo_ordinate</span>(taxa)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ord)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ord)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="heatmap" class="level3">
-<h3 class="anchored" data-anchor-id="heatmap">Heatmap</h3>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">taxo_heatmap</span>(taxa)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="finding-the-closest-relative" class="level3">
-<h3 class="anchored" data-anchor-id="finding-the-closest-relative">Finding the closest relative</h3>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">closest_relative</span>(</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Carnotaurus"</span>,</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"Aucasaurus"</span>, <span class="st">"Velociraptor"</span>, <span class="st">"Triceratops"</span>,</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Brachiosaurus"</span>, <span class="st">"Homo sapiens"</span>, <span class="st">"Apis mellifera"</span>)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            taxon   distance</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     Aucasaurus 0.01515152</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2   Velociraptor 0.01666667</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4  Brachiosaurus 0.01754386</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3    Triceratops 0.01818182</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5   Homo sapiens 0.02777778</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 Apis mellifera 0.06666667</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr>
+<section id="shared-lineage-and-path" class="level3">
+<h3 class="anchored" data-anchor-id="shared-lineage-and-path">Shared lineage and path</h3>
+<p><code>shared_clades()</code> returns the common trunk from the root through the MRCA. <code>taxo_path()</code> returns the route from the first node to the MRCA and then to the second node.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
+<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shared_clades</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Triceratops"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">compare_lineages</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Triceratops"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>path <span class="ot">&lt;-</span> <span class="fu">taxo_path</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Triceratops"</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>path</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>td.shared_clades(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Triceratops"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>td.compare_lineages(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Triceratops"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> td.taxo_path(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Triceratops"</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>path</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
-<section id="lineage-utilities" class="level2">
-<h2 class="anchored" data-anchor-id="lineage-utilities">Lineage utilities</h2>
-<section id="comparing-lineages-side-by-side" class="level3">
-<h3 class="anchored" data-anchor-id="comparing-lineages-side-by-side">Comparing lineages side by side</h3>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compare_lineages</span>(<span class="st">"Carnotaurus"</span>, <span class="st">"Tyrannosaurus"</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -- Lineage Comparison --</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MRCA: Averostra at depth 60</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Shared lineage (60 nodes):</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Biota ... Theropoda</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Carnotaurus only (7 nodes):</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Ceratosauria ... Carnotaurus</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Tyrannosaurus only (10 nodes):</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Tetanurae ... Tyrannosaurus</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="work-with-multiple-taxa" class="level2">
+<h2 class="anchored" data-anchor-id="work-with-multiple-taxa">Work with multiple taxa</h2>
+<p>Before analyzing a large set, inspect name coverage and resolve ambiguous or missing taxa. Each previously unseen taxon may require a network request; repeated retrievals use the session cache.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
+<div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>taxa <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Tyrannosaurus"</span>,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Velociraptor"</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Triceratops"</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Brachiosaurus"</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Homo sapiens"</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Panthera leo"</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>coverage <span class="ot">&lt;-</span> <span class="fu">check_coverage</span>(taxa)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>distances <span class="ot">&lt;-</span> <span class="fu">distance_matrix</span>(taxa)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>coverage</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>distances</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="fu">as.matrix</span>(distances)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>taxa <span class="op">=</span> [</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Tyrannosaurus"</span>,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Velociraptor"</span>,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Triceratops"</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Brachiosaurus"</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Homo sapiens"</span>,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Panthera leo"</span>,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>coverage <span class="op">=</span> td.check_coverage(taxa)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>distances <span class="op">=</span> td.distance_matrix(taxa)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>coverage</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>distances</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<p>In R, <code>distance_matrix()</code> returns a base <code>dist</code> object. Convert it with <code>as.matrix()</code> when a full square matrix is required. In Python, it returns a symmetric <code>pandas.DataFrame</code> with taxon names as row and column labels.</p>
+<p>Taxa that cannot be resolved remain represented in the result, with missing pairwise distances.</p>
+<section id="distances-from-one-focal-taxon" class="level3">
+<h3 class="anchored" data-anchor-id="distances-from-one-focal-taxon">Distances from one focal taxon</h3>
+<p><code>focal_distances()</code> includes the MRCA and its depth for every comparison. <code>closest_relative()</code> provides the simpler taxon-and-distance view.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
+<div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>community <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Velociraptor"</span>,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Triceratops"</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Brachiosaurus"</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Homo sapiens"</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="fu">focal_distances</span>(<span class="st">"Tyrannosaurus"</span>, community)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="fu">closest_relative</span>(<span class="st">"Tyrannosaurus"</span>, community)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>community <span class="op">=</span> [</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Velociraptor"</span>,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Triceratops"</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Brachiosaurus"</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Homo sapiens"</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>td.focal_distances(<span class="st">"Tyrannosaurus"</span>, community)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>td.closest_relative(<span class="st">"Tyrannosaurus"</span>, community)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
 </section>
-<section id="testing-and-filtering-by-clade" class="level3">
-<h3 class="anchored" data-anchor-id="testing-and-filtering-by-clade">Testing and filtering by clade</h3>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is_member</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Theropoda"</span>)          <span class="co"># TRUE</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">is_member</span>(<span class="st">"Triceratops"</span>, <span class="st">"Theropoda"</span>)            <span class="co"># FALSE</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">is_member</span>(<span class="st">"Homo sapiens"</span>, <span class="st">"Amniota"</span>)             <span class="co"># TRUE</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">filter_clade</span>(taxa, <span class="st">"Dinosauria"</span>)</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "Tyrannosaurus" "Carnotaurus" "Triceratops" "Velociraptor"</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">filter_clade</span>(taxa, <span class="st">"Theropoda"</span>)</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "Tyrannosaurus" "Carnotaurus" "Velociraptor"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr>
 </section>
+<section id="test-and-filter-clade-membership" class="level2">
+<h2 class="anchored" data-anchor-id="test-and-filter-clade-membership">Test and filter clade membership</h2>
+<p>Clade matching is exact, case-insensitive, and ignores surrounding whitespace. A partial string such as <code>"Dino"</code> does not match <code>"Dinosauria"</code>.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-9-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-1" role="tab" aria-controls="tabset-9-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-2" role="tab" aria-controls="tabset-9-2" aria-selected="false">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-9-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-9-1-tab">
+<div class="sourceCode" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is_member</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Theropoda"</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">is_member</span>(<span class="st">"Triceratops"</span>, <span class="st">"Theropoda"</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">filter_clade</span>(taxa, <span class="st">"Dinosauria"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-9-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-2-tab">
+<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>td.is_member(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Theropoda"</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>td.is_member(<span class="st">"Triceratops"</span>, <span class="st">"Theropoda"</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>td.filter_clade(taxa, <span class="st">"Dinosauria"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
 </section>
-<section id="coverage-and-caching" class="level2">
-<h2 class="anchored" data-anchor-id="coverage-and-caching">Coverage and caching</h2>
-<section id="checking-coverage-before-a-large-run" class="level3">
-<h3 class="anchored" data-anchor-id="checking-coverage-before-a-large-run">Checking coverage before a large run</h3>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>taxa <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Velociraptor"</span>, <span class="st">"Apis mellifera"</span>, <span class="st">"Fakeosaurus"</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">check_coverage</span>(taxa)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Tyrannosaurus  Velociraptor  Apis mellifera    Fakeosaurus</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           TRUE          TRUE            TRUE          FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Use <code>check_coverage()</code> to pre-screen a list before <code>distance_matrix()</code> — taxa returning <code>FALSE</code> will produce <code>NA</code> distances.</p>
-</section>
-<section id="persisting-the-cache-across-sessions" class="level3">
-<h3 class="anchored" data-anchor-id="persisting-the-cache-across-sessions">Persisting the cache across sessions</h3>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save_cache</span>(<span class="st">"my_taxa_cache.rds"</span>)   <span class="co"># end of session</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load_cache</span>(<span class="st">"my_taxa_cache.rds"</span>)   <span class="co"># start of next session, before any calls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-tip callout-titled">
+<section id="clustering-ordination-and-heatmaps" class="level2">
+<h2 class="anchored" data-anchor-id="clustering-ordination-and-heatmaps">Clustering, ordination, and heatmaps</h2>
+<p>The analysis helpers accept taxon names or a previously computed distance object.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-10-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-1" role="tab" aria-controls="tabset-10-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-10-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-2" role="tab" aria-controls="tabset-10-2" aria-selected="false">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-10-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-10-1-tab">
+<div class="sourceCode" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>distances <span class="ot">&lt;-</span> <span class="fu">distance_matrix</span>(taxa)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>cluster <span class="ot">&lt;-</span> <span class="fu">taxo_cluster</span>(distances)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>ordination <span class="ot">&lt;-</span> <span class="fu">taxo_ordinate</span>(distances, <span class="at">k =</span> <span class="dv">2</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cluster)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ordination)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ordination)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="fu">taxo_heatmap</span>(distances)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-10-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-2-tab">
+<div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>distances <span class="op">=</span> td.distance_matrix(taxa)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>cluster <span class="op">=</span> td.taxo_cluster(distances)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>ordination <span class="op">=</span> td.taxo_ordinate(distances, k<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>heatmap_data <span class="op">=</span> td.taxo_heatmap(distances)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Check the matrix first">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Optimization Tip
+Check the matrix first
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Save your session cache before running <code>distance_matrix()</code> on a large dataset. Because retrieved lineages are preserved locally in memory, reloading a saved cache avoids all subsequent network queries.</p>
+<p>Clustering, ordination, and heatmaps require at least two taxa and a finite, complete distance matrix. The helpers warn and return an empty analysis component when the matrix contains missing or infinite distances.</p>
 </div>
 </div>
-<hr>
+<p>The clustering dendrogram is a visualization of taxonomic hierarchy distances. It is not a phylogeny inferred from characters, sequences, or branch lengths.</p>
 </section>
+<section id="coverage-search-and-homonyms" class="level2">
+<h2 class="anchored" data-anchor-id="coverage-search-and-homonyms">Coverage, search, and homonyms</h2>
+<p>Use <code>check_coverage()</code> before a large calculation to identify names that cannot be resolved. Use <code>taxo_search()</code> to inspect possible Taxonomicon matches when a name is ambiguous or unexpected.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-11-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-1" role="tab" aria-controls="tabset-11-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-11-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-2" role="tab" aria-controls="tabset-11-2" aria-selected="false">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-11-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-11-1-tab">
+<div class="sourceCode" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_coverage</span>(<span class="fu">c</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Homo sapiens"</span>, <span class="st">"Fakeosaurus"</span>))</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">taxo_search</span>(<span class="st">"Bacteria"</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">get_taxonomicon_id</span>(<span class="st">"Tyrannosaurus"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-11-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-11-2-tab">
+<div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>td.check_coverage([<span class="st">"Tyrannosaurus"</span>, <span class="st">"Homo sapiens"</span>, <span class="st">"Fakeosaurus"</span>])</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>td.taxo_search(<span class="st">"Bacteria"</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>td.get_taxonomicon_id(<span class="st">"Tyrannosaurus"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<p>When reproducibility matters, record the resolved numeric ID and the retrieval date. This helps distinguish homonyms and documents which external classification was queried.</p>
 </section>
-<section id="a-note-on-lineage-depth" class="level2">
-<h2 class="anchored" data-anchor-id="a-note-on-lineage-depth">A note on lineage depth</h2>
-<p>The Taxonomicon provides substantially deeper lineage resolution than most other programmatic sources. <em>Tyrannosaurus</em> has 70 nodes in its lineage, capturing intermediate clades at the level of superfamilies, tribes, and named subclades absent from most sources. This depth is what makes the distance metric meaningful — shallower sources produce coarser distances that conflate distantly related groups.</p>
-<hr>
+<section id="save-and-restore-the-cache" class="level2">
+<h2 class="anchored" data-anchor-id="save-and-restore-the-cache">Save and restore the cache</h2>
+<p>Retrieved identifiers and lineages are cached in memory. Saving the cache avoids repeating those network requests in a later session.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-12-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-1" role="tab" aria-controls="tabset-12-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-12-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-2" role="tab" aria-controls="tabset-12-2" aria-selected="false">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-12-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-12-1-tab">
+<div class="sourceCode" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cache_info</span>()</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">save_cache</span>(<span class="st">"taxodist-cache.rds"</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">clear_cache</span>()</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">load_cache</span>(<span class="st">"taxodist-cache.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-12-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-12-2-tab">
+<div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>td.cache_info()</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>td.save_cache(<span class="st">"taxodist-cache.pkl"</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>td.clear_cache()</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>td.load_cache(<span class="st">"taxodist-cache.pkl"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<p>R and Python use different serialization formats, so their cache files are not interchangeable. Python cache files use <code>pickle</code>; only load files from sources you trust.</p>
+</section>
+<section id="use-the-offline-reference-data" class="level2">
+<h2 class="anchored" data-anchor-id="use-the-offline-reference-data">Use the offline reference data</h2>
+<p>The packaged <code>taxobase</code> object provides a fixed, offline dataset for examples, tests, and comparisons that must not depend on the availability or current state of The Taxonomicon.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-13-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-1" role="tab" aria-controls="tabset-13-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-13-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-2" role="tab" aria-controls="tabset-13-2" aria-selected="false">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-13-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-13-1-tab">
+<div class="sourceCode" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(taxobase, <span class="at">package =</span> <span class="st">"taxodist"</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(taxobase)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>taxobase<span class="sc">$</span>metadata</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-13-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-13-2-tab">
+<div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>taxobase <span class="op">=</span> td.load_taxobase()</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>taxobase.keys()</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>taxobase[<span class="st">"metadata"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<p>Release 0.6.0 distributes equivalent reference content in both packages, preserving component names, taxon order, matrices, examples, and provenance metadata. The native serialized package artifacts remain language-specific.</p>
 </section>
 <section id="data-source-and-citation" class="level2">
 <h2 class="anchored" data-anchor-id="data-source-and-citation">Data source and citation</h2>
-<p>All lineage data is sourced from The Taxonomicon (taxonomy.nl), based on <em>Systema Naturae 2000</em>:</p>
+<p>All live lineage data originate from The Taxonomicon, based on <em>Systema Naturae 2000</em>:</p>
 <blockquote class="blockquote">
-<p>Brands, S.J. (1989 onwards). <em>Systema Naturae 2000</em>. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, http://taxonomicon.taxonomy.nl.</p>
+<p>Brands, S.J. (1989 onwards). <em>Systema Naturae 2000</em>. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, <a href="http://taxonomicon.taxonomy.nl" class="uri">http://taxonomicon.taxonomy.nl</a>.</p>
 </blockquote>
-<p>Please cite this resource in any published work using <code>taxodist</code>.</p>
-<hr>
-<p><a href="./statistical-applications.html" class="btn btn-outline-primary" role="button">Continue to Statistical Applications →</a></p>
+<p>Published analyses should cite both the <code>taxodist</code> software and the underlying classification source.</p>
+<p><a href="./methodology.html" class="btn btn-outline-secondary" role="button">Read the Methodology →</a> <a href="./statistical-applications.html" class="btn btn-outline-primary" role="button">Continue to Statistical Applications →</a></p>
 
 
 </section>
@@ -809,7 +990,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">taxodist 0.6.0</div>   
+    <div class="nav-footer-center">Taxonomic hierarchy distances — not evolutionary time or branch length.</div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://cran.r-project.org/package=taxodist">R</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://pypi.org/project/taxodist/">Python</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/">App</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
 
 
 
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

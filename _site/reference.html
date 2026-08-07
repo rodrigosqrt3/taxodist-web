@@ -60,6 +60,7 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit"
   }
 }</script>
+<style>html{ scroll-behavior: smooth; }</style>
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -98,8 +99,16 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">    
         <li>
+    <a class="dropdown-item" href="./methodology.html" rel="" target="">
+ <span class="dropdown-text">Methodology</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="./statistical-applications.html" rel="" target="">
  <span class="dropdown-text">Statistical Applications</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./r-python-compatibility.html" rel="" target="">
+ <span class="dropdown-text">R/Python Compatibility</span></a>
   </li>  
     </ul>
   </li>
@@ -117,11 +126,27 @@ ul.task-list li input[type="checkbox"] {
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/rodrigosqrt3/taxodist" rel="" target=""><i class="bi bi-github" role="img" aria-label="GitHub">
-</i> 
- <span class="menu-text"></span></a>
+  <li class="nav-item">
+    <a class="nav-link" href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/" rel="" target="">
+ <span class="menu-text">Launch App ↗</span></a>
   </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-source" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text">Source</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-source">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/rodrigosqrt3/taxodist" rel="" target="">
+ <span class="dropdown-text">R source</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/rodrigosqrt3/taxodist-py" rel="" target="">
+ <span class="dropdown-text">Python source</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
             <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
@@ -139,41 +164,49 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#distance-computation" id="toc-distance-computation" class="nav-link active" data-scroll-target="#distance-computation">Distance Computation</a>
+  <li><a href="#taxon-retrieval-and-search" id="toc-taxon-retrieval-and-search" class="nav-link active" data-scroll-target="#taxon-retrieval-and-search">Taxon retrieval and search</a>
+  <ul class="collapse">
+  <li><a href="#get_taxonomicon_id" id="toc-get_taxonomicon_id" class="nav-link" data-scroll-target="#get_taxonomicon_id"><code>get_taxonomicon_id()</code></a></li>
+  <li><a href="#get_lineage_by_id" id="toc-get_lineage_by_id" class="nav-link" data-scroll-target="#get_lineage_by_id"><code>get_lineage_by_id()</code></a></li>
+  <li><a href="#get_lineage" id="toc-get_lineage" class="nav-link" data-scroll-target="#get_lineage"><code>get_lineage()</code></a></li>
+  <li><a href="#taxo_search" id="toc-taxo_search" class="nav-link" data-scroll-target="#taxo_search"><code>taxo_search()</code></a></li>
+  </ul></li>
+  <li><a href="#distance-computation" id="toc-distance-computation" class="nav-link" data-scroll-target="#distance-computation">Distance computation</a>
   <ul class="collapse">
   <li><a href="#taxo_distance" id="toc-taxo_distance" class="nav-link" data-scroll-target="#taxo_distance"><code>taxo_distance()</code></a></li>
+  <li><a href="#mrca" id="toc-mrca" class="nav-link" data-scroll-target="#mrca"><code>mrca()</code></a></li>
   <li><a href="#distance_matrix" id="toc-distance_matrix" class="nav-link" data-scroll-target="#distance_matrix"><code>distance_matrix()</code></a></li>
   <li><a href="#focal_distances" id="toc-focal_distances" class="nav-link" data-scroll-target="#focal_distances"><code>focal_distances()</code></a></li>
   <li><a href="#closest_relative" id="toc-closest_relative" class="nav-link" data-scroll-target="#closest_relative"><code>closest_relative()</code></a></li>
-  <li><a href="#mrca" id="toc-mrca" class="nav-link" data-scroll-target="#mrca"><code>mrca()</code></a></li>
+  <li><a href="#lineage_depth" id="toc-lineage_depth" class="nav-link" data-scroll-target="#lineage_depth"><code>lineage_depth()</code></a></li>
+  <li><a href="#check_coverage" id="toc-check_coverage" class="nav-link" data-scroll-target="#check_coverage"><code>check_coverage()</code></a></li>
   </ul></li>
-  <li><a href="#lineage-utilities" id="toc-lineage-utilities" class="nav-link" data-scroll-target="#lineage-utilities">Lineage Utilities</a>
+  <li><a href="#lineage-comparison-and-membership" id="toc-lineage-comparison-and-membership" class="nav-link" data-scroll-target="#lineage-comparison-and-membership">Lineage comparison and membership</a>
   <ul class="collapse">
-  <li><a href="#get_lineage" id="toc-get_lineage" class="nav-link" data-scroll-target="#get_lineage"><code>get_lineage()</code></a></li>
-  <li><a href="#get_lineage_by_id" id="toc-get_lineage_by_id" class="nav-link" data-scroll-target="#get_lineage_by_id"><code>get_lineage_by_id()</code></a></li>
-  <li><a href="#get_taxonomicon_id" id="toc-get_taxonomicon_id" class="nav-link" data-scroll-target="#get_taxonomicon_id"><code>get_taxonomicon_id()</code></a></li>
-  <li><a href="#taxo_search" id="toc-taxo_search" class="nav-link" data-scroll-target="#taxo_search"><code>taxo_search()</code></a></li>
   <li><a href="#compare_lineages" id="toc-compare_lineages" class="nav-link" data-scroll-target="#compare_lineages"><code>compare_lineages()</code></a></li>
   <li><a href="#shared_clades" id="toc-shared_clades" class="nav-link" data-scroll-target="#shared_clades"><code>shared_clades()</code></a></li>
   <li><a href="#taxo_path" id="toc-taxo_path" class="nav-link" data-scroll-target="#taxo_path"><code>taxo_path()</code></a></li>
-  <li><a href="#lineage_depth" id="toc-lineage_depth" class="nav-link" data-scroll-target="#lineage_depth"><code>lineage_depth()</code></a></li>
   <li><a href="#is_member" id="toc-is_member" class="nav-link" data-scroll-target="#is_member"><code>is_member()</code></a></li>
   <li><a href="#filter_clade" id="toc-filter_clade" class="nav-link" data-scroll-target="#filter_clade"><code>filter_clade()</code></a></li>
-  <li><a href="#check_coverage" id="toc-check_coverage" class="nav-link" data-scroll-target="#check_coverage"><code>check_coverage()</code></a></li>
   </ul></li>
-  <li><a href="#multivariate-analysis" id="toc-multivariate-analysis" class="nav-link" data-scroll-target="#multivariate-analysis">Multivariate Analysis</a>
+  <li><a href="#multivariate-analysis-and-visualization" id="toc-multivariate-analysis-and-visualization" class="nav-link" data-scroll-target="#multivariate-analysis-and-visualization">Multivariate analysis and visualization</a>
   <ul class="collapse">
   <li><a href="#taxo_cluster" id="toc-taxo_cluster" class="nav-link" data-scroll-target="#taxo_cluster"><code>taxo_cluster()</code></a></li>
   <li><a href="#taxo_ordinate" id="toc-taxo_ordinate" class="nav-link" data-scroll-target="#taxo_ordinate"><code>taxo_ordinate()</code></a></li>
   <li><a href="#taxo_heatmap" id="toc-taxo_heatmap" class="nav-link" data-scroll-target="#taxo_heatmap"><code>taxo_heatmap()</code></a></li>
   </ul></li>
-  <li><a href="#cache-management" id="toc-cache-management" class="nav-link" data-scroll-target="#cache-management">Cache Management</a>
+  <li><a href="#cache-management" id="toc-cache-management" class="nav-link" data-scroll-target="#cache-management">Cache management</a>
   <ul class="collapse">
-  <li><a href="#clear_cache" id="toc-clear_cache" class="nav-link" data-scroll-target="#clear_cache"><code>clear_cache()</code></a></li>
+  <li><a href="#cache_info" id="toc-cache_info" class="nav-link" data-scroll-target="#cache_info"><code>cache_info()</code></a></li>
   <li><a href="#save_cache" id="toc-save_cache" class="nav-link" data-scroll-target="#save_cache"><code>save_cache()</code></a></li>
   <li><a href="#load_cache" id="toc-load_cache" class="nav-link" data-scroll-target="#load_cache"><code>load_cache()</code></a></li>
-  <li><a href="#cache_info" id="toc-cache_info" class="nav-link" data-scroll-target="#cache_info"><code>cache_info()</code></a></li>
+  <li><a href="#clear_cache" id="toc-clear_cache" class="nav-link" data-scroll-target="#clear_cache"><code>clear_cache()</code></a></li>
   </ul></li>
+  <li><a href="#packaged-reference-data" id="toc-packaged-reference-data" class="nav-link" data-scroll-target="#packaged-reference-data">Packaged reference data</a>
+  <ul class="collapse">
+  <li><a href="#taxobase-load_taxobase" id="toc-taxobase-load_taxobase" class="nav-link" data-scroll-target="#taxobase-load_taxobase"><code>taxobase</code> / <code>load_taxobase()</code></a></li>
+  </ul></li>
+  <li><a href="#display-helpers" id="toc-display-helpers" class="nav-link" data-scroll-target="#display-helpers">Display helpers</a></li>
   </ul>
 </nav>
     </div>
@@ -183,7 +216,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Function Reference</h1>
-<p class="subtitle lead">Complete API reference for taxodist in R and Python. All functions are structurally equivalent across both ecosystems.</p>
+<p class="subtitle lead">Public API for taxodist 0.6.0 in R and Python.</p>
 </div>
 
 
@@ -198,251 +231,315 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="distance-computation" class="level2">
-<h2 class="anchored" data-anchor-id="distance-computation">Distance Computation</h2>
-<section id="taxo_distance" class="level3">
-<h3 class="anchored" data-anchor-id="taxo_distance"><code>taxo_distance()</code></h3>
-<p><strong>Signature:</strong> <code>taxo_distance(taxon_a, taxon_b)</code></p>
-<p>Computes the taxonomic distance between two taxa. Retrieves both lineages from The Taxonomicon, finds their most recent common ancestor (MRCA), and calculates the distance as <span class="math inline">\(1 / \text{depth}(\text{MRCA})\)</span>.</p>
-<ul>
-<li><strong>Returns:</strong> <code>named list</code> (R) or <code>dict</code> (Python) containing the following fields:
-<ul>
-<li><code>distance</code>: Numeric taxonomic distance.</li>
-<li><code>mrca</code>: Name of the most recent common ancestor.</li>
-<li><code>mrca_depth</code>: Hierarchical node depth of the MRCA.</li>
-<li><code>depth_a</code> / <code>depth_b</code>: Absolute lineage depths of both input taxa.</li>
-</ul></li>
-</ul>
-<hr>
-</section>
-<section id="distance_matrix" class="level3">
-<h3 class="anchored" data-anchor-id="distance_matrix"><code>distance_matrix()</code></h3>
-<p><strong>Signature:</strong> <code>distance_matrix(taxa)</code></p>
-<p>Computes the full symmetric pairwise distance matrix for a vector of taxon names. Lineages are cached in memory after first retrieval to avoid redundant network requests.</p>
-<ul>
-<li><strong>Returns:</strong> Standard <code>dist</code> object in R, or a <code>scipy</code>-compatible distance matrix (NumPy <code>ndarray</code>) in Python, with zeros on the diagonal. Taxa not present in the database are populated with <code>NA</code> / <code>None</code> distances.</li>
-</ul>
-<hr>
-</section>
-<section id="focal_distances" class="level3">
-<h3 class="anchored" data-anchor-id="focal_distances"><code>focal_distances()</code></h3>
-<p><strong>Signature:</strong> <code>focal_distances(focal, community)</code></p>
-<p>Computes taxonomic distances from a single focal taxon to all members of a community vector. This is equivalent to pulling a single row of a complete distance matrix, but operates with higher execution efficiency.</p>
-<ul>
-<li><strong>Returns:</strong> <code>named numeric vector</code> (R) or pandas <code>Series</code> (Python).</li>
-</ul>
-<hr>
-</section>
-<section id="closest_relative" class="level3">
-<h3 class="anchored" data-anchor-id="closest_relative"><code>closest_relative()</code></h3>
-<p><strong>Signature:</strong> <code>closest_relative(query, candidates)</code></p>
-<p>Identifies and ranks candidate taxa based on their taxonomic proximity to a query taxon. Useful for nearest-neighbor classification or phylogenetic sorting.</p>
-<ul>
-<li><strong>Returns:</strong> <code>data.frame</code> (R) or pandas <code>DataFrame</code> (Python) containing columns <code>taxon</code> and <code>distance</code> (sorted in ascending order).</li>
-</ul>
-<hr>
-</section>
-<section id="mrca" class="level3">
-<h3 class="anchored" data-anchor-id="mrca"><code>mrca()</code></h3>
-<p><strong>Signature:</strong> <code>mrca(taxon_a, taxon_b)</code></p>
-<p>Retrieves the name of the most recent common ancestor of two taxa as recorded in The Taxonomicon classification hierarchy.</p>
-<ul>
-<li><strong>Returns:</strong> <code>character string</code> (R) or <code>str</code> (Python).</li>
-</ul>
-<hr>
-</section>
-</section>
-<section id="lineage-utilities" class="level2">
-<h2 class="anchored" data-anchor-id="lineage-utilities">Lineage Utilities</h2>
-<section id="get_lineage" class="level3">
-<h3 class="anchored" data-anchor-id="get_lineage"><code>get_lineage()</code></h3>
-<p><strong>Signature:</strong> <code>get_lineage(taxon)</code></p>
-<p>Retrieves the full hierarchical lineage of a taxon by name, from the root node (Biota) down to the taxon itself. This function resolves classifications at any rank, including species, genus, family, order, or named clades. All successfully resolved lineages are stored in the local session cache.</p>
-<ul>
-<li><strong>Returns:</strong> <code>character vector</code> (R) or <code>list</code> of strings (Python).</li>
-</ul>
-<hr>
+<p>The R and Python implementations share the same distance semantics and principal function names. Native return types follow the conventions of each language.</p>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>R</th>
+<th>Python</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Missing scalar result</td>
+<td><code>NULL</code> or <code>NA</code></td>
+<td><code>None</code> or <code>NaN</code></td>
+</tr>
+<tr class="even">
+<td>Distance matrix</td>
+<td>Base R <code>dist</code></td>
+<td><code>pandas.DataFrame</code></td>
+</tr>
+<tr class="odd">
+<td>Structured result</td>
+<td>S3 list or data frame</td>
+<td><code>dict</code> or <code>pandas.DataFrame</code></td>
+</tr>
+<tr class="even">
+<td>Cache file</td>
+<td><code>.rds</code></td>
+<td><code>.pkl</code></td>
+</tr>
+</tbody>
+</table>
+<p>Unless stated otherwise, retrieval functions accept <code>verbose = FALSE</code> in R and <code>verbose=False</code> in Python.</p>
+<section id="taxon-retrieval-and-search" class="level2">
+<h2 class="anchored" data-anchor-id="taxon-retrieval-and-search">Taxon retrieval and search</h2>
+<section id="get_taxonomicon_id" class="level3">
+<h3 class="anchored" data-anchor-id="get_taxonomicon_id"><code>get_taxonomicon_id()</code></h3>
+<pre class="text"><code>R:      get_taxonomicon_id(taxon, verbose = FALSE)
+Python: get_taxonomicon_id(taxon, verbose=False)</code></pre>
+<p>Resolves a taxon name to a numeric Taxonomicon identifier. Astronomical entries are excluded. When several valid biological entries remain, the function warns before returning the first candidate.</p>
+<p><strong>Returns:</strong> a character string in R or <code>str</code> in Python; <code>NULL</code>/<code>None</code> if no valid identifier is found.</p>
 </section>
 <section id="get_lineage_by_id" class="level3">
 <h3 class="anchored" data-anchor-id="get_lineage_by_id"><code>get_lineage_by_id()</code></h3>
-<p><strong>Signature:</strong> <code>get_lineage_by_id(id)</code></p>
-<p>Retrieves and parses a complete hierarchical lineage using The Taxonomicon’s unique numeric identifier instead of a text name. This method bypasses name resolution and is recommended for programmatically resolving homonyms or historical classifications.</p>
-<ul>
-<li><strong>Returns:</strong> <code>character vector</code> (R) or <code>list</code> of strings (Python).</li>
-</ul>
-<hr>
+<pre class="text"><code>R:      get_lineage_by_id(taxon_id, clean = TRUE, verbose = FALSE)
+Python: get_lineage_by_id(taxon_id, clean=True, verbose=False)</code></pre>
+<p>Retrieves an ordered lineage for a numeric Taxonomicon ID. With <code>clean</code> enabled, formatting markers and nodes preceding <code>Biota</code> are removed when applicable.</p>
+<p><strong>Returns:</strong> a character vector in R or list of strings in Python, ordered from root to queried node; <code>NULL</code>/<code>None</code> for an invalid or unresolved ID.</p>
 </section>
-<section id="get_taxonomicon_id" class="level3">
-<h3 class="anchored" data-anchor-id="get_taxonomicon_id"><code>get_taxonomicon_id()</code></h3>
-<p><strong>Signature:</strong> <code>get_taxonomicon_id(taxon)</code></p>
-<p>Resolves a text taxon name to its corresponding numeric Taxonomicon database identifier. It returns the identifier of the first valid taxonomic match. For highly ambiguous queries or homonyms, use <code>taxo_search()</code> first to inspect all possible matches.</p>
-<ul>
-<li><strong>Returns:</strong> <code>integer</code> (R) or <code>int</code> (Python).</li>
-</ul>
-<hr>
+<section id="get_lineage" class="level3">
+<h3 class="anchored" data-anchor-id="get_lineage"><code>get_lineage()</code></h3>
+<pre class="text"><code>R:      get_lineage(taxon, clean = TRUE, verbose = FALSE)
+Python: get_lineage(taxon, clean=True, verbose=False)</code></pre>
+<p>Convenience wrapper combining name resolution and lineage retrieval. A numeric ID supplied as a string bypasses name search.</p>
+<p><strong>Returns:</strong> a character vector in R or list of strings in Python; <code>NULL</code>/<code>None</code> if unresolved.</p>
 </section>
 <section id="taxo_search" class="level3">
 <h3 class="anchored" data-anchor-id="taxo_search"><code>taxo_search()</code></h3>
-<p><strong>Signature:</strong> <code>taxo_search(query)</code></p>
-<p>Queries The Taxonomicon database for all biological entries matching the specified query string. This is used to resolve homonym ambiguities, evaluate taxonomic synonyms, or locate the precise numeric database ID for a genus or species.</p>
-<ul>
-<li><strong>Returns:</strong> <code>data.frame</code> (R) or pandas <code>DataFrame</code> (Python) containing columns:
-<ul>
-<li><code>id</code>: The numeric Taxonomicon ID.</li>
-<li><code>name</code>: The full taxon description, including author and publication year annotations.</li>
-<li><code>rank</code>: The assigned taxonomic rank.</li>
-<li><code>accepted_name</code>: The current accepted name according to Systema Naturae 2000.</li>
-</ul></li>
-</ul>
-<hr>
+<pre class="text"><code>R:      taxo_search(taxon, verbose = FALSE)
+Python: taxo_search(taxon, verbose=False)</code></pre>
+<p>Lists biological Taxonomicon search results after removing astronomical entries and duplicate identifiers.</p>
+<p><strong>Returns:</strong> a data frame with columns <code>id</code> and <code>name</code>, or <code>NULL</code>/<code>None</code> when no matches are found.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Reproducible name resolution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Reproducible name resolution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For ambiguous names, inspect <code>taxo_search()</code> and record the selected numeric ID and retrieval date. The Taxonomicon is external to the package and its classifications may change.</p>
+</div>
+</div>
 </section>
-<section id="compare_lineages" class="level3">
-<h3 class="anchored" data-anchor-id="compare_lineages"><code>compare_lineages()</code></h3>
-<p><strong>Signature:</strong> <code>compare_lineages(taxon_a, taxon_b)</code></p>
-<p>Generates a comparative side-by-side printout of two complete taxonomic lineages. It aligns both hierarchies, isolating the shared ancestral trunk up to their most recent common ancestor, and lists the unique diverging clades for each taxon below the split.</p>
-<ul>
-<li><strong>Returns:</strong> Invisibly returns a <code>list</code> (R) or <code>dict</code> (Python) containing the following fields:
-<ul>
-<li><code>shared</code>: Lineage path shared by both taxa up to the MRCA.</li>
-<li><code>unique_a</code>: Unique ancestral nodes for taxon A.</li>
-<li><code>unique_b</code>: Unique ancestral nodes for taxon B.</li>
-</ul></li>
-</ul>
-<hr>
 </section>
-<section id="shared_clades" class="level3">
-<h3 class="anchored" data-anchor-id="shared_clades"><code>shared_clades()</code></h3>
-<p><strong>Signature:</strong> <code>shared_clades(taxon_a, taxon_b)</code></p>
-<p>Extracts the shared portion of the taxonomic lineage between two taxa, representing all overlapping hierarchical nodes from the root (Biota) down to and including their MRCA.</p>
-<ul>
-<li><strong>Returns:</strong> <code>character vector</code> (R) or <code>list</code> of strings (Python).</li>
-</ul>
-<hr>
+<section id="distance-computation" class="level2">
+<h2 class="anchored" data-anchor-id="distance-computation">Distance computation</h2>
+<section id="taxo_distance" class="level3">
+<h3 class="anchored" data-anchor-id="taxo_distance"><code>taxo_distance()</code></h3>
+<pre class="text"><code>R:      taxo_distance(taxon_a, taxon_b, verbose = FALSE)
+Python: taxo_distance(taxon_a, taxon_b, verbose=False)</code></pre>
+<p>Retrieves both ordered lineages and computes</p>
+<p><span class="math display">\[
+d(A,B)=
+\begin{cases}
+0, &amp; \text{identical complete lineages}, \\
+1 / \operatorname{depth}(\operatorname{MRCA}(A,B)), &amp; \text{otherwise}.
+\end{cases}
+\]</span></p>
+<p>MRCA detection uses only the continuous common prefix from the root. Distinct ancestor–descendant nodes therefore retain a positive distance. Lineages without a shared root have infinite distance and no MRCA.</p>
+<p><strong>Returns:</strong> an S3 list in R or <code>dict</code> in Python with:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>distance</code></td>
+<td>Numeric hierarchy distance</td>
+</tr>
+<tr class="even">
+<td><code>mrca</code></td>
+<td>MRCA name, or missing when no root is shared</td>
+</tr>
+<tr class="odd">
+<td><code>mrca_depth</code></td>
+<td>Number of nodes from root through the MRCA</td>
+</tr>
+<tr class="even">
+<td><code>depth_a</code>, <code>depth_b</code></td>
+<td>Complete lineage depths</td>
+</tr>
+<tr class="odd">
+<td><code>taxon_a</code>, <code>taxon_b</code></td>
+<td>Input labels</td>
+</tr>
+</tbody>
+</table>
+<p>Returns <code>NULL</code>/<code>None</code> if either lineage cannot be retrieved.</p>
 </section>
-<section id="taxo_path" class="level3">
-<h3 class="anchored" data-anchor-id="taxo_path"><code>taxo_path()</code></h3>
-<p><strong>Signature:</strong> <code>taxo_path(taxon_a, taxon_b)</code></p>
-<p>Traces the node-by-node path connecting two taxa through the taxonomic hierarchy, ascending from taxon A up to their MRCA, and then descending down to taxon B. This maps the shortest topological path between both entities.</p>
-<ul>
-<li><strong>Returns:</strong> <code>character vector</code> (R) or <code>list</code> of strings (Python).</li>
-</ul>
-<hr>
+<section id="mrca" class="level3">
+<h3 class="anchored" data-anchor-id="mrca"><code>mrca()</code></h3>
+<pre class="text"><code>R:      mrca(taxon_a, taxon_b, verbose = FALSE)
+Python: mrca(taxon_a, taxon_b, verbose=False)</code></pre>
+<p>Returns only the MRCA name from <code>taxo_distance()</code>. The result is <code>NULL</code>/<code>None</code> if retrieval fails or the lineages share no ancestor.</p>
+</section>
+<section id="distance_matrix" class="level3">
+<h3 class="anchored" data-anchor-id="distance_matrix"><code>distance_matrix()</code></h3>
+<pre class="text"><code>R:      distance_matrix(taxa, verbose = FALSE, progress = TRUE)
+Python: distance_matrix(taxa, verbose=False, progress=True)</code></pre>
+<p>Retrieves each lineage once and computes all pairwise distances. Input order and labels are preserved. Unresolved taxa receive missing off-diagonal comparisons; the diagonal is zero.</p>
+<p><strong>Returns:</strong> a <code>dist</code> object in R or symmetric <code>pandas.DataFrame</code> in Python. Empty input returns a correctly shaped empty object.</p>
+</section>
+<section id="focal_distances" class="level3">
+<h3 class="anchored" data-anchor-id="focal_distances"><code>focal_distances()</code></h3>
+<pre class="text"><code>R:      focal_distances(focal, community, verbose = FALSE, progress = TRUE)
+Python: focal_distances(focal, community, verbose=False, progress=True)</code></pre>
+<p>Computes the distance from one focal taxon to each community member and sorts finite results from smallest to largest.</p>
+<p><strong>Returns:</strong> a data frame with columns <code>taxon</code>, <code>distance</code>, <code>mrca</code>, and <code>mrca_depth</code>. The focal name is retained as object metadata. Returns <code>NULL</code>/<code>None</code> if the focal lineage is unavailable.</p>
+</section>
+<section id="closest_relative" class="level3">
+<h3 class="anchored" data-anchor-id="closest_relative"><code>closest_relative()</code></h3>
+<pre class="text"><code>R:      closest_relative(taxon, candidates, verbose = FALSE)
+Python: closest_relative(taxon, candidates, verbose=False)</code></pre>
+<p>Ranks candidate taxa by distance from the query taxon.</p>
+<p><strong>Returns:</strong> a data frame with columns <code>taxon</code> and <code>distance</code>, sorted ascending with missing values last. Returns <code>NULL</code>/<code>None</code> if the query lineage is unavailable.</p>
 </section>
 <section id="lineage_depth" class="level3">
 <h3 class="anchored" data-anchor-id="lineage_depth"><code>lineage_depth()</code></h3>
-<p><strong>Signature:</strong> <code>lineage_depth(taxon)</code></p>
-<p>Calculates the absolute number of taxonomic nodes present in a taxon’s lineage from root to tip. This measures how fully resolved the hierarchy of a given clade is within The Taxonomicon database.</p>
-<ul>
-<li><strong>Returns:</strong> <code>integer</code> (R) or <code>int</code> (Python).</li>
-</ul>
-<hr>
-</section>
-<section id="is_member" class="level3">
-<h3 class="anchored" data-anchor-id="is_member"><code>is_member()</code></h3>
-<p><strong>Signature:</strong> <code>is_member(taxon, clade)</code></p>
-<p>Evaluates whether a target taxon is nested within a specified clade. This is determined by verifying whether the target clade name is present in the taxon’s hierarchical lineage.</p>
-<ul>
-<li><strong>Returns:</strong> <code>logical</code> (R) or <code>bool</code> (Python).</li>
-</ul>
-<hr>
-</section>
-<section id="filter_clade" class="level3">
-<h3 class="anchored" data-anchor-id="filter_clade"><code>filter_clade()</code></h3>
-<p><strong>Signature:</strong> <code>filter_clade(taxa, clade)</code></p>
-<p>Filters a vector of taxonomic names, retaining only those individuals that belong to the specified clade. This serves as a set operation tool to isolate specific evolutionary groups from broad ecological communities.</p>
-<ul>
-<li><strong>Returns:</strong> <code>character vector</code> (R) or <code>list</code> of strings (Python).</li>
-</ul>
-<hr>
+<pre class="text"><code>R:      lineage_depth(taxon, verbose = FALSE)
+Python: lineage_depth(taxon, verbose=False)</code></pre>
+<p>Returns the number of nodes in the retrieved lineage, including root and queried node. This is classification resolution, not elapsed time.</p>
 </section>
 <section id="check_coverage" class="level3">
 <h3 class="anchored" data-anchor-id="check_coverage"><code>check_coverage()</code></h3>
-<p><strong>Signature:</strong> <code>check_coverage(taxa)</code></p>
-<p>Cross-references a list of taxon names against The Taxonomicon database to verify their presence. This serves as a pre-screening step before executing larger distance computations, as unrecognized taxa will return <code>NA</code> distance values.</p>
+<pre class="text"><code>R:      check_coverage(taxa, verbose = FALSE)
+Python: check_coverage(taxa, verbose=False)</code></pre>
+<p>Checks whether each input can be resolved to a Taxonomicon identifier.</p>
+<p><strong>Returns:</strong> a named logical vector in R or Boolean <code>pandas.Series</code> in Python.</p>
+</section>
+</section>
+<section id="lineage-comparison-and-membership" class="level2">
+<h2 class="anchored" data-anchor-id="lineage-comparison-and-membership">Lineage comparison and membership</h2>
+<section id="compare_lineages" class="level3">
+<h3 class="anchored" data-anchor-id="compare_lineages"><code>compare_lineages()</code></h3>
+<pre class="text"><code>R:      compare_lineages(taxon_a, taxon_b, verbose = FALSE)
+Python: compare_lineages(taxon_a, taxon_b, verbose=False)</code></pre>
+<p>Prints the common lineage and the nodes unique to each side after divergence.</p>
+<p><strong>Returns:</strong> invisibly in R, and directly in Python, an object containing <code>lineage_a</code>, <code>lineage_b</code>, and <code>mrca_depth</code>.</p>
+</section>
+<section id="shared_clades" class="level3">
+<h3 class="anchored" data-anchor-id="shared_clades"><code>shared_clades()</code></h3>
+<pre class="text"><code>R:      shared_clades(taxon_a, taxon_b, verbose = FALSE)
+Python: shared_clades(taxon_a, taxon_b, verbose=False)</code></pre>
+<p>Returns the continuous common prefix from root through the MRCA. A pair with no common ancestor returns an empty vector/list; failed retrieval returns <code>NULL</code>/<code>None</code>.</p>
+</section>
+<section id="taxo_path" class="level3">
+<h3 class="anchored" data-anchor-id="taxo_path"><code>taxo_path()</code></h3>
+<pre class="text"><code>R:      taxo_path(taxon_a, taxon_b, verbose = FALSE)
+Python: taxo_path(taxon_a, taxon_b, verbose=False)</code></pre>
+<p>Constructs the route from taxon A upward to the MRCA and downward to taxon B.</p>
+<p><strong>Returns:</strong> a data frame with one row per node and columns:</p>
 <ul>
-<li><strong>Returns:</strong> Named <code>logical vector</code> (R) or pandas <code>Series</code> of booleans (Python).</li>
+<li><code>node</code>: hierarchy node name;</li>
+<li><code>depth</code>: depth in the complete lineage;</li>
+<li><code>direction</code>: <code>"a"</code>, <code>"mrca"</code>, or <code>"b"</code>.</li>
 </ul>
-<hr>
+<p>The input labels are retained as object metadata. Returns <code>NULL</code>/<code>None</code> if retrieval fails or no common ancestor exists.</p>
+</section>
+<section id="is_member" class="level3">
+<h3 class="anchored" data-anchor-id="is_member"><code>is_member()</code></h3>
+<pre class="text"><code>R:      is_member(taxon, clade, verbose = FALSE)
+Python: is_member(taxon, clade, verbose=False)</code></pre>
+<p>Tests whether the complete clade name occurs in the taxon’s lineage. Matching is exact, case-insensitive, and ignores surrounding whitespace.</p>
+<p><strong>Returns:</strong> logical/Boolean, or <code>NULL</code>/<code>None</code> if the taxon cannot be retrieved.</p>
+</section>
+<section id="filter_clade" class="level3">
+<h3 class="anchored" data-anchor-id="filter_clade"><code>filter_clade()</code></h3>
+<pre class="text"><code>R:      filter_clade(taxa, clade, verbose = FALSE)
+Python: filter_clade(taxa, clade, verbose=False)</code></pre>
+<p>Returns only input taxa for which <code>is_member()</code> is true. Unresolved taxa are omitted.</p>
 </section>
 </section>
-<section id="multivariate-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="multivariate-analysis">Multivariate Analysis</h2>
+<section id="multivariate-analysis-and-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="multivariate-analysis-and-visualization">Multivariate analysis and visualization</h2>
 <section id="taxo_cluster" class="level3">
 <h3 class="anchored" data-anchor-id="taxo_cluster"><code>taxo_cluster()</code></h3>
-<p><strong>Signature:</strong> <code>taxo_cluster(taxa, method = "average")</code></p>
-<p>Executes hierarchical clustering on a calculated taxonomic distance matrix. The default clustering algorithm is UPGMA (<code>"average"</code>), which preserves taxonomic distance properties. The output object integrates directly with standard plotting methods and phylogenetics pipelines.</p>
+<pre class="text"><code>R:      taxo_cluster(taxa, method = "average", ...)
+Python: taxo_cluster(taxa, method="average", **kwargs)</code></pre>
+<p>Accepts taxon names or a previously computed distance object. The default is average-linkage hierarchical clustering.</p>
+<p><strong>Returns:</strong></p>
 <ul>
-<li><strong>Returns:</strong> A custom list object containing:
-<ul>
-<li><code>hclust</code>: The standard R <code>hclust</code> object (which can be cast to a phylogenetic tree via <code>ape::as.phylo()</code>).</li>
-<li><code>dist</code>: The underlying symmetric taxonomic distance matrix.</li>
-</ul></li>
+<li>R: a <code>taxodist_cluster</code> list with <code>hclust</code> and <code>dist</code>;</li>
+<li>Python: a dictionary with <code>hclust</code> (SciPy linkage matrix) and <code>dist</code>.</li>
 </ul>
-<hr>
+<p>If the matrix contains missing or infinite values, or represents fewer than two taxa, clustering is skipped and <code>hclust</code> is <code>NULL</code>/<code>None</code>.</p>
 </section>
 <section id="taxo_ordinate" class="level3">
 <h3 class="anchored" data-anchor-id="taxo_ordinate"><code>taxo_ordinate()</code></h3>
-<p><strong>Signature:</strong> <code>taxo_ordinate(taxa_or_dist)</code></p>
-<p>Applies classical multidimensional scaling (Principal Coordinate Analysis, PCoA) to project a taxonomic distance matrix into a low-dimensional Euclidean space. This function accepts either a raw vector of taxon names or a pre-computed distance matrix of class <code>"dist"</code>.</p>
-<ul>
-<li><strong>Returns:</strong> A structured list containing:
-<ul>
-<li><code>points</code>: A numeric coordinate matrix of dimensions <span class="math inline">\(N \times K\)</span>.</li>
-<li><code>eigenvalues</code>: Eigenvalues computed for each PCoA axis.</li>
-<li><code>gof</code>: Goodness-of-fit statistics.</li>
-</ul></li>
-</ul>
-<hr>
+<pre class="text"><code>R:      taxo_ordinate(taxa, k = 2, ...)
+Python: taxo_ordinate(taxa, k=2, **kwargs)</code></pre>
+<p>Performs classical multidimensional scaling (PCoA). The requested <code>k</code> must be a positive integer and is reduced to at most <span class="math inline">\(n-1\)</span>.</p>
+<p><strong>Returns:</strong> an S3 list or dictionary with <code>points</code>, <code>dist</code>, <code>GOF</code>, and <code>eig</code>. Invalid matrices return the same structure with empty analysis components.</p>
 </section>
 <section id="taxo_heatmap" class="level3">
 <h3 class="anchored" data-anchor-id="taxo_heatmap"><code>taxo_heatmap()</code></h3>
-<p><strong>Signature:</strong> <code>taxo_heatmap(taxa_or_dist)</code></p>
-<p>Generates a spatial distance heatmap with marginal dendrograms. The rows and columns are automatically reordered based on UPGMA hierarchical clustering. It accepts either a raw list of taxa or a pre-computed distance matrix.</p>
-<ul>
-<li><strong>Returns:</strong> Invisibly returns the underlying plot object or active graphical device.</li>
-</ul>
-<hr>
+<pre class="text"><code>R:      taxo_heatmap(taxa, ...)
+Python: taxo_heatmap(taxa, **kwargs)</code></pre>
+<p>Plots the distance matrix with clustered rows and columns. R passes additional arguments to <code>stats::heatmap()</code>; Python passes them to <code>seaborn.clustermap()</code>.</p>
+<p><strong>Returns:</strong> the underlying <code>dist</code> object invisibly in R or the underlying <code>pandas.DataFrame</code> in Python. Plotting is skipped for incomplete, infinite, or undersized matrices.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Interpretation of analysis output">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Interpretation of analysis output
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Clustering, PCoA, and heatmaps summarize the supplied classification-depth distances. They do not infer phylogenetic history or evolutionary branch lengths.</p>
+</div>
+</div>
 </section>
 </section>
 <section id="cache-management" class="level2">
-<h2 class="anchored" data-anchor-id="cache-management">Cache Management</h2>
-<section id="clear_cache" class="level3">
-<h3 class="anchored" data-anchor-id="clear_cache"><code>clear_cache()</code></h3>
-<p><strong>Signature:</strong> <code>clear_cache()</code></p>
-<p>Purges all taxonomic lineages and database identifiers currently preserved in the session-level memory cache. Subsequent calculations will require fresh HTTP queries to the database server.</p>
-<ul>
-<li><strong>Returns:</strong> Invisibly returns <code>NULL</code> (R) or <code>None</code> (Python).</li>
-</ul>
-<hr>
+<h2 class="anchored" data-anchor-id="cache-management">Cache management</h2>
+<section id="cache_info" class="level3">
+<h3 class="anchored" data-anchor-id="cache_info"><code>cache_info()</code></h3>
+<pre class="text"><code>cache_info()</code></pre>
+<p>Prints and returns counts of cached lineages and identifiers, stored lineage keys, and approximate memory use. The return fields are <code>n_lineages</code>, <code>n_ids</code>, <code>taxa</code>, and <code>size_bytes</code>.</p>
 </section>
 <section id="save_cache" class="level3">
 <h3 class="anchored" data-anchor-id="save_cache"><code>save_cache()</code></h3>
-<p><strong>Signature:</strong> <code>save_cache(path)</code></p>
-<p>Serializes the active in-memory session cache to disk as an <code>.rds</code> file (R) or a <code>.pkl</code> file (Python). This preserves parsed classifications and avoids repeating network requests in future analytical sessions.</p>
-<ul>
-<li><strong>Returns:</strong> Invisibly returns the serialized path string.</li>
-</ul>
-<hr>
+<pre class="text"><code>R:      save_cache(file)
+Python: save_cache(file)</code></pre>
+<p>Serializes the current cache to an R <code>.rds</code> file or Python <code>.pkl</code> file. Returns invisibly <code>NULL</code> in R and <code>None</code> in Python.</p>
 </section>
 <section id="load_cache" class="level3">
 <h3 class="anchored" data-anchor-id="load_cache"><code>load_cache()</code></h3>
-<p><strong>Signature:</strong> <code>load_cache(path)</code></p>
-<p>Restores a serialized cache from disk back into your active programming environment. This merges the stored classifications with your current session cache, preventing redundant network requests.</p>
-<ul>
-<li><strong>Returns:</strong> Invisibly returns <code>NULL</code> (R) or <code>None</code> (Python).</li>
-</ul>
-<hr>
+<pre class="text"><code>R:      load_cache(file)
+Python: load_cache(file)</code></pre>
+<p>Validates and restores a previously saved cache. Validation occurs before the active cache is modified. R and Python cache files are not interchangeable.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Python cache security">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Python cache security
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Python cache files use <code>pickle</code>. Only load <code>.pkl</code> files from trusted sources, because unpickling untrusted data can execute arbitrary code.</p>
+</div>
+</div>
 </section>
-<section id="cache_info" class="level3">
-<h3 class="anchored" data-anchor-id="cache_info"><code>cache_info()</code></h3>
-<p><strong>Signature:</strong> <code>cache_info()</code></p>
-<p>Generates a diagnostic report summarizing the active session cache. It reports the total number of cached lineages, resolved database identifiers, active memory consumption (in bytes), and a preview of cached taxonomic names.</p>
-<ul>
-<li><strong>Returns:</strong> Prints structural summary statistics to the console, and invisibly returns a diagnostic <code>list</code> (R) or <code>dict</code> (Python).</li>
-</ul>
+<section id="clear_cache" class="level3">
+<h3 class="anchored" data-anchor-id="clear_cache"><code>clear_cache()</code></h3>
+<pre class="text"><code>clear_cache()</code></pre>
+<p>Removes all identifiers and lineages cached in the current session. Returns invisibly <code>NULL</code> in R and <code>None</code> in Python.</p>
+</section>
+</section>
+<section id="packaged-reference-data" class="level2">
+<h2 class="anchored" data-anchor-id="packaged-reference-data">Packaged reference data</h2>
+<section id="taxobase-load_taxobase" class="level3">
+<h3 class="anchored" data-anchor-id="taxobase-load_taxobase"><code>taxobase</code> / <code>load_taxobase()</code></h3>
+<pre class="text"><code>R:      data(taxobase, package = "taxodist")
+Python: taxobase = load_taxobase()</code></pre>
+<p>Loads the fixed reference object distributed with release 0.6.0. Components include taxa, coverage, lineages, pairwise examples, search results, general and statistical distance matrices, and provenance metadata.</p>
+<p>R stores distance components as <code>dist</code>; Python converts matrix components to labeled <code>pandas.DataFrame</code> objects.</p>
+</section>
+</section>
+<section id="display-helpers" class="level2">
+<h2 class="anchored" data-anchor-id="display-helpers">Display helpers</h2>
+<p>R uses S3 methods for distance results, focal results, paths, clusters, and ordinations. Python exposes corresponding helpers including <code>print_taxodist_result()</code>, <code>print_taxodist_path()</code>, <code>plot_taxodist_cluster()</code>, <code>plot_taxodist_ord()</code>, and <code>summary_taxodist_ord()</code>.</p>
+<p>For complete argument documentation in R, run <code>help(package = "taxodist")</code>. In Python, use <code>help(taxodist.function_name)</code>.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -795,7 +892,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">taxodist 0.6.0</div>   
+    <div class="nav-footer-center">Taxonomic hierarchy distances — not evolutionary time or branch length.</div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://cran.r-project.org/package=taxodist">R</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://pypi.org/project/taxodist/">Python</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/">App</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
 
 
 
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>
