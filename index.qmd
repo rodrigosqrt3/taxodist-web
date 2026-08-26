@@ -7,7 +7,7 @@ toc: false
 ::: {.g-col-12 .g-col-md-9}
 # taxodist
 
-Taxonomic hierarchy distances and lineage analysis in R and Python
+Taxonomic hierarchy distances and lineage analysis in R, Python, and Julia
 :::
 
 ::: {.g-col-12 .g-col-md-3 .text-center}
@@ -15,9 +15,9 @@ Taxonomic hierarchy distances and lineage analysis in R and Python
 :::
 :::
 
-[![CRAN status](https://img.shields.io/cran/v/taxodist?color=green)](https://cran.r-project.org/package=taxodist) &nbsp; [![PyPI version](https://img.shields.io/pypi/v/taxodist?color=green)](https://pypi.org/project/taxodist)
+[![CRAN status](https://img.shields.io/cran/v/taxodist?color=green)](https://cran.r-project.org/package=taxodist) &nbsp; [![PyPI version](https://img.shields.io/pypi/v/taxodist?color=green)](https://pypi.org/project/taxodist) &nbsp; [![JuliaHub version](https://juliahub.com/docs/Taxodist/version.svg)](https://platform.juliahub.com/ui/Packages/General/Taxodist/)
 
-`taxodist` retrieves ordered taxonomic lineages from [The Taxonomicon](http://taxonomicon.taxonomy.nl) and compares hierarchy nodes through the depth of their most recent common ancestor (MRCA). The R and Python packages implement the same distance definition and lineage semantics.
+`taxodist` retrieves ordered taxonomic lineages from [The Taxonomicon](http://taxonomicon.taxonomy.nl) and compares hierarchy nodes through the depth of their most recent common ancestor (MRCA). The R, Python, and Julia packages implement the same distance definition and lineage semantics.
 
 [Get started](getting-started.qmd){.btn .btn-primary role="button"} [Launch the web app ↗](https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/){.btn .btn-outline-primary role="button"} [Browse the API](reference.qmd){.btn .btn-outline-secondary role="button"}
 
@@ -49,6 +49,7 @@ Within each connected hierarchy, the definition is an ultrametric. Lineages with
 |---|---|---|
 | R | [CRAN](https://cran.r-project.org/package=taxodist) and [source code](https://github.com/rodrigosqrt3/taxodist) | Base R `dist` objects and S3 analysis methods |
 | Python | [PyPI](https://pypi.org/project/taxodist) and [source code](https://github.com/rodrigosqrt3/taxodist-py) | Labeled `pandas` objects and analysis dictionaries |
+| Julia | [JuliaHub](https://platform.juliahub.com/ui/Packages/General/Taxodist/) and [source code](https://github.com/rodrigosqrt3/taxodist-jl) | Labeled `TaxonomicDistanceMatrix` objects and native named tuples |
 | Web application | [Interactive interface](https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/) | Browser-based lineage and distance exploration |
 
 ## A common workflow
@@ -110,6 +111,32 @@ cluster = td.taxo_cluster(matrix)
 ordination = td.taxo_ordinate(matrix)
 ```
 
+### Julia
+
+```julia
+using Taxodist
+
+taxa = [
+    "Tyrannosaurus",
+    "Velociraptor",
+    "Triceratops",
+    "Homo sapiens",
+]
+
+# Retrieve an ordered lineage
+lineage = get_lineage("Tyrannosaurus")
+
+# Compare two hierarchy nodes
+result = taxo_distance("Tyrannosaurus", "Velociraptor")
+result.mrca
+result.distance
+
+# Build and analyze a community matrix
+matrix = distance_matrix(taxa)
+cluster = taxo_cluster(matrix)
+ordination = taxo_ordinate(matrix)
+```
+
 :::
 
 ## Core API
@@ -126,7 +153,7 @@ ordination = td.taxo_ordinate(matrix)
 
 ## Reproducible reference data
 
-The R package provides `taxobase`, and Python provides `load_taxobase()`, for examples and tests that should not depend on live network access. Release 0.6.0 preserves the same component structure, taxon order, matrices, examples, and provenance metadata across the two implementations, using native containers in each language.
+R provides the `taxobase` data object, while Python and Julia provide `load_taxobase()`. Release 0.6.0 preserves the same component structure, taxon order, matrices, examples, and provenance metadata across the three implementations, using native containers in each language.
 
 This object is useful for demonstrations, tests, and reproducible examples that should not depend on live network access. Live Taxonomicon queries may change as the underlying classification is updated.
 

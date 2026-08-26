@@ -5,7 +5,7 @@ subtitle: "Project scope, authorship, citation, and licensing."
 
 ## Project scope
 
-`taxodist` is an open-source project for retrieving ordered taxonomic lineages and measuring separation between nodes in a classification hierarchy. It is available as coordinated R and Python packages and through an interactive web application.
+`taxodist` is an open-source project for retrieving ordered taxonomic lineages and measuring separation between nodes in a classification hierarchy. It is available as coordinated R, Python, and Julia packages and through an interactive web application.
 
 The project addresses a practical need: a reproducible way to resolve taxon names, inspect their lineages, identify their most recent common ancestor, and construct labeled distance objects for downstream analysis.
 
@@ -23,7 +23,7 @@ Version 0.6.0 formalized this distinction across the R package, Python package, 
 
 The project began with a general question: how can the shared hierarchical position of any two named organisms be retrieved and compared programmatically?
 
-Early development focused on resolving names and parsing the deeply nested classification exposed by The Taxonomicon. Subsequent releases added matrix operations, lineage comparison, cache persistence, visualization, multivariate helpers, offline reference data, and a Python implementation with matching distance semantics.
+Early development focused on resolving names and parsing the deeply nested classification exposed by The Taxonomicon. Subsequent releases added matrix operations, lineage comparison, cache persistence, visualization, multivariate helpers, offline reference data, and Python and Julia implementations with matching distance semantics.
 
 The project remains deliberately focused on classification-based analysis. It does not attempt to replace curated phylogenies, sequence-based inference, divergence-time estimation, or specialized taxonomic name services.
 
@@ -42,14 +42,15 @@ The fixed `taxobase` object is distributed for examples, tests, and comparisons 
 
 ## Citation
 
-The R and Python implementations are parts of the same software project and may be cited with a common project-level reference:
+The R, Python, and Julia implementations are parts of the same software project and may be cited with a common project-level reference:
 
-> Villa, R. F. (2026). *taxodist: Taxonomic Hierarchy Distances and Lineage Analysis* (version 0.6.0). Open-source software. <https://rodrigosqrt3.github.io/taxodist-site/>.
+> Villa, R. F. (2026). *taxodist: Taxonomic Hierarchy Distances and Lineage Analysis* (version 0.6.0). Open-source software. <https://rodrigosqrt3.github.io/taxodist-web/>.
 
 In the methods section, identify the implementation used:
 
 - R package: <https://cran.r-project.org/package=taxodist>
 - Python package: <https://pypi.org/project/taxodist/>
+- Julia package: <https://platform.juliahub.com/ui/Packages/General/Taxodist/>
 
 The R command below returns the citation metadata distributed with the package:
 
@@ -57,7 +58,7 @@ The R command below returns the citation metadata distributed with the package:
 citation("taxodist")
 ```
 
-GitHub also reads the `CITATION.cff` file in the Python repository and provides a **Cite this repository** interface.
+The source repositories also provide language-specific citation and release metadata.
 
 ### Classification source
 
@@ -74,6 +75,7 @@ The software citation acknowledges the implementation; the Taxonomicon citation 
 - **Email:** [rodrigo03.villa@gmail.com](mailto:rodrigo03.villa@gmail.com)
 - **R source:** <https://github.com/rodrigosqrt3/taxodist>
 - **Python source:** <https://github.com/rodrigosqrt3/taxodist-py>
+- **Julia source:** <https://github.com/rodrigosqrt3/taxodist-jl>
 
 Bug reports should include the queried name, numeric Taxonomicon ID when available, retrieval date, package version, operating system, and a minimal reproducible example.
 

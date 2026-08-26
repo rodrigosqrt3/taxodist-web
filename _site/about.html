@@ -94,6 +94,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit"
   }
 }</script>
+<style>html{ scroll-behavior: smooth; }</style>
 
 
 <link rel="stylesheet" href="styles.css">
@@ -130,8 +131,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">    
         <li>
+    <a class="dropdown-item" href="./methodology.html" rel="" target="">
+ <span class="dropdown-text">Methodology</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="./statistical-applications.html" rel="" target="">
  <span class="dropdown-text">Statistical Applications</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./cross-language-compatibility.qmd" rel="" target="">
+ <span class="dropdown-text">Cross-language Compatibility</span></a>
   </li>  
     </ul>
   </li>
@@ -149,11 +158,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/rodrigosqrt3/taxodist" rel="" target=""><i class="bi bi-github" role="img" aria-label="GitHub">
-</i> 
- <span class="menu-text"></span></a>
+  <li class="nav-item">
+    <a class="nav-link" href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/" rel="" target="">
+ <span class="menu-text">Launch App ↗</span></a>
   </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-source" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text">Source</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-source">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/rodrigosqrt3/taxodist" rel="" target="">
+ <span class="dropdown-text">R source</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/rodrigosqrt3/taxodist-py" rel="" target="">
+ <span class="dropdown-text">Python source</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/rodrigosqrt3/taxodist-jl" rel="" target="">
+ <span class="dropdown-text">Julia source</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
             <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
@@ -207,7 +236,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="project-scope" class="level2">
 <h2 class="anchored" data-anchor-id="project-scope">Project scope</h2>
-<p><code>taxodist</code> is an open-source project for retrieving ordered taxonomic lineages and measuring separation between nodes in a classification hierarchy. It is available as coordinated R and Python packages and through an interactive web application.</p>
+<p><code>taxodist</code> is an open-source project for retrieving ordered taxonomic lineages and measuring separation between nodes in a classification hierarchy. It is available as coordinated R, Python, and Julia packages and through an interactive web application.</p>
 <p>The project addresses a practical need: a reproducible way to resolve taxon names, inspect their lineages, identify their most recent common ancestor, and construct labeled distance objects for downstream analysis.</p>
 <p>The current implementation uses lineage data from <a href="http://taxonomicon.taxonomy.nl">The Taxonomicon</a>, based on <em>Systema Naturae 2000</em>. The external source remains responsible for the underlying classification; <code>taxodist</code> retrieves, cleans, organizes, and compares those records.</p>
 </section>
@@ -220,7 +249,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="project-history" class="level2">
 <h2 class="anchored" data-anchor-id="project-history">Project history</h2>
 <p>The project began with a general question: how can the shared hierarchical position of any two named organisms be retrieved and compared programmatically?</p>
-<p>Early development focused on resolving names and parsing the deeply nested classification exposed by The Taxonomicon. Subsequent releases added matrix operations, lineage comparison, cache persistence, visualization, multivariate helpers, offline reference data, and a Python implementation with matching distance semantics.</p>
+<p>Early development focused on resolving names and parsing the deeply nested classification exposed by The Taxonomicon. Subsequent releases added matrix operations, lineage comparison, cache persistence, visualization, multivariate helpers, offline reference data, and Python and Julia implementations with matching distance semantics.</p>
 <p>The project remains deliberately focused on classification-based analysis. It does not attempt to replace curated phylogenies, sequence-based inference, divergence-time estimation, or specialized taxonomic name services.</p>
 </section>
 <section id="reproducibility-and-transparency" class="level2">
@@ -238,18 +267,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="citation" class="level2">
 <h2 class="anchored" data-anchor-id="citation">Citation</h2>
-<p>The R and Python implementations are parts of the same software project and may be cited with a common project-level reference:</p>
+<p>The R, Python, and Julia implementations are parts of the same software project and may be cited with a common project-level reference:</p>
 <blockquote class="blockquote">
-<p>Villa, R. F. (2026). <em>taxodist: Taxonomic Hierarchy Distances and Lineage Analysis</em> (version 0.6.0). Open-source software. <a href="https://rodrigosqrt3.github.io/taxodist-site/" class="uri">https://rodrigosqrt3.github.io/taxodist-site/</a>.</p>
+<p>Villa, R. F. (2026). <em>taxodist: Taxonomic Hierarchy Distances and Lineage Analysis</em> (version 0.6.0). Open-source software. <a href="https://rodrigosqrt3.github.io/taxodist-web/" class="uri">https://rodrigosqrt3.github.io/taxodist-web/</a>.</p>
 </blockquote>
 <p>In the methods section, identify the implementation used:</p>
 <ul>
 <li>R package: <a href="https://cran.r-project.org/package=taxodist" class="uri">https://cran.r-project.org/package=taxodist</a></li>
 <li>Python package: <a href="https://pypi.org/project/taxodist/" class="uri">https://pypi.org/project/taxodist/</a></li>
+<li>Julia package: <a href="https://platform.juliahub.com/ui/Packages/General/Taxodist/" class="uri">https://platform.juliahub.com/ui/Packages/General/Taxodist/</a></li>
 </ul>
 <p>The R command below returns the citation metadata distributed with the package:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>(<span class="st">"taxodist"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>GitHub also reads the <code>CITATION.cff</code> file in the Python repository and provides a <strong>Cite this repository</strong> interface.</p>
+<p>The source repositories also provide language-specific citation and release metadata.</p>
 <section id="classification-source" class="level3">
 <h3 class="anchored" data-anchor-id="classification-source">Classification source</h3>
 <p>Published analyses based on live or packaged Taxonomicon lineages should also cite the underlying source:</p>
@@ -267,6 +297,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Email:</strong> <a href="mailto:rodrigo03.villa@gmail.com">rodrigo03.villa@gmail.com</a></li>
 <li><strong>R source:</strong> <a href="https://github.com/rodrigosqrt3/taxodist" class="uri">https://github.com/rodrigosqrt3/taxodist</a></li>
 <li><strong>Python source:</strong> <a href="https://github.com/rodrigosqrt3/taxodist-py" class="uri">https://github.com/rodrigosqrt3/taxodist-py</a></li>
+<li><strong>Julia source:</strong> <a href="https://github.com/rodrigosqrt3/taxodist-jl" class="uri">https://github.com/rodrigosqrt3/taxodist-jl</a></li>
 </ul>
 <p>Bug reports should include the queried name, numeric Taxonomicon ID when available, retrieval date, package version, operating system, and a minimal reproducible example.</p>
 </section>
@@ -628,7 +659,30 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">taxodist 0.6.0</div>   
+    <div class="nav-footer-center">Taxonomic hierarchy distances — not evolutionary time or branch length.</div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://cran.r-project.org/package=taxodist">R</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://pypi.org/project/taxodist/">Python</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://platform.juliahub.com/ui/Packages/General/Taxodist/">Julia</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/">App</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
 
 
 
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

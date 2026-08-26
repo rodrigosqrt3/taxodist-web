@@ -3,8 +3,8 @@ project:
 
 website:
   title: "taxodist"
-  site-url: "https://rodrigosqrt3.github.io/taxodist-site"
-  description: "Taxonomic hierarchy distances and lineage analysis in R and Python."
+  site-url: "https://rodrigosqrt3.github.io/taxodist-web/"
+  description: "Taxonomic hierarchy distances and lineage analysis in R, Python, and Julia."
   navbar:
     background: "#5c3d1e"
     search: true
@@ -19,8 +19,8 @@ website:
             text: Methodology
           - href: statistical-applications.qmd
             text: Statistical Applications
-          - href: r-python-compatibility.qmd
-            text: R/Python Compatibility
+          - href: cross-language-compatibility.qmd
+            text: Cross-language Compatibility
       - href: reference.qmd
         text: Reference
       - href: news.qmd
@@ -37,6 +37,8 @@ website:
             href: https://github.com/rodrigosqrt3/taxodist
           - text: Python source
             href: https://github.com/rodrigosqrt3/taxodist-py
+          - text: Julia source
+            href: https://github.com/rodrigosqrt3/taxodist-jl
 
   page-footer:
     left: "taxodist 0.6.0"
@@ -46,6 +48,8 @@ website:
         href: https://cran.r-project.org/package=taxodist
       - text: Python
         href: https://pypi.org/project/taxodist/
+      - text: Julia
+        href: https://platform.juliahub.com/ui/Packages/General/Taxodist/
       - text: App
         href: https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/
 

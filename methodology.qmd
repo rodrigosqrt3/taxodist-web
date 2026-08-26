@@ -153,6 +153,28 @@ def check_triplet(index):
 all(check_triplet(x) for x in combinations(range(len(m)), 3))
 ```
 
+### Julia
+
+```julia
+using Taxodist
+
+taxobase = load_taxobase()
+matrix = taxobase.statistical_matrix
+m = Matrix(matrix)
+tol = sqrt(eps(Float64))
+
+function check_triplet(i, j, k)
+    distances = sort([m[i, j], m[i, k], m[j, k]], rev=true)
+    distances[1] <= distances[2] + tol
+end
+
+n = size(m, 1)
+all(
+    check_triplet(i, j, k)
+    for i in 1:(n - 2) for j in (i + 1):(n - 1) for k in (j + 1):n
+)
+```
+
 :::
 
 For an ultrametric triangle, the two largest pairwise distances are equal. The checks above allow a small numerical tolerance.
@@ -180,7 +202,7 @@ A scientific name may correspond to several biological entries. Use `taxo_search
 
 ### Missing lineages
 
-If a lineage cannot be retrieved, pairwise matrices retain the taxon label and use `NA` in R or `NaN` in Python for affected comparisons. Coverage should be examined before analysis.
+If a lineage cannot be retrieved, pairwise matrices retain the taxon label and use `NA` in R or `NaN` in Python and Julia for affected comparisons. Coverage should be examined before analysis.
 
 ### Disconnected roots
 
@@ -214,7 +236,7 @@ Live lineages may change when The Taxonomicon is updated. For empirical work, re
 7. the distance definition;
 8. downstream clustering, ordination, or permutation settings.
 
-Use `save_cache()` when the exact retrieved lineages must be reused. Cache files are language-specific. Use `taxobase` when a fixed, packaged example is preferable to a live query.
+Use `save_cache()` when the exact retrieved lineages must be reused. Cache files are language-specific (`.rds`, `.pkl`, and `.json`). Use `taxobase` or `load_taxobase()` when a fixed, packaged example is preferable to a live query.
 
 ## Recommended methods statement
 

@@ -107,8 +107,8 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Statistical Applications</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./r-python-compatibility.html" rel="" target="">
- <span class="dropdown-text">R/Python Compatibility</span></a>
+    <a class="dropdown-item" href="./cross-language-compatibility.qmd" rel="" target="">
+ <span class="dropdown-text">Cross-language Compatibility</span></a>
   </li>  
     </ul>
   </li>
@@ -144,6 +144,10 @@ ul.task-list li input[type="checkbox"] {
         <li>
     <a class="dropdown-item" href="https://github.com/rodrigosqrt3/taxodist-py" rel="" target="">
  <span class="dropdown-text">Python source</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/rodrigosqrt3/taxodist-jl" rel="" target="">
+ <span class="dropdown-text">Julia source</span></a>
   </li>  
     </ul>
   </li>
@@ -192,7 +196,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#data-and-documentation" id="toc-data-and-documentation" class="nav-link" data-scroll-target="#data-and-documentation">Data and documentation</a></li>
   <li><a href="#robustness" id="toc-robustness" class="nav-link" data-scroll-target="#robustness">Robustness</a></li>
   </ul></li>
-  <li><a href="#compatibility-note" id="toc-compatibility-note" class="nav-link" data-scroll-target="#compatibility-note">Compatibility note</a></li>
+  <li><a href="#cross-language-compatibility-note" id="toc-cross-language-compatibility-note" class="nav-link" data-scroll-target="#cross-language-compatibility-note">Cross-language compatibility note</a></li>
   </ul>
 </nav>
     </div>
@@ -202,7 +206,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Changelog</h1>
-<p class="subtitle lead">Release history for taxodist, from version 0.1.0 through 0.6.0.</p>
+<p class="subtitle lead">Release history for taxodist, from version 0.1.0 through the coordinated 0.6.0 implementations.</p>
 </div>
 
 
@@ -337,9 +341,10 @@ Behavioral change
 <h3 class="anchored" data-anchor-id="data-and-documentation">Data and documentation</h3>
 <ul>
 <li>Standardized <code>taxobase</code> as a documented list with provenance metadata and offline matrices used by reproducible examples.</li>
-<li>Aligned the R and Python reference data, taxon ordering, distance definition, and principal API behavior.</li>
+<li>Aligned the R, Python, and Julia reference data, taxon ordering, distance definition, and principal API behavior.</li>
 <li>Added explicit methodological documentation, limitations, and separate citations for the software and The Taxonomicon.</li>
 <li>Revised statistical examples to distinguish taxonomic dendrograms from inferred phylogenetic trees.</li>
+<li>Added the Julia implementation and registered distribution, with the same distance definition, principal API, labeled matrices, cache persistence, analysis helpers, and packaged <code>taxobase</code> reference data.</li>
 </ul>
 </section>
 <section id="robustness" class="level3">
@@ -355,9 +360,9 @@ Behavioral change
 </ul>
 </section>
 </section>
-<section id="compatibility-note" class="level2">
-<h2 class="anchored" data-anchor-id="compatibility-note">Compatibility note</h2>
-<p>The R and Python implementations follow the same version 0.6.0 distance semantics. Their native containers differ: R uses <code>dist</code>, S3 objects, and <code>.rds</code> cache files; Python uses labeled <code>pandas</code> objects, dictionaries, and <code>.pkl</code> cache files.</p>
+<section id="cross-language-compatibility-note" class="level2">
+<h2 class="anchored" data-anchor-id="cross-language-compatibility-note">Cross-language compatibility note</h2>
+<p>The R, Python, and Julia implementations follow the same version 0.6.0 distance semantics. Their native containers differ: R uses <code>dist</code>, S3 objects, and <code>.rds</code> cache files; Python uses labeled <code>pandas</code> objects, dictionaries, and <code>.pkl</code> cache files; Julia uses <code>TaxonomicDistanceMatrix</code>, named tuples, <code>DataFrame</code> objects, and <code>.json</code> cache files.</p>
 
 
 </section>
@@ -723,6 +728,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </li>  
     <li class="nav-item">
     <a class="nav-link" href="https://pypi.org/project/taxodist/">Python</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://platform.juliahub.com/ui/Packages/General/Taxodist/">Julia</a>
   </li>  
     <li class="nav-item">
     <a class="nav-link" href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/">App</a>

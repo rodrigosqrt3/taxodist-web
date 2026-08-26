@@ -107,8 +107,8 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Statistical Applications</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./r-python-compatibility.html" rel="" target="">
- <span class="dropdown-text">R/Python Compatibility</span></a>
+    <a class="dropdown-item" href="./cross-language-compatibility.html" rel="" target="">
+ <span class="dropdown-text">Cross-language Compatibility</span></a>
   </li>  
     </ul>
   </li>
@@ -144,6 +144,10 @@ ul.task-list li input[type="checkbox"] {
         <li>
     <a class="dropdown-item" href="https://github.com/rodrigosqrt3/taxodist-py" rel="" target="">
  <span class="dropdown-text">Python source</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/rodrigosqrt3/taxodist-jl" rel="" target="">
+ <span class="dropdown-text">Julia source</span></a>
   </li>  
     </ul>
   </li>
@@ -216,7 +220,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Function Reference</h1>
-<p class="subtitle lead">Public API for taxodist 0.6.0 in R and Python.</p>
+<p class="subtitle lead">Public API for taxodist 0.6.0 in R, Python, and Julia.</p>
 </div>
 
 
@@ -231,18 +235,20 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>The R and Python implementations share the same distance semantics and principal function names. Native return types follow the conventions of each language.</p>
+<p>The R, Python, and Julia implementations share the same distance semantics and principal function names. Native return types follow the conventions of each language.</p>
 <table class="table">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Concept</th>
 <th>R</th>
 <th>Python</th>
+<th>Julia</th>
 </tr>
 </thead>
 <tbody>
@@ -250,52 +256,60 @@ ul.task-list li input[type="checkbox"] {
 <td>Missing scalar result</td>
 <td><code>NULL</code> or <code>NA</code></td>
 <td><code>None</code> or <code>NaN</code></td>
+<td><code>nothing</code> or <code>NaN</code></td>
 </tr>
 <tr class="even">
 <td>Distance matrix</td>
 <td>Base R <code>dist</code></td>
 <td><code>pandas.DataFrame</code></td>
+<td><code>TaxonomicDistanceMatrix</code></td>
 </tr>
 <tr class="odd">
 <td>Structured result</td>
 <td>S3 list or data frame</td>
 <td><code>dict</code> or <code>pandas.DataFrame</code></td>
+<td>Named tuple or <code>DataFrame</code></td>
 </tr>
 <tr class="even">
 <td>Cache file</td>
 <td><code>.rds</code></td>
 <td><code>.pkl</code></td>
+<td><code>.json</code></td>
 </tr>
 </tbody>
 </table>
-<p>Unless stated otherwise, retrieval functions accept <code>verbose = FALSE</code> in R and <code>verbose=False</code> in Python.</p>
+<p>Unless stated otherwise, retrieval functions accept <code>verbose = FALSE</code> in R and <code>verbose=false</code> in Python and Julia.</p>
 <section id="taxon-retrieval-and-search" class="level2">
 <h2 class="anchored" data-anchor-id="taxon-retrieval-and-search">Taxon retrieval and search</h2>
 <section id="get_taxonomicon_id" class="level3">
 <h3 class="anchored" data-anchor-id="get_taxonomicon_id"><code>get_taxonomicon_id()</code></h3>
 <pre class="text"><code>R:      get_taxonomicon_id(taxon, verbose = FALSE)
-Python: get_taxonomicon_id(taxon, verbose=False)</code></pre>
+Python: get_taxonomicon_id(taxon, verbose=False)
+Julia:  get_taxonomicon_id(taxon; verbose=false)</code></pre>
 <p>Resolves a taxon name to a numeric Taxonomicon identifier. Astronomical entries are excluded. When several valid biological entries remain, the function warns before returning the first candidate.</p>
 <p><strong>Returns:</strong> a character string in R or <code>str</code> in Python; <code>NULL</code>/<code>None</code> if no valid identifier is found.</p>
 </section>
 <section id="get_lineage_by_id" class="level3">
 <h3 class="anchored" data-anchor-id="get_lineage_by_id"><code>get_lineage_by_id()</code></h3>
 <pre class="text"><code>R:      get_lineage_by_id(taxon_id, clean = TRUE, verbose = FALSE)
-Python: get_lineage_by_id(taxon_id, clean=True, verbose=False)</code></pre>
+Python: get_lineage_by_id(taxon_id, clean=True, verbose=False)
+Julia:  get_lineage_by_id(taxon_id; clean=true, verbose=false)</code></pre>
 <p>Retrieves an ordered lineage for a numeric Taxonomicon ID. With <code>clean</code> enabled, formatting markers and nodes preceding <code>Biota</code> are removed when applicable.</p>
 <p><strong>Returns:</strong> a character vector in R or list of strings in Python, ordered from root to queried node; <code>NULL</code>/<code>None</code> for an invalid or unresolved ID.</p>
 </section>
 <section id="get_lineage" class="level3">
 <h3 class="anchored" data-anchor-id="get_lineage"><code>get_lineage()</code></h3>
 <pre class="text"><code>R:      get_lineage(taxon, clean = TRUE, verbose = FALSE)
-Python: get_lineage(taxon, clean=True, verbose=False)</code></pre>
+Python: get_lineage(taxon, clean=True, verbose=False)
+Julia:  get_lineage(taxon; clean=true, verbose=false)</code></pre>
 <p>Convenience wrapper combining name resolution and lineage retrieval. A numeric ID supplied as a string bypasses name search.</p>
 <p><strong>Returns:</strong> a character vector in R or list of strings in Python; <code>NULL</code>/<code>None</code> if unresolved.</p>
 </section>
 <section id="taxo_search" class="level3">
 <h3 class="anchored" data-anchor-id="taxo_search"><code>taxo_search()</code></h3>
 <pre class="text"><code>R:      taxo_search(taxon, verbose = FALSE)
-Python: taxo_search(taxon, verbose=False)</code></pre>
+Python: taxo_search(taxon, verbose=False)
+Julia:  taxo_search(taxon; verbose=false)</code></pre>
 <p>Lists biological Taxonomicon search results after removing astronomical entries and duplicate identifiers.</p>
 <p><strong>Returns:</strong> a data frame with columns <code>id</code> and <code>name</code>, or <code>NULL</code>/<code>None</code> when no matches are found.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Reproducible name resolution">
@@ -318,7 +332,8 @@ Reproducible name resolution
 <section id="taxo_distance" class="level3">
 <h3 class="anchored" data-anchor-id="taxo_distance"><code>taxo_distance()</code></h3>
 <pre class="text"><code>R:      taxo_distance(taxon_a, taxon_b, verbose = FALSE)
-Python: taxo_distance(taxon_a, taxon_b, verbose=False)</code></pre>
+Python: taxo_distance(taxon_a, taxon_b, verbose=False)
+Julia:  taxo_distance(taxon_a, taxon_b; verbose=false)</code></pre>
 <p>Retrieves both ordered lineages and computes</p>
 <p><span class="math display">\[
 d(A,B)=
@@ -328,7 +343,7 @@ d(A,B)=
 \end{cases}
 \]</span></p>
 <p>MRCA detection uses only the continuous common prefix from the root. Distinct ancestor–descendant nodes therefore retain a positive distance. Lineages without a shared root have infinite distance and no MRCA.</p>
-<p><strong>Returns:</strong> an S3 list in R or <code>dict</code> in Python with:</p>
+<p><strong>Returns:</strong> an S3 list in R, <code>dict</code> in Python, or named tuple in Julia with:</p>
 <table class="table">
 <thead>
 <tr class="header">
@@ -364,40 +379,46 @@ d(A,B)=
 <section id="mrca" class="level3">
 <h3 class="anchored" data-anchor-id="mrca"><code>mrca()</code></h3>
 <pre class="text"><code>R:      mrca(taxon_a, taxon_b, verbose = FALSE)
-Python: mrca(taxon_a, taxon_b, verbose=False)</code></pre>
+Python: mrca(taxon_a, taxon_b, verbose=False)
+Julia:  mrca(taxon_a, taxon_b; verbose=false)</code></pre>
 <p>Returns only the MRCA name from <code>taxo_distance()</code>. The result is <code>NULL</code>/<code>None</code> if retrieval fails or the lineages share no ancestor.</p>
 </section>
 <section id="distance_matrix" class="level3">
 <h3 class="anchored" data-anchor-id="distance_matrix"><code>distance_matrix()</code></h3>
 <pre class="text"><code>R:      distance_matrix(taxa, verbose = FALSE, progress = TRUE)
-Python: distance_matrix(taxa, verbose=False, progress=True)</code></pre>
+Python: distance_matrix(taxa, verbose=False, progress=True)
+Julia:  distance_matrix(taxa; verbose=false, progress=true)</code></pre>
 <p>Retrieves each lineage once and computes all pairwise distances. Input order and labels are preserved. Unresolved taxa receive missing off-diagonal comparisons; the diagonal is zero.</p>
-<p><strong>Returns:</strong> a <code>dist</code> object in R or symmetric <code>pandas.DataFrame</code> in Python. Empty input returns a correctly shaped empty object.</p>
+<p><strong>Returns:</strong> a <code>dist</code> object in R, symmetric <code>pandas.DataFrame</code> in Python, or labeled <code>TaxonomicDistanceMatrix</code> in Julia. Empty input returns a correctly shaped empty object.</p>
 </section>
 <section id="focal_distances" class="level3">
 <h3 class="anchored" data-anchor-id="focal_distances"><code>focal_distances()</code></h3>
 <pre class="text"><code>R:      focal_distances(focal, community, verbose = FALSE, progress = TRUE)
-Python: focal_distances(focal, community, verbose=False, progress=True)</code></pre>
+Python: focal_distances(focal, community, verbose=False, progress=True)
+Julia:  focal_distances(focal, community; verbose=false)</code></pre>
 <p>Computes the distance from one focal taxon to each community member and sorts finite results from smallest to largest.</p>
 <p><strong>Returns:</strong> a data frame with columns <code>taxon</code>, <code>distance</code>, <code>mrca</code>, and <code>mrca_depth</code>. The focal name is retained as object metadata. Returns <code>NULL</code>/<code>None</code> if the focal lineage is unavailable.</p>
 </section>
 <section id="closest_relative" class="level3">
 <h3 class="anchored" data-anchor-id="closest_relative"><code>closest_relative()</code></h3>
 <pre class="text"><code>R:      closest_relative(taxon, candidates, verbose = FALSE)
-Python: closest_relative(taxon, candidates, verbose=False)</code></pre>
+Python: closest_relative(taxon, candidates, verbose=False)
+Julia:  closest_relative(taxon, candidates; verbose=false)</code></pre>
 <p>Ranks candidate taxa by distance from the query taxon.</p>
 <p><strong>Returns:</strong> a data frame with columns <code>taxon</code> and <code>distance</code>, sorted ascending with missing values last. Returns <code>NULL</code>/<code>None</code> if the query lineage is unavailable.</p>
 </section>
 <section id="lineage_depth" class="level3">
 <h3 class="anchored" data-anchor-id="lineage_depth"><code>lineage_depth()</code></h3>
 <pre class="text"><code>R:      lineage_depth(taxon, verbose = FALSE)
-Python: lineage_depth(taxon, verbose=False)</code></pre>
+Python: lineage_depth(taxon, verbose=False)
+Julia:  lineage_depth(taxon; verbose=false)</code></pre>
 <p>Returns the number of nodes in the retrieved lineage, including root and queried node. This is classification resolution, not elapsed time.</p>
 </section>
 <section id="check_coverage" class="level3">
 <h3 class="anchored" data-anchor-id="check_coverage"><code>check_coverage()</code></h3>
 <pre class="text"><code>R:      check_coverage(taxa, verbose = FALSE)
-Python: check_coverage(taxa, verbose=False)</code></pre>
+Python: check_coverage(taxa, verbose=False)
+Julia:  check_coverage(taxa; verbose=false)</code></pre>
 <p>Checks whether each input can be resolved to a Taxonomicon identifier.</p>
 <p><strong>Returns:</strong> a named logical vector in R or Boolean <code>pandas.Series</code> in Python.</p>
 </section>
@@ -407,20 +428,23 @@ Python: check_coverage(taxa, verbose=False)</code></pre>
 <section id="compare_lineages" class="level3">
 <h3 class="anchored" data-anchor-id="compare_lineages"><code>compare_lineages()</code></h3>
 <pre class="text"><code>R:      compare_lineages(taxon_a, taxon_b, verbose = FALSE)
-Python: compare_lineages(taxon_a, taxon_b, verbose=False)</code></pre>
+Python: compare_lineages(taxon_a, taxon_b, verbose=False)
+Julia:  compare_lineages(taxon_a, taxon_b; verbose=false)</code></pre>
 <p>Prints the common lineage and the nodes unique to each side after divergence.</p>
 <p><strong>Returns:</strong> invisibly in R, and directly in Python, an object containing <code>lineage_a</code>, <code>lineage_b</code>, and <code>mrca_depth</code>.</p>
 </section>
 <section id="shared_clades" class="level3">
 <h3 class="anchored" data-anchor-id="shared_clades"><code>shared_clades()</code></h3>
 <pre class="text"><code>R:      shared_clades(taxon_a, taxon_b, verbose = FALSE)
-Python: shared_clades(taxon_a, taxon_b, verbose=False)</code></pre>
+Python: shared_clades(taxon_a, taxon_b, verbose=False)
+Julia:  shared_clades(taxon_a, taxon_b; verbose=false)</code></pre>
 <p>Returns the continuous common prefix from root through the MRCA. A pair with no common ancestor returns an empty vector/list; failed retrieval returns <code>NULL</code>/<code>None</code>.</p>
 </section>
 <section id="taxo_path" class="level3">
 <h3 class="anchored" data-anchor-id="taxo_path"><code>taxo_path()</code></h3>
 <pre class="text"><code>R:      taxo_path(taxon_a, taxon_b, verbose = FALSE)
-Python: taxo_path(taxon_a, taxon_b, verbose=False)</code></pre>
+Python: taxo_path(taxon_a, taxon_b, verbose=False)
+Julia:  taxo_path(taxon_a, taxon_b; verbose=false)</code></pre>
 <p>Constructs the route from taxon A upward to the MRCA and downward to taxon B.</p>
 <p><strong>Returns:</strong> a data frame with one row per node and columns:</p>
 <ul>
@@ -433,14 +457,16 @@ Python: taxo_path(taxon_a, taxon_b, verbose=False)</code></pre>
 <section id="is_member" class="level3">
 <h3 class="anchored" data-anchor-id="is_member"><code>is_member()</code></h3>
 <pre class="text"><code>R:      is_member(taxon, clade, verbose = FALSE)
-Python: is_member(taxon, clade, verbose=False)</code></pre>
+Python: is_member(taxon, clade, verbose=False)
+Julia:  is_member(taxon, clade; verbose=false)</code></pre>
 <p>Tests whether the complete clade name occurs in the taxon’s lineage. Matching is exact, case-insensitive, and ignores surrounding whitespace.</p>
 <p><strong>Returns:</strong> logical/Boolean, or <code>NULL</code>/<code>None</code> if the taxon cannot be retrieved.</p>
 </section>
 <section id="filter_clade" class="level3">
 <h3 class="anchored" data-anchor-id="filter_clade"><code>filter_clade()</code></h3>
 <pre class="text"><code>R:      filter_clade(taxa, clade, verbose = FALSE)
-Python: filter_clade(taxa, clade, verbose=False)</code></pre>
+Python: filter_clade(taxa, clade, verbose=False)
+Julia:  filter_clade(taxa, clade; verbose=false)</code></pre>
 <p>Returns only input taxa for which <code>is_member()</code> is true. Unresolved taxa are omitted.</p>
 </section>
 </section>
@@ -449,7 +475,8 @@ Python: filter_clade(taxa, clade, verbose=False)</code></pre>
 <section id="taxo_cluster" class="level3">
 <h3 class="anchored" data-anchor-id="taxo_cluster"><code>taxo_cluster()</code></h3>
 <pre class="text"><code>R:      taxo_cluster(taxa, method = "average", ...)
-Python: taxo_cluster(taxa, method="average", **kwargs)</code></pre>
+Python: taxo_cluster(taxa, method="average", **kwargs)
+Julia:  taxo_cluster(taxa; method="average", kwargs...)</code></pre>
 <p>Accepts taxon names or a previously computed distance object. The default is average-linkage hierarchical clustering.</p>
 <p><strong>Returns:</strong></p>
 <ul>
@@ -461,14 +488,16 @@ Python: taxo_cluster(taxa, method="average", **kwargs)</code></pre>
 <section id="taxo_ordinate" class="level3">
 <h3 class="anchored" data-anchor-id="taxo_ordinate"><code>taxo_ordinate()</code></h3>
 <pre class="text"><code>R:      taxo_ordinate(taxa, k = 2, ...)
-Python: taxo_ordinate(taxa, k=2, **kwargs)</code></pre>
+Python: taxo_ordinate(taxa, k=2, **kwargs)
+Julia:  taxo_ordinate(taxa; k=2, kwargs...)</code></pre>
 <p>Performs classical multidimensional scaling (PCoA). The requested <code>k</code> must be a positive integer and is reduced to at most <span class="math inline">\(n-1\)</span>.</p>
 <p><strong>Returns:</strong> an S3 list or dictionary with <code>points</code>, <code>dist</code>, <code>GOF</code>, and <code>eig</code>. Invalid matrices return the same structure with empty analysis components.</p>
 </section>
 <section id="taxo_heatmap" class="level3">
 <h3 class="anchored" data-anchor-id="taxo_heatmap"><code>taxo_heatmap()</code></h3>
 <pre class="text"><code>R:      taxo_heatmap(taxa, ...)
-Python: taxo_heatmap(taxa, **kwargs)</code></pre>
+Python: taxo_heatmap(taxa, **kwargs)
+Julia:  taxo_heatmap(taxa; display_plot=true, kwargs...)</code></pre>
 <p>Plots the distance matrix with clustered rows and columns. R passes additional arguments to <code>stats::heatmap()</code>; Python passes them to <code>seaborn.clustermap()</code>.</p>
 <p><strong>Returns:</strong> the underlying <code>dist</code> object invisibly in R or the underlying <code>pandas.DataFrame</code> in Python. Plotting is skipped for incomplete, infinite, or undersized matrices.</p>
 <div class="callout callout-style-default callout-warning callout-titled" title="Interpretation of analysis output">
@@ -496,14 +525,16 @@ Interpretation of analysis output
 <section id="save_cache" class="level3">
 <h3 class="anchored" data-anchor-id="save_cache"><code>save_cache()</code></h3>
 <pre class="text"><code>R:      save_cache(file)
-Python: save_cache(file)</code></pre>
+Python: save_cache(file)
+Julia:  save_cache(file)</code></pre>
 <p>Serializes the current cache to an R <code>.rds</code> file or Python <code>.pkl</code> file. Returns invisibly <code>NULL</code> in R and <code>None</code> in Python.</p>
 </section>
 <section id="load_cache" class="level3">
 <h3 class="anchored" data-anchor-id="load_cache"><code>load_cache()</code></h3>
 <pre class="text"><code>R:      load_cache(file)
-Python: load_cache(file)</code></pre>
-<p>Validates and restores a previously saved cache. Validation occurs before the active cache is modified. R and Python cache files are not interchangeable.</p>
+Python: load_cache(file)
+Julia:  load_cache(file)</code></pre>
+<p>Validates and restores a previously saved cache. Validation occurs before the active cache is modified. The R, Python, and Julia cache files are not interchangeable.</p>
 <div class="callout callout-style-default callout-warning callout-titled" title="Python cache security">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -529,15 +560,16 @@ Python cache security
 <section id="taxobase-load_taxobase" class="level3">
 <h3 class="anchored" data-anchor-id="taxobase-load_taxobase"><code>taxobase</code> / <code>load_taxobase()</code></h3>
 <pre class="text"><code>R:      data(taxobase, package = "taxodist")
-Python: taxobase = load_taxobase()</code></pre>
+Python: taxobase = load_taxobase()
+Julia:  taxobase = load_taxobase()</code></pre>
 <p>Loads the fixed reference object distributed with release 0.6.0. Components include taxa, coverage, lineages, pairwise examples, search results, general and statistical distance matrices, and provenance metadata.</p>
-<p>R stores distance components as <code>dist</code>; Python converts matrix components to labeled <code>pandas.DataFrame</code> objects.</p>
+<p>R stores distance components as <code>dist</code>; Python converts matrices to labeled <code>pandas.DataFrame</code> objects; Julia converts them to labeled <code>TaxonomicDistanceMatrix</code> objects.</p>
 </section>
 </section>
 <section id="display-helpers" class="level2">
 <h2 class="anchored" data-anchor-id="display-helpers">Display helpers</h2>
-<p>R uses S3 methods for distance results, focal results, paths, clusters, and ordinations. Python exposes corresponding helpers including <code>print_taxodist_result()</code>, <code>print_taxodist_path()</code>, <code>plot_taxodist_cluster()</code>, <code>plot_taxodist_ord()</code>, and <code>summary_taxodist_ord()</code>.</p>
-<p>For complete argument documentation in R, run <code>help(package = "taxodist")</code>. In Python, use <code>help(taxodist.function_name)</code>.</p>
+<p>R uses S3 methods for distance results, focal results, paths, clusters, and ordinations. Python exposes corresponding explicit helpers. Julia provides <code>plot_taxodist_cluster()</code>, <code>plot_taxodist_ord()</code>, and <code>summary_taxodist_ord()</code> alongside native display of named tuples, data frames, and labeled matrices.</p>
+<p>For complete argument documentation in R, run <code>help(package = "taxodist")</code>. In Python, use <code>help(taxodist.function_name)</code>. In Julia, use help mode, for example <code>?taxo_distance</code>.</p>
 
 
 </section>
@@ -903,6 +935,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </li>  
     <li class="nav-item">
     <a class="nav-link" href="https://pypi.org/project/taxodist/">Python</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://platform.juliahub.com/ui/Packages/General/Taxodist/">Julia</a>
   </li>  
     <li class="nav-item">
     <a class="nav-link" href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/">App</a>

@@ -1,18 +1,18 @@
 ---
 title: "Function Reference"
-subtitle: "Public API for taxodist 0.6.0 in R and Python."
+subtitle: "Public API for taxodist 0.6.0 in R, Python, and Julia."
 ---
 
-The R and Python implementations share the same distance semantics and principal function names. Native return types follow the conventions of each language.
+The R, Python, and Julia implementations share the same distance semantics and principal function names. Native return types follow the conventions of each language.
 
-| Concept | R | Python |
-|---|---|---|
-| Missing scalar result | `NULL` or `NA` | `None` or `NaN` |
-| Distance matrix | Base R `dist` | `pandas.DataFrame` |
-| Structured result | S3 list or data frame | `dict` or `pandas.DataFrame` |
-| Cache file | `.rds` | `.pkl` |
+| Concept | R | Python | Julia |
+|---|---|---|---|
+| Missing scalar result | `NULL` or `NA` | `None` or `NaN` | `nothing` or `NaN` |
+| Distance matrix | Base R `dist` | `pandas.DataFrame` | `TaxonomicDistanceMatrix` |
+| Structured result | S3 list or data frame | `dict` or `pandas.DataFrame` | Named tuple or `DataFrame` |
+| Cache file | `.rds` | `.pkl` | `.json` |
 
-Unless stated otherwise, retrieval functions accept `verbose = FALSE` in R and `verbose=False` in Python.
+Unless stated otherwise, retrieval functions accept `verbose = FALSE` in R and `verbose=false` in Python and Julia.
 
 ## Taxon retrieval and search
 
@@ -21,6 +21,7 @@ Unless stated otherwise, retrieval functions accept `verbose = FALSE` in R and `
 ```text
 R:      get_taxonomicon_id(taxon, verbose = FALSE)
 Python: get_taxonomicon_id(taxon, verbose=False)
+Julia:  get_taxonomicon_id(taxon; verbose=false)
 ```
 
 Resolves a taxon name to a numeric Taxonomicon identifier. Astronomical entries are excluded. When several valid biological entries remain, the function warns before returning the first candidate.
@@ -32,6 +33,7 @@ Resolves a taxon name to a numeric Taxonomicon identifier. Astronomical entries 
 ```text
 R:      get_lineage_by_id(taxon_id, clean = TRUE, verbose = FALSE)
 Python: get_lineage_by_id(taxon_id, clean=True, verbose=False)
+Julia:  get_lineage_by_id(taxon_id; clean=true, verbose=false)
 ```
 
 Retrieves an ordered lineage for a numeric Taxonomicon ID. With `clean` enabled, formatting markers and nodes preceding `Biota` are removed when applicable.
@@ -43,6 +45,7 @@ Retrieves an ordered lineage for a numeric Taxonomicon ID. With `clean` enabled,
 ```text
 R:      get_lineage(taxon, clean = TRUE, verbose = FALSE)
 Python: get_lineage(taxon, clean=True, verbose=False)
+Julia:  get_lineage(taxon; clean=true, verbose=false)
 ```
 
 Convenience wrapper combining name resolution and lineage retrieval. A numeric ID supplied as a string bypasses name search.
@@ -54,6 +57,7 @@ Convenience wrapper combining name resolution and lineage retrieval. A numeric I
 ```text
 R:      taxo_search(taxon, verbose = FALSE)
 Python: taxo_search(taxon, verbose=False)
+Julia:  taxo_search(taxon; verbose=false)
 ```
 
 Lists biological Taxonomicon search results after removing astronomical entries and duplicate identifiers.
@@ -71,6 +75,7 @@ For ambiguous names, inspect `taxo_search()` and record the selected numeric ID 
 ```text
 R:      taxo_distance(taxon_a, taxon_b, verbose = FALSE)
 Python: taxo_distance(taxon_a, taxon_b, verbose=False)
+Julia:  taxo_distance(taxon_a, taxon_b; verbose=false)
 ```
 
 Retrieves both ordered lineages and computes
@@ -85,7 +90,7 @@ $$
 
 MRCA detection uses only the continuous common prefix from the root. Distinct ancestor–descendant nodes therefore retain a positive distance. Lineages without a shared root have infinite distance and no MRCA.
 
-**Returns:** an S3 list in R or `dict` in Python with:
+**Returns:** an S3 list in R, `dict` in Python, or named tuple in Julia with:
 
 | Field | Meaning |
 |---|---|
@@ -102,6 +107,7 @@ Returns `NULL`/`None` if either lineage cannot be retrieved.
 ```text
 R:      mrca(taxon_a, taxon_b, verbose = FALSE)
 Python: mrca(taxon_a, taxon_b, verbose=False)
+Julia:  mrca(taxon_a, taxon_b; verbose=false)
 ```
 
 Returns only the MRCA name from `taxo_distance()`. The result is `NULL`/`None` if retrieval fails or the lineages share no ancestor.
@@ -111,17 +117,19 @@ Returns only the MRCA name from `taxo_distance()`. The result is `NULL`/`None` i
 ```text
 R:      distance_matrix(taxa, verbose = FALSE, progress = TRUE)
 Python: distance_matrix(taxa, verbose=False, progress=True)
+Julia:  distance_matrix(taxa; verbose=false, progress=true)
 ```
 
 Retrieves each lineage once and computes all pairwise distances. Input order and labels are preserved. Unresolved taxa receive missing off-diagonal comparisons; the diagonal is zero.
 
-**Returns:** a `dist` object in R or symmetric `pandas.DataFrame` in Python. Empty input returns a correctly shaped empty object.
+**Returns:** a `dist` object in R, symmetric `pandas.DataFrame` in Python, or labeled `TaxonomicDistanceMatrix` in Julia. Empty input returns a correctly shaped empty object.
 
 ### `focal_distances()`
 
 ```text
 R:      focal_distances(focal, community, verbose = FALSE, progress = TRUE)
 Python: focal_distances(focal, community, verbose=False, progress=True)
+Julia:  focal_distances(focal, community; verbose=false)
 ```
 
 Computes the distance from one focal taxon to each community member and sorts finite results from smallest to largest.
@@ -133,6 +141,7 @@ Computes the distance from one focal taxon to each community member and sorts fi
 ```text
 R:      closest_relative(taxon, candidates, verbose = FALSE)
 Python: closest_relative(taxon, candidates, verbose=False)
+Julia:  closest_relative(taxon, candidates; verbose=false)
 ```
 
 Ranks candidate taxa by distance from the query taxon.
@@ -144,6 +153,7 @@ Ranks candidate taxa by distance from the query taxon.
 ```text
 R:      lineage_depth(taxon, verbose = FALSE)
 Python: lineage_depth(taxon, verbose=False)
+Julia:  lineage_depth(taxon; verbose=false)
 ```
 
 Returns the number of nodes in the retrieved lineage, including root and queried node. This is classification resolution, not elapsed time.
@@ -153,6 +163,7 @@ Returns the number of nodes in the retrieved lineage, including root and queried
 ```text
 R:      check_coverage(taxa, verbose = FALSE)
 Python: check_coverage(taxa, verbose=False)
+Julia:  check_coverage(taxa; verbose=false)
 ```
 
 Checks whether each input can be resolved to a Taxonomicon identifier.
@@ -166,6 +177,7 @@ Checks whether each input can be resolved to a Taxonomicon identifier.
 ```text
 R:      compare_lineages(taxon_a, taxon_b, verbose = FALSE)
 Python: compare_lineages(taxon_a, taxon_b, verbose=False)
+Julia:  compare_lineages(taxon_a, taxon_b; verbose=false)
 ```
 
 Prints the common lineage and the nodes unique to each side after divergence.
@@ -177,6 +189,7 @@ Prints the common lineage and the nodes unique to each side after divergence.
 ```text
 R:      shared_clades(taxon_a, taxon_b, verbose = FALSE)
 Python: shared_clades(taxon_a, taxon_b, verbose=False)
+Julia:  shared_clades(taxon_a, taxon_b; verbose=false)
 ```
 
 Returns the continuous common prefix from root through the MRCA. A pair with no common ancestor returns an empty vector/list; failed retrieval returns `NULL`/`None`.
@@ -186,6 +199,7 @@ Returns the continuous common prefix from root through the MRCA. A pair with no 
 ```text
 R:      taxo_path(taxon_a, taxon_b, verbose = FALSE)
 Python: taxo_path(taxon_a, taxon_b, verbose=False)
+Julia:  taxo_path(taxon_a, taxon_b; verbose=false)
 ```
 
 Constructs the route from taxon A upward to the MRCA and downward to taxon B.
@@ -203,6 +217,7 @@ The input labels are retained as object metadata. Returns `NULL`/`None` if retri
 ```text
 R:      is_member(taxon, clade, verbose = FALSE)
 Python: is_member(taxon, clade, verbose=False)
+Julia:  is_member(taxon, clade; verbose=false)
 ```
 
 Tests whether the complete clade name occurs in the taxon's lineage. Matching is exact, case-insensitive, and ignores surrounding whitespace.
@@ -214,6 +229,7 @@ Tests whether the complete clade name occurs in the taxon's lineage. Matching is
 ```text
 R:      filter_clade(taxa, clade, verbose = FALSE)
 Python: filter_clade(taxa, clade, verbose=False)
+Julia:  filter_clade(taxa, clade; verbose=false)
 ```
 
 Returns only input taxa for which `is_member()` is true. Unresolved taxa are omitted.
@@ -225,6 +241,7 @@ Returns only input taxa for which `is_member()` is true. Unresolved taxa are omi
 ```text
 R:      taxo_cluster(taxa, method = "average", ...)
 Python: taxo_cluster(taxa, method="average", **kwargs)
+Julia:  taxo_cluster(taxa; method="average", kwargs...)
 ```
 
 Accepts taxon names or a previously computed distance object. The default is average-linkage hierarchical clustering.
@@ -241,6 +258,7 @@ If the matrix contains missing or infinite values, or represents fewer than two 
 ```text
 R:      taxo_ordinate(taxa, k = 2, ...)
 Python: taxo_ordinate(taxa, k=2, **kwargs)
+Julia:  taxo_ordinate(taxa; k=2, kwargs...)
 ```
 
 Performs classical multidimensional scaling (PCoA). The requested `k` must be a positive integer and is reduced to at most $n-1$.
@@ -252,6 +270,7 @@ Performs classical multidimensional scaling (PCoA). The requested `k` must be a 
 ```text
 R:      taxo_heatmap(taxa, ...)
 Python: taxo_heatmap(taxa, **kwargs)
+Julia:  taxo_heatmap(taxa; display_plot=true, kwargs...)
 ```
 
 Plots the distance matrix with clustered rows and columns. R passes additional arguments to `stats::heatmap()`; Python passes them to `seaborn.clustermap()`.
@@ -277,6 +296,7 @@ Prints and returns counts of cached lineages and identifiers, stored lineage key
 ```text
 R:      save_cache(file)
 Python: save_cache(file)
+Julia:  save_cache(file)
 ```
 
 Serializes the current cache to an R `.rds` file or Python `.pkl` file. Returns invisibly `NULL` in R and `None` in Python.
@@ -286,9 +306,10 @@ Serializes the current cache to an R `.rds` file or Python `.pkl` file. Returns 
 ```text
 R:      load_cache(file)
 Python: load_cache(file)
+Julia:  load_cache(file)
 ```
 
-Validates and restores a previously saved cache. Validation occurs before the active cache is modified. R and Python cache files are not interchangeable.
+Validates and restores a previously saved cache. Validation occurs before the active cache is modified. The R, Python, and Julia cache files are not interchangeable.
 
 ::: {.callout-warning title="Python cache security"}
 Python cache files use `pickle`. Only load `.pkl` files from trusted sources, because unpickling untrusted data can execute arbitrary code.
@@ -309,14 +330,15 @@ Removes all identifiers and lineages cached in the current session. Returns invi
 ```text
 R:      data(taxobase, package = "taxodist")
 Python: taxobase = load_taxobase()
+Julia:  taxobase = load_taxobase()
 ```
 
 Loads the fixed reference object distributed with release 0.6.0. Components include taxa, coverage, lineages, pairwise examples, search results, general and statistical distance matrices, and provenance metadata.
 
-R stores distance components as `dist`; Python converts matrix components to labeled `pandas.DataFrame` objects.
+R stores distance components as `dist`; Python converts matrices to labeled `pandas.DataFrame` objects; Julia converts them to labeled `TaxonomicDistanceMatrix` objects.
 
 ## Display helpers
 
-R uses S3 methods for distance results, focal results, paths, clusters, and ordinations. Python exposes corresponding helpers including `print_taxodist_result()`, `print_taxodist_path()`, `plot_taxodist_cluster()`, `plot_taxodist_ord()`, and `summary_taxodist_ord()`.
+R uses S3 methods for distance results, focal results, paths, clusters, and ordinations. Python exposes corresponding explicit helpers. Julia provides `plot_taxodist_cluster()`, `plot_taxodist_ord()`, and `summary_taxodist_ord()` alongside native display of named tuples, data frames, and labeled matrices.
 
-For complete argument documentation in R, run `help(package = "taxodist")`. In Python, use `help(taxodist.function_name)`.
+For complete argument documentation in R, run `help(package = "taxodist")`. In Python, use `help(taxodist.function_name)`. In Julia, use help mode, for example `?taxo_distance`.

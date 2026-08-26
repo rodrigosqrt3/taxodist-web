@@ -1,6 +1,6 @@
 ---
 title: "Introduction to taxodist"
-subtitle: "Retrieve ordered taxonomic lineages and compare hierarchy nodes in R or Python."
+subtitle: "Retrieve ordered taxonomic lineages and compare hierarchy nodes in R, Python, or Julia."
 ---
 
 ## What is taxodist?
@@ -39,7 +39,7 @@ The root has depth 1. Consequently, distinct nodes sharing only that root have d
 
 Zero is reserved for identical hierarchy nodes. If one queried node is an ancestor of the other, their distance remains positive. Use `is_member()` when your question is about containment and `taxo_path()` when you want to inspect the route between nodes.
 
-Within a connected hierarchy, this definition is an ultrametric. If two lineages share no root, their distance is infinite. If a lineage cannot be retrieved, the corresponding values are missing (`NA` in R and `NaN` in Python matrices).
+Within a connected hierarchy, this definition is an ultrametric. If two lineages share no root, their distance is infinite. If a lineage cannot be retrieved, the corresponding values are missing (`NA` in R and `NaN` in Python or Julia matrices).
 
 ::: {.callout-warning title="Interpretation"}
 Classification depth depends on the source and on which intermediate clades it records. These distances must not be interpreted as genetic divergence, morphological difference, evolutionary time, or phylogenetic branch length.
@@ -85,6 +85,28 @@ Install the development version from GitHub:
 pip install git+https://github.com/rodrigosqrt3/taxodist-py.git
 ```
 
+### Julia
+
+Install the registered package from the Julia General registry:
+
+```julia
+using Pkg
+Pkg.add("Taxodist")
+```
+
+Then load it:
+
+```julia
+using Taxodist
+```
+
+Install the development version from GitHub:
+
+```julia
+using Pkg
+Pkg.add(url="https://github.com/rodrigosqrt3/taxodist-jl")
+```
+
 :::
 
 ## Retrieve a lineage
@@ -107,9 +129,17 @@ lineage
 len(lineage)
 ```
 
+### Julia
+
+```julia
+lineage = get_lineage("Tyrannosaurus")
+lineage
+length(lineage)
+```
+
 :::
 
-The returned character vector or list is ordered from the root to the queried node. Retrieval results are cached automatically during the session.
+The returned character vector, Python list, or Julia vector is ordered from the root to the queried node. Retrieval results are cached automatically during the session.
 
 You can also query a known numeric Taxonomicon ID directly:
 
@@ -127,6 +157,13 @@ get_lineage("50841")
 ```python
 td.get_lineage_by_id("50841")
 td.get_lineage("50841")
+```
+
+### Julia
+
+```julia
+get_lineage_by_id("50841")
+get_lineage("50841")
 ```
 
 :::
@@ -163,6 +200,19 @@ result["depth_a"]
 result["depth_b"]
 ```
 
+#### Julia
+
+```julia
+result = taxo_distance("Tyrannosaurus", "Velociraptor")
+result
+
+result.distance
+result.mrca
+result.mrca_depth
+result.depth_a
+result.depth_b
+```
+
 :::
 
 Examples on this site do not hard-code live distances or lineage depths. The Taxonomicon is an external, curated source, so classifications may change over time. Accessing the returned fields keeps the workflow valid when the source is updated.
@@ -185,6 +235,14 @@ mrca("Tyrannosaurus", "Homo")
 td.mrca("Tyrannosaurus", "Velociraptor")
 td.mrca("Tyrannosaurus", "Triceratops")
 td.mrca("Tyrannosaurus", "Homo")
+```
+
+#### Julia
+
+```julia
+mrca("Tyrannosaurus", "Velociraptor")
+mrca("Tyrannosaurus", "Triceratops")
+mrca("Tyrannosaurus", "Homo")
 ```
 
 :::
@@ -212,6 +270,16 @@ td.shared_clades("Tyrannosaurus", "Triceratops")
 td.compare_lineages("Tyrannosaurus", "Triceratops")
 
 path = td.taxo_path("Tyrannosaurus", "Triceratops")
+path
+```
+
+#### Julia
+
+```julia
+shared_clades("Tyrannosaurus", "Triceratops")
+compare_lineages("Tyrannosaurus", "Triceratops")
+
+path = taxo_path("Tyrannosaurus", "Triceratops")
 path
 ```
 
@@ -262,9 +330,30 @@ coverage
 distances
 ```
 
+### Julia
+
+```julia
+taxa = [
+    "Tyrannosaurus",
+    "Velociraptor",
+    "Triceratops",
+    "Brachiosaurus",
+    "Homo sapiens",
+    "Panthera leo",
+]
+
+coverage = check_coverage(taxa)
+distances = distance_matrix(taxa)
+
+coverage
+distances
+Matrix(distances)
+distances["Tyrannosaurus", "Velociraptor"]
+```
+
 :::
 
-In R, `distance_matrix()` returns a base `dist` object. Convert it with `as.matrix()` when a full square matrix is required. In Python, it returns a symmetric `pandas.DataFrame` with taxon names as row and column labels.
+In R, `distance_matrix()` returns a base `dist` object. Convert it with `as.matrix()` when a full square matrix is required. Python returns a symmetric `pandas.DataFrame`. Julia returns a `TaxonomicDistanceMatrix` supporting both integer and taxon-label indexing.
 
 Taxa that cannot be resolved remain represented in the result, with missing pairwise distances.
 
@@ -302,6 +391,20 @@ td.focal_distances("Tyrannosaurus", community)
 td.closest_relative("Tyrannosaurus", community)
 ```
 
+#### Julia
+
+```julia
+community = [
+    "Velociraptor",
+    "Triceratops",
+    "Brachiosaurus",
+    "Homo sapiens",
+]
+
+focal_distances("Tyrannosaurus", community)
+closest_relative("Tyrannosaurus", community)
+```
+
 :::
 
 ## Test and filter clade membership
@@ -326,6 +429,15 @@ td.is_member("Tyrannosaurus", "Theropoda")
 td.is_member("Triceratops", "Theropoda")
 
 td.filter_clade(taxa, "Dinosauria")
+```
+
+### Julia
+
+```julia
+is_member("Tyrannosaurus", "Theropoda")
+is_member("Triceratops", "Theropoda")
+
+filter_clade(taxa, "Dinosauria")
 ```
 
 :::
@@ -360,6 +472,20 @@ ordination = td.taxo_ordinate(distances, k=2)
 heatmap_data = td.taxo_heatmap(distances)
 ```
 
+### Julia
+
+```julia
+distances = distance_matrix(taxa)
+
+cluster = taxo_cluster(distances)
+ordination = taxo_ordinate(distances, k=2)
+
+plot_taxodist_cluster(cluster)
+summary_taxodist_ord(ordination)
+plot_taxodist_ord(ordination)
+taxo_heatmap(distances)
+```
+
 :::
 
 ::: {.callout-warning title="Check the matrix first"}
@@ -388,6 +514,14 @@ get_taxonomicon_id("Tyrannosaurus")
 td.check_coverage(["Tyrannosaurus", "Homo sapiens", "Fakeosaurus"])
 td.taxo_search("Bacteria")
 td.get_taxonomicon_id("Tyrannosaurus")
+```
+
+### Julia
+
+```julia
+check_coverage(["Tyrannosaurus", "Homo sapiens", "Fakeosaurus"])
+taxo_search("Bacteria")
+get_taxonomicon_id("Tyrannosaurus")
 ```
 
 :::
@@ -420,9 +554,19 @@ td.clear_cache()
 td.load_cache("taxodist-cache.pkl")
 ```
 
+### Julia
+
+```julia
+cache_info()
+save_cache("taxodist-cache.json")
+
+clear_cache()
+load_cache("taxodist-cache.json")
+```
+
 :::
 
-R and Python use different serialization formats, so their cache files are not interchangeable. Python cache files use `pickle`; only load files from sources you trust.
+The three implementations use language-specific cache formats: `.rds` in R, `.pkl` in Python, and `.json` in Julia. These cache files are not interchangeable. Python cache files use `pickle`; only load them from sources you trust.
 
 ## Use the offline reference data
 
@@ -446,9 +590,17 @@ taxobase.keys()
 taxobase["metadata"]
 ```
 
+### Julia
+
+```julia
+taxobase = load_taxobase()
+keys(taxobase)
+taxobase.metadata
+```
+
 :::
 
-Release 0.6.0 distributes equivalent reference content in both packages, preserving component names, taxon order, matrices, examples, and provenance metadata. The native serialized package artifacts remain language-specific.
+Release 0.6.0 distributes equivalent reference content in all three packages, preserving component names, taxon order, matrices, examples, and provenance metadata. The native package objects remain language-specific.
 
 ## Data source and citation
 

@@ -231,4 +231,4 @@ Warton, D.I., Wright, T.W., and Wang, Y. (2012). Distance-based multivariate ana
 
 Brands, S.J. (1989 onwards). *Systema Naturae 2000*. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, <http://taxonomicon.taxonomy.nl>.
 
-[← Methodology](methodology.qmd){.btn .btn-outline-secondary role="button"} [R/Python Compatibility →](r-python-compatibility.qmd){.btn .btn-outline-primary role="button"}
+[← Methodology](methodology.qmd){.btn .btn-outline-secondary role="button"} [Cross-language Compatibility →](cross-language-compatibility.qmd){.btn .btn-outline-primary role="button"}
