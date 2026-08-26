@@ -19,7 +19,7 @@ Taxonomic hierarchy distances and lineage analysis in R, Python, and Julia
 
 `taxodist` retrieves ordered taxonomic lineages from [The Taxonomicon](http://taxonomicon.taxonomy.nl) and compares hierarchy nodes through the depth of their most recent common ancestor (MRCA). The R, Python, and Julia packages implement the same distance definition and lineage semantics.
 
-[Get started](getting-started.qmd){.btn .btn-primary role="button"} [Launch the web app ↗](https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/){.btn .btn-outline-primary role="button"} [Browse the API](reference.qmd){.btn .btn-outline-secondary role="button"}
+[Usage guide](getting-started.qmd) · [Web application](https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/) · [Function reference](reference.qmd)
 
 ## What does taxodist measure?
 
@@ -41,7 +41,7 @@ The values describe separation in a taxonomic classification. They are **not** e
 
 Within each connected hierarchy, the definition is an ultrametric. Lineages with no shared root have infinite distance, while taxa whose lineages cannot be retrieved produce missing values in multi-taxon results.
 
-[Read the complete methodology →](methodology.qmd)
+[Methodology](methodology.qmd)
 
 ## Software interfaces
 
@@ -52,7 +52,7 @@ Within each connected hierarchy, the definition is an ultrametric. Lineages with
 | Julia | [JuliaHub](https://platform.juliahub.com/ui/Packages/General/Taxodist/) and [source code](https://github.com/rodrigosqrt3/taxodist-jl) | Labeled `TaxonomicDistanceMatrix` objects and native named tuples |
 | Web application | [Interactive interface](https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/) | Browser-based lineage and distance exploration |
 
-## A common workflow
+## Basic workflow
 
 ::: {.panel-tabset}
 
@@ -163,4 +163,4 @@ All retrieved lineage data originate from **The Taxonomicon**, based on *Systema
 
 > Brands, S.J. (1989 onwards). *Systema Naturae 2000*. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, <http://taxonomicon.taxonomy.nl>.
 
-[Start with the full guide →](getting-started.qmd){.btn .btn-primary role="button"}
+[Introduction and usage](getting-started.qmd)

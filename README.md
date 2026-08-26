@@ -1,6 +1,6 @@
 # taxodist website
 
-Official documentation website for [`taxodist`](https://rodrigosqrt3.github.io/taxodist-web/), an open-source project for taxonomic hierarchy distances and lineage analysis in R, Python, and Julia.
+Documentation website for [`taxodist`](https://rodrigosqrt3.github.io/taxodist-web/), an open-source project for taxonomic hierarchy distances and lineage analysis in R, Python, and Julia.
 
 The site documents how `taxodist` retrieves ordered lineages from [The Taxonomicon](http://taxonomicon.taxonomy.nl), compares taxa through the depth of their most recent common ancestor, and integrates the resulting distance objects with multivariate analysis workflows.
 

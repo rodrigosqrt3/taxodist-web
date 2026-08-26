@@ -12,7 +12,7 @@ website:
       - href: index.qmd
         text: Home
       - href: getting-started.qmd
-        text: Get Started
+        text: Guide
       - text: Articles
         menu:
           - href: methodology.qmd
@@ -28,7 +28,7 @@ website:
       - href: about.qmd
         text: About
     right:
-      - text: "Launch App ↗"
+      - text: "Web app"
         href: https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/
       - text: Source
         icon: github
@@ -42,7 +42,6 @@ website:
 
   page-footer:
     left: "taxodist 0.6.0"
-    center: "Taxonomic hierarchy distances — not evolutionary time or branch length."
     right:
       - text: R
         href: https://cran.r-project.org/package=taxodist

@@ -88,7 +88,7 @@
     "href": "index.html",
     "title": "taxodist",
     "section": "",
-    "text": "Taxonomic hierarchy distances and lineage analysis in R, Python, and Julia\ntaxodist retrieves ordered taxonomic lineages from The Taxonomicon and compares hierarchy nodes through the depth of their most recent common ancestor (MRCA). The R, Python, and Julia packages implement the same distance definition and lineage semantics.\nGet started Launch the web app ↗ Browse the API"
+    "text": "Taxonomic hierarchy distances and lineage analysis in R, Python, and Julia\ntaxodist retrieves ordered taxonomic lineages from The Taxonomicon and compares hierarchy nodes through the depth of their most recent common ancestor (MRCA). The R, Python, and Julia packages implement the same distance definition and lineage semantics.\nUsage guide · Web application · Function reference"
   },
   {
     "objectID": "index.html#core-functionality",
@@ -123,7 +123,7 @@
     "href": "index.html#data-source-and-citation",
     "title": "taxodist",
     "section": "Data source and citation",
-    "text": "Data source and citation\nAll retrieved lineage data originate from The Taxonomicon, based on Systema Naturae 2000. Published analyses should cite both the taxodist software and the underlying classification source:\n\nBrands, S.J. (1989 onwards). Systema Naturae 2000. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, http://taxonomicon.taxonomy.nl.\n\nStart with the full guide →"
+    "text": "Data source and citation\nAll retrieved lineage data originate from The Taxonomicon, based on Systema Naturae 2000. Published analyses should cite both the taxodist software and the underlying classification source:\n\nBrands, S.J. (1989 onwards). Systema Naturae 2000. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, http://taxonomicon.taxonomy.nl.\n\nIntroduction and usage"
   },
   {
     "objectID": "news.html",
@@ -354,7 +354,7 @@
     "href": "index.html#what-does-taxodist-measure",
     "title": "taxodist",
     "section": "What does taxodist measure?",
-    "text": "What does taxodist measure?\nFor two ordered lineages, taxodist finds their continuous common prefix. The final node in that prefix is their MRCA. Distance is then defined as\n\\[\nd(A,B)=\n\\begin{cases}\n0, & \\text{if the complete lineages of } A \\text{ and } B \\text{ are identical}, \\\\\n\\dfrac{1}{\\operatorname{depth}(\\operatorname{MRCA}(A,B))}, & \\text{otherwise}.\n\\end{cases}\n\\]\nA deeper shared ancestor produces a smaller distance. Zero is reserved for identical hierarchy nodes; distinct nodes always have a positive distance, including when one taxon is an ancestor of the other.\n\n\n\n\n\n\nClassification distance, not evolutionary distance\n\n\n\nThe values describe separation in a taxonomic classification. They are not evolutionary time, genetic distance, morphological divergence, or phylogenetic branch length. Dendrograms produced from the matrix summarize these classification distances and must not be interpreted as inferred phylogenetic trees.\n\n\nWithin each connected hierarchy, the definition is an ultrametric. Lineages with no shared root have infinite distance, while taxa whose lineages cannot be retrieved produce missing values in multi-taxon results.\nRead the complete methodology →"
+    "text": "What does taxodist measure?\nFor two ordered lineages, taxodist finds their continuous common prefix. The final node in that prefix is their MRCA. Distance is then defined as\n\\[\nd(A,B)=\n\\begin{cases}\n0, & \\text{if the complete lineages of } A \\text{ and } B \\text{ are identical}, \\\\\n\\dfrac{1}{\\operatorname{depth}(\\operatorname{MRCA}(A,B))}, & \\text{otherwise}.\n\\end{cases}\n\\]\nA deeper shared ancestor produces a smaller distance. Zero is reserved for identical hierarchy nodes; distinct nodes always have a positive distance, including when one taxon is an ancestor of the other.\n\n\n\n\n\n\nClassification distance, not evolutionary distance\n\n\n\nThe values describe separation in a taxonomic classification. They are not evolutionary time, genetic distance, morphological divergence, or phylogenetic branch length. Dendrograms produced from the matrix summarize these classification distances and must not be interpreted as inferred phylogenetic trees.\n\n\nWithin each connected hierarchy, the definition is an ultrametric. Lineages with no shared root have infinite distance, while taxa whose lineages cannot be retrieved produce missing values in multi-taxon results.\nMethodology"
   },
   {
     "objectID": "index.html#three-ways-to-use-taxodist",
@@ -859,5 +859,12 @@
     "title": "Cross-language Compatibility",
     "section": "Version reporting",
     "text": "Version reporting\n\nRPythonJulia\n\n\npackageVersion(\"taxodist\")\nsessionInfo()\n\n\nimport platform\nimport taxodist as td\n\ntd.__version__\nplatform.python_version()\n\n\nusing Pkg\n\nPkg.status(\"Taxodist\")\nVERSION\n\n\n\nReport these values whenever results are exchanged between languages.\n← Methodology API Reference →"
+  },
+  {
+    "objectID": "index.html#basic-workflow",
+    "href": "index.html#basic-workflow",
+    "title": "taxodist",
+    "section": "Basic workflow",
+    "text": "Basic workflow\n\nRPythonJulia\n\n\nlibrary(taxodist)\n\ntaxa &lt;- c(\n  \"Tyrannosaurus\",\n  \"Velociraptor\",\n  \"Triceratops\",\n  \"Homo sapiens\"\n)\n\n# Retrieve an ordered lineage\nlineage &lt;- get_lineage(\"Tyrannosaurus\")\n\n# Compare two hierarchy nodes\nresult &lt;- taxo_distance(\"Tyrannosaurus\", \"Velociraptor\")\nresult$mrca\nresult$distance\n\n# Build and analyze a community matrix\nmat &lt;- distance_matrix(taxa)\ncluster &lt;- taxo_cluster(mat)\nordination &lt;- taxo_ordinate(mat)\n\nplot(cluster)\nplot(ordination)\n\n\nimport taxodist as td\n\ntaxa = [\n    \"Tyrannosaurus\",\n    \"Velociraptor\",\n    \"Triceratops\",\n    \"Homo sapiens\",\n]\n\n# Retrieve an ordered lineage\nlineage = td.get_lineage(\"Tyrannosaurus\")\n\n# Compare two hierarchy nodes\nresult = td.taxo_distance(\"Tyrannosaurus\", \"Velociraptor\")\nresult[\"mrca\"]\nresult[\"distance\"]\n\n# Build and analyze a community matrix\nmatrix = td.distance_matrix(taxa)\ncluster = td.taxo_cluster(matrix)\nordination = td.taxo_ordinate(matrix)\n\n\nusing Taxodist\n\ntaxa = [\n    \"Tyrannosaurus\",\n    \"Velociraptor\",\n    \"Triceratops\",\n    \"Homo sapiens\",\n]\n\n# Retrieve an ordered lineage\nlineage = get_lineage(\"Tyrannosaurus\")\n\n# Compare two hierarchy nodes\nresult = taxo_distance(\"Tyrannosaurus\", \"Velociraptor\")\nresult.mrca\nresult.distance\n\n# Build and analyze a community matrix\nmatrix = distance_matrix(taxa)\ncluster = taxo_cluster(matrix)\nordination = taxo_ordinate(matrix)"
   }
 ]

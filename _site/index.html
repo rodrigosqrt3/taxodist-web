@@ -125,7 +125,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./getting-started.html" rel="" target="">
- <span class="menu-text">Get Started</span></a>
+ <span class="menu-text">Guide</span></a>
   </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-articles" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
@@ -141,7 +141,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">Statistical Applications</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./cross-language-compatibility.qmd" rel="" target="">
+    <a class="dropdown-item" href="./cross-language-compatibility.html" rel="" target="">
  <span class="dropdown-text">Cross-language Compatibility</span></a>
   </li>  
     </ul>
@@ -162,7 +162,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
     <a class="nav-link" href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/" rel="" target="">
- <span class="menu-text">Launch App ↗</span></a>
+ <span class="menu-text">Web app</span></a>
   </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-source" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
@@ -214,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><a href="https://cran.r-project.org/package=taxodist"><img src="https://img.shields.io/cran/v/taxodist?color=green.png" class="img-fluid" alt="CRAN status"></a> &nbsp; <a href="https://pypi.org/project/taxodist"><img src="https://img.shields.io/pypi/v/taxodist?color=green.png" class="img-fluid" alt="PyPI version"></a> &nbsp; <a href="https://platform.juliahub.com/ui/Packages/General/Taxodist/"><img src="https://juliahub.com/docs/Taxodist/version.svg" class="img-fluid" alt="JuliaHub version"></a></p>
 <p><code>taxodist</code> retrieves ordered taxonomic lineages from <a href="http://taxonomicon.taxonomy.nl">The Taxonomicon</a> and compares hierarchy nodes through the depth of their most recent common ancestor (MRCA). The R, Python, and Julia packages implement the same distance definition and lineage semantics.</p>
-<p><a href="./getting-started.html" class="btn btn-primary" role="button">Get started</a> <a href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/" class="btn btn-outline-primary" role="button">Launch the web app ↗</a> <a href="./reference.html" class="btn btn-outline-secondary" role="button">Browse the API</a></p>
+<p><a href="./getting-started.html">Usage guide</a> · <a href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/">Web application</a> · <a href="./reference.html">Function reference</a></p>
 <section id="what-does-taxodist-measure" class="level2">
 <h2 class="anchored" data-anchor-id="what-does-taxodist-measure">What does taxodist measure?</h2>
 <p>For two ordered lineages, <code>taxodist</code> finds their continuous common prefix. The final node in that prefix is their MRCA. Distance is then defined as</p>
@@ -240,7 +240,7 @@ Classification distance, not evolutionary distance
 </div>
 </div>
 <p>Within each connected hierarchy, the definition is an ultrametric. Lineages with no shared root have infinite distance, while taxa whose lineages cannot be retrieved produce missing values in multi-taxon results.</p>
-<p><a href="./methodology.html">Read the complete methodology →</a></p>
+<p><a href="./methodology.html">Methodology</a></p>
 </section>
 <section id="software-interfaces" class="level2">
 <h2 class="anchored" data-anchor-id="software-interfaces">Software interfaces</h2>
@@ -276,8 +276,8 @@ Classification distance, not evolutionary distance
 </tbody>
 </table>
 </section>
-<section id="a-common-workflow" class="level2">
-<h2 class="anchored" data-anchor-id="a-common-workflow">A common workflow</h2>
+<section id="basic-workflow" class="level2">
+<h2 class="anchored" data-anchor-id="basic-workflow">Basic workflow</h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Julia</a></li></ul>
 <div class="tab-content">
@@ -412,7 +412,7 @@ Classification distance, not evolutionary distance
 <blockquote class="blockquote">
 <p>Brands, S.J. (1989 onwards). <em>Systema Naturae 2000</em>. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, <a href="http://taxonomicon.taxonomy.nl" class="uri">http://taxonomicon.taxonomy.nl</a>.</p>
 </blockquote>
-<p><a href="./getting-started.html" class="btn btn-primary" role="button">Start with the full guide →</a></p>
+<p><a href="./getting-started.html">Introduction and usage</a></p>
 
 
 </section>
@@ -770,7 +770,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">taxodist 0.6.0</div>   
-    <div class="nav-footer-center">Taxonomic hierarchy distances — not evolutionary time or branch length.</div>
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
