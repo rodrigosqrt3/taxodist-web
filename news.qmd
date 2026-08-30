@@ -1,6 +1,6 @@
 ---
 title: "Changelog"
-subtitle: "Release history for taxodist, from version 0.1.0 through the coordinated 0.6.0 implementations."
+subtitle: "Release history for taxodist, from version 0.1.0 through the coordinated 0.7.0 implementations."
 ---
 
 ## taxodist 0.1.0 — Initial release
@@ -71,7 +71,7 @@ subtitle: "Release history for taxodist, from version 0.1.0 through the coordina
 - Added `Epifamily` to the rank-token filter.
 - Corrected parsing around superscript type markers and target names appearing in page-navigation text.
 
-## taxodist 0.6.0 [Latest]{.badge .bg-primary}
+## taxodist 0.6.0
 
 ### Distance definition
 
@@ -104,4 +104,20 @@ Analyses that relied on version 0.5.0 or earlier should be recomputed when ances
 
 ## Cross-language compatibility note
 
-The R, Python, and Julia implementations follow the same version 0.6.0 distance semantics. Their native containers differ: R uses `dist`, S3 objects, and `.rds` cache files; Python uses labeled `pandas` objects, dictionaries, and `.pkl` cache files; Julia uses `TaxonomicDistanceMatrix`, named tuples, `DataFrame` objects, and `.json` cache files.
+The R, Python, and Julia implementations follow the same distance semantics. Their native containers differ: R uses `dist`, S3 objects, and `.rds` cache files; Python uses labeled `pandas` objects, dictionaries, and `.pkl` cache files; Julia uses `TaxonomicDistanceMatrix`, named tuples, `DataFrame` objects, and `.json` cache files.
+
+## taxodist 0.7.0 [Latest]{.badge .bg-primary}
+
+### Performance
+
+- R now fills the compact lower-triangular `dist` representation directly instead of allocating a full square intermediate matrix.
+- Python now reuses a persistent HTTP session across Taxonomicon requests, enabling connection pooling without changing public behavior.
+- All three implementations use streamlined numeric pairwise paths for matrix construction and reuse final name-resolved lineages during warm calls.
+
+### Compatibility and validation
+
+- Preserved the public API and continuous-prefix MRCA distance semantics.
+- Revalidated reference matrices, resolved identifiers, lineage outputs, and optimized matrix paths across R, Python, and Julia.
+- Julia now reads intermediate hierarchy nodes rendered as plain text and aligns ambiguous-name matching with the whole-word behavior used by R and Python.
+- Expanded deterministic and regression coverage; each implementation reports complete coverage under its language-specific coverage measure.
+- Improved cache inspection and clearing in the R implementation by addressing the private cache environment explicitly.

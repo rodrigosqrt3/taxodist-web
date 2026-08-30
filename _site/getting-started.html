@@ -270,7 +270,7 @@ Terminology
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Throughout this site, <strong>distance</strong> means distance between nodes in a taxonomic hierarchy. It does not mean phylogenetic branch length or elapsed evolutionary time.</p>
+<p>Throughout this site, <strong>distance</strong> means distance between nodes in a taxonomic hierarchy. It does not mean phylogenetic branch length or elapsed evolutionary time. Root depth is 1, so distinct valid Taxonomicon nodes have distances in <span class="math inline">\((0,1]\)</span>.</p>
 </div>
 </div>
 </section>
@@ -286,7 +286,7 @@ d(A,B)=
 \]</span></p>
 <p>The root has depth 1. Consequently, distinct nodes sharing only that root have distance 1, while a deeper MRCA produces a smaller positive value.</p>
 <p>Zero is reserved for identical hierarchy nodes. If one queried node is an ancestor of the other, their distance remains positive. Use <code>is_member()</code> when your question is about containment and <code>taxo_path()</code> when you want to inspect the route between nodes.</p>
-<p>Within a connected hierarchy, this definition is an ultrametric. If two lineages share no root, their distance is infinite. If a lineage cannot be retrieved, the corresponding values are missing (<code>NA</code> in R and <code>NaN</code> in Python or Julia matrices).</p>
+<p>Within a connected hierarchy, this definition is an ultrametric. Valid Taxonomicon lineages share the retained root <code>Biota</code>; infinite distance is a defensive result for disconnected input lineages. If a lineage cannot be retrieved, the corresponding values are missing (<code>NA</code> in R and <code>NaN</code> in Python or Julia matrices).</p>
 <div class="callout callout-style-default callout-warning callout-titled" title="Interpretation">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -734,7 +734,7 @@ Check the matrix first
 </div>
 </div>
 </div>
-<p>Release 0.6.0 distributes equivalent reference content in all three packages, preserving component names, taxon order, matrices, examples, and provenance metadata. The native package objects remain language-specific.</p>
+<p>Release 0.7.0 distributes equivalent reference content in all three packages, preserving component names, taxon order, matrices, examples, and provenance metadata. The native package objects remain language-specific.</p>
 </section>
 <section id="data-source-and-citation" class="level2">
 <h2 class="anchored" data-anchor-id="data-source-and-citation">Data source and citation</h2>
@@ -1100,7 +1100,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left">taxodist 0.6.0</div>   
+    <div class="nav-footer-left">taxodist 0.7.0</div>   
     <div class="nav-footer-center">
       &nbsp;
     </div>

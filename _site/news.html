@@ -91,7 +91,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./getting-started.html" rel="" target="">
- <span class="menu-text">Get Started</span></a>
+ <span class="menu-text">Guide</span></a>
   </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-articles" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
@@ -107,7 +107,7 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Statistical Applications</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./cross-language-compatibility.qmd" rel="" target="">
+    <a class="dropdown-item" href="./cross-language-compatibility.html" rel="" target="">
  <span class="dropdown-text">Cross-language Compatibility</span></a>
   </li>  
     </ul>
@@ -128,7 +128,7 @@ ul.task-list li input[type="checkbox"] {
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
     <a class="nav-link" href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/" rel="" target="">
- <span class="menu-text">Launch App ↗</span></a>
+ <span class="menu-text">Web app</span></a>
   </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-source" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
@@ -190,13 +190,18 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#reference-data" id="toc-reference-data" class="nav-link" data-scroll-target="#reference-data">Reference data</a></li>
   <li><a href="#corrections-1" id="toc-corrections-1" class="nav-link" data-scroll-target="#corrections-1">Corrections</a></li>
   </ul></li>
-  <li><a href="#taxodist-0.6.0-latest" id="toc-taxodist-0.6.0-latest" class="nav-link" data-scroll-target="#taxodist-0.6.0-latest">taxodist 0.6.0 <span class="badge bg-primary">Latest</span></a>
+  <li><a href="#taxodist-0.6.0" id="toc-taxodist-0.6.0" class="nav-link" data-scroll-target="#taxodist-0.6.0">taxodist 0.6.0</a>
   <ul class="collapse">
   <li><a href="#distance-definition" id="toc-distance-definition" class="nav-link" data-scroll-target="#distance-definition">Distance definition</a></li>
   <li><a href="#data-and-documentation" id="toc-data-and-documentation" class="nav-link" data-scroll-target="#data-and-documentation">Data and documentation</a></li>
   <li><a href="#robustness" id="toc-robustness" class="nav-link" data-scroll-target="#robustness">Robustness</a></li>
   </ul></li>
   <li><a href="#cross-language-compatibility-note" id="toc-cross-language-compatibility-note" class="nav-link" data-scroll-target="#cross-language-compatibility-note">Cross-language compatibility note</a></li>
+  <li><a href="#taxodist-0.7.0-latest" id="toc-taxodist-0.7.0-latest" class="nav-link" data-scroll-target="#taxodist-0.7.0-latest">taxodist 0.7.0 <span class="badge bg-primary">Latest</span></a>
+  <ul class="collapse">
+  <li><a href="#performance" id="toc-performance" class="nav-link" data-scroll-target="#performance">Performance</a></li>
+  <li><a href="#compatibility-and-validation" id="toc-compatibility-and-validation" class="nav-link" data-scroll-target="#compatibility-and-validation">Compatibility and validation</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -206,7 +211,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Changelog</h1>
-<p class="subtitle lead">Release history for taxodist, from version 0.1.0 through the coordinated 0.6.0 implementations.</p>
+<p class="subtitle lead">Release history for taxodist, from version 0.1.0 through the coordinated 0.7.0 implementations.</p>
 </div>
 
 
@@ -313,8 +318,8 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 </section>
 </section>
-<section id="taxodist-0.6.0-latest" class="level2">
-<h2 class="anchored" data-anchor-id="taxodist-0.6.0-latest">taxodist 0.6.0 <span class="badge bg-primary">Latest</span></h2>
+<section id="taxodist-0.6.0" class="level2">
+<h2 class="anchored" data-anchor-id="taxodist-0.6.0">taxodist 0.6.0</h2>
 <section id="distance-definition" class="level3">
 <h3 class="anchored" data-anchor-id="distance-definition">Distance definition</h3>
 <ul>
@@ -362,9 +367,30 @@ Behavioral change
 </section>
 <section id="cross-language-compatibility-note" class="level2">
 <h2 class="anchored" data-anchor-id="cross-language-compatibility-note">Cross-language compatibility note</h2>
-<p>The R, Python, and Julia implementations follow the same version 0.6.0 distance semantics. Their native containers differ: R uses <code>dist</code>, S3 objects, and <code>.rds</code> cache files; Python uses labeled <code>pandas</code> objects, dictionaries, and <code>.pkl</code> cache files; Julia uses <code>TaxonomicDistanceMatrix</code>, named tuples, <code>DataFrame</code> objects, and <code>.json</code> cache files.</p>
+<p>The R, Python, and Julia implementations follow the same distance semantics. Their native containers differ: R uses <code>dist</code>, S3 objects, and <code>.rds</code> cache files; Python uses labeled <code>pandas</code> objects, dictionaries, and <code>.pkl</code> cache files; Julia uses <code>TaxonomicDistanceMatrix</code>, named tuples, <code>DataFrame</code> objects, and <code>.json</code> cache files.</p>
+</section>
+<section id="taxodist-0.7.0-latest" class="level2">
+<h2 class="anchored" data-anchor-id="taxodist-0.7.0-latest">taxodist 0.7.0 <span class="badge bg-primary">Latest</span></h2>
+<section id="performance" class="level3">
+<h3 class="anchored" data-anchor-id="performance">Performance</h3>
+<ul>
+<li>R now fills the compact lower-triangular <code>dist</code> representation directly instead of allocating a full square intermediate matrix.</li>
+<li>Python now reuses a persistent HTTP session across Taxonomicon requests, enabling connection pooling without changing public behavior.</li>
+<li>All three implementations use streamlined numeric pairwise paths for matrix construction and reuse final name-resolved lineages during warm calls.</li>
+</ul>
+</section>
+<section id="compatibility-and-validation" class="level3">
+<h3 class="anchored" data-anchor-id="compatibility-and-validation">Compatibility and validation</h3>
+<ul>
+<li>Preserved the public API and continuous-prefix MRCA distance semantics.</li>
+<li>Revalidated reference matrices, resolved identifiers, lineage outputs, and optimized matrix paths across R, Python, and Julia.</li>
+<li>Julia now reads intermediate hierarchy nodes rendered as plain text and aligns ambiguous-name matching with the whole-word behavior used by R and Python.</li>
+<li>Expanded deterministic and regression coverage; each implementation reports complete coverage under its language-specific coverage measure.</li>
+<li>Improved cache inspection and clearing in the R implementation by addressing the private cache environment explicitly.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -719,8 +745,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left">taxodist 0.6.0</div>   
-    <div class="nav-footer-center">Taxonomic hierarchy distances — not evolutionary time or branch length.</div>
+    <div class="nav-footer-left">taxodist 0.7.0</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">

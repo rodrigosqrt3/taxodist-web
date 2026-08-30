@@ -5,12 +5,12 @@ subtitle: "Shared semantics, native return types, and reproducible workflows in 
 
 ## Compatibility contract
 
-The R, Python, and Julia packages are separate implementations of the same taxonomic hierarchy distance. Version 0.6.0 aligns their core behavioral contract:
+The R, Python, and Julia packages are separate implementations of the same taxonomic hierarchy distance. Version 0.7.0 preserves their core behavioral contract:
 
 - ordered lineages are compared through their continuous common prefix;
 - identical complete lineages receive distance zero;
 - distinct nodes receive $1 / \operatorname{depth}(\operatorname{MRCA})$;
-- lineages without a common root receive infinite distance;
+- valid Taxonomicon nodes have distances in $(0,1]$, while disconnected inputs retain infinite distance as a defensive result;
 - unresolved lineages produce missing values in multi-taxon results;
 - ancestor–descendant pairs retain positive distance;
 - clade membership uses exact, case-insensitive matching;
@@ -205,7 +205,7 @@ Typography, plotting backends, colors, dendrogram orientation, and console forma
 
 ## Reference data parity
 
-Release 0.6.0 distributes equivalent `taxobase` content in all three packages. Python and Julia load the neutral JSON reference into their native labeled containers.
+Release 0.7.0 distributes equivalent `taxobase` content in all three packages. Python and Julia load the neutral JSON reference into their native labeled containers.
 
 ::: {.panel-tabset}
 
@@ -303,6 +303,20 @@ from_julia = load_taxobase().statistical_matrix
 ```
 
 This checks labels, order, and numerical values without depending on language-specific serialization.
+
+## Version 0.7.0 validation and performance
+
+Release 0.7.0 was revalidated with the same 52-taxon reference set in three order-rotated runs. Across languages, all 468 lineage audit records, resolved identifiers, finite-pair counts, and matrix checksums agreed.
+
+Cached timings below are medians across the three runs; each timing summarizes 15 adaptively calibrated batches on the validation system.
+
+| Cached operation, $n=52$ | R | Python | Julia |
+|---|---:|---:|---:|
+| Distance matrix | 9.250 ms | 4.358 ms | **0.369 ms** |
+| Clustering | 0.086 ms | 0.124 ms | **0.030 ms** |
+| Ordination | 0.633 ms | 0.675 ms | **0.398 ms** |
+
+At this size, Julia constructed the cached matrix 11.8 times faster than Python and 25.1 times faster than R. These values describe this implementation version, dataset, and validation system; they are not universal language benchmarks. Initial lineage retrieval was network-dominated and varied substantially between runs, so it should not be used to rank language performance.
 
 ## Cache compatibility
 

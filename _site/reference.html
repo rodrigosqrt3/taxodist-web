@@ -91,7 +91,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./getting-started.html" rel="" target="">
- <span class="menu-text">Get Started</span></a>
+ <span class="menu-text">Guide</span></a>
   </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-articles" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
@@ -128,7 +128,7 @@ ul.task-list li input[type="checkbox"] {
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
     <a class="nav-link" href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/" rel="" target="">
- <span class="menu-text">Launch App ↗</span></a>
+ <span class="menu-text">Web app</span></a>
   </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-source" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
@@ -220,7 +220,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Function Reference</h1>
-<p class="subtitle lead">Public API for taxodist 0.6.0 in R, Python, and Julia.</p>
+<p class="subtitle lead">Public API for taxodist 0.7.0 in R, Python, and Julia.</p>
 </div>
 
 
@@ -342,7 +342,7 @@ d(A,B)=
 1 / \operatorname{depth}(\operatorname{MRCA}(A,B)), &amp; \text{otherwise}.
 \end{cases}
 \]</span></p>
-<p>MRCA detection uses only the continuous common prefix from the root. Distinct ancestor–descendant nodes therefore retain a positive distance. Lineages without a shared root have infinite distance and no MRCA.</p>
+<p>MRCA detection uses only the continuous common prefix from the root. Distinct ancestor–descendant nodes therefore retain a positive distance. Root depth is 1, so distinct valid Taxonomicon nodes have distances in <span class="math inline">\((0,1]\)</span>. Infinite distance is retained as a defensive result for disconnected input lineages.</p>
 <p><strong>Returns:</strong> an S3 list in R, <code>dict</code> in Python, or named tuple in Julia with:</p>
 <table class="table">
 <thead>
@@ -562,7 +562,7 @@ Python cache security
 <pre class="text"><code>R:      data(taxobase, package = "taxodist")
 Python: taxobase = load_taxobase()
 Julia:  taxobase = load_taxobase()</code></pre>
-<p>Loads the fixed reference object distributed with release 0.6.0. Components include taxa, coverage, lineages, pairwise examples, search results, general and statistical distance matrices, and provenance metadata.</p>
+<p>Loads the fixed reference object distributed with release 0.7.0. Components include taxa, coverage, lineages, pairwise examples, search results, general and statistical distance matrices, and provenance metadata.</p>
 <p>R stores distance components as <code>dist</code>; Python converts matrices to labeled <code>pandas.DataFrame</code> objects; Julia converts them to labeled <code>TaxonomicDistanceMatrix</code> objects.</p>
 </section>
 </section>
@@ -926,8 +926,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left">taxodist 0.6.0</div>   
-    <div class="nav-footer-center">Taxonomic hierarchy distances — not evolutionary time or branch length.</div>
+    <div class="nav-footer-left">taxodist 0.7.0</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">

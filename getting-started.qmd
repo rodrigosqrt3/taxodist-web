@@ -20,7 +20,7 @@ You can then use those lineages to:
 Names at different taxonomic levels are accepted. Examples include `"Tyrannosaurus"`, `"Tyrannosaurus rex"`, `"Dinosauria"`, `"Homo sapiens"`, and `"Drosophilidae"`.
 
 ::: {.callout-note title="Terminology"}
-Throughout this site, **distance** means distance between nodes in a taxonomic hierarchy. It does not mean phylogenetic branch length or elapsed evolutionary time.
+Throughout this site, **distance** means distance between nodes in a taxonomic hierarchy. It does not mean phylogenetic branch length or elapsed evolutionary time. Root depth is 1, so distinct valid Taxonomicon nodes have distances in $(0,1]$.
 :::
 
 ## The distance definition
@@ -39,7 +39,7 @@ The root has depth 1. Consequently, distinct nodes sharing only that root have d
 
 Zero is reserved for identical hierarchy nodes. If one queried node is an ancestor of the other, their distance remains positive. Use `is_member()` when your question is about containment and `taxo_path()` when you want to inspect the route between nodes.
 
-Within a connected hierarchy, this definition is an ultrametric. If two lineages share no root, their distance is infinite. If a lineage cannot be retrieved, the corresponding values are missing (`NA` in R and `NaN` in Python or Julia matrices).
+Within a connected hierarchy, this definition is an ultrametric. Valid Taxonomicon lineages share the retained root `Biota`; infinite distance is a defensive result for disconnected input lineages. If a lineage cannot be retrieved, the corresponding values are missing (`NA` in R and `NaN` in Python or Julia matrices).
 
 ::: {.callout-warning title="Interpretation"}
 Classification depth depends on the source and on which intermediate clades it records. These distances must not be interpreted as genetic divergence, morphological difference, evolutionary time, or phylogenetic branch length.
@@ -600,7 +600,7 @@ taxobase.metadata
 
 :::
 
-Release 0.6.0 distributes equivalent reference content in all three packages, preserving component names, taxon order, matrices, examples, and provenance metadata. The native package objects remain language-specific.
+Release 0.7.0 distributes equivalent reference content in all three packages, preserving component names, taxon order, matrices, examples, and provenance metadata. The native package objects remain language-specific.
 
 ## Data source and citation
 

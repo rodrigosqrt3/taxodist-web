@@ -206,9 +206,9 @@ If a lineage cannot be retrieved, pairwise matrices retain the taxon label and u
 
 ### Disconnected roots
 
-If the cleaned lineages have no common initial node, the distance is infinite and the MRCA is absent. This differs from a missing lineage: both lineages exist, but they are not connected under the retained representation.
+Valid biological lineages retrieved and cleaned from The Taxonomicon retain `Biota` as their shared root. An infinite distance is therefore not expected during ordinary Taxonomicon use. It remains a defensive result for supplied or malformed lineages with no common initial node; this differs from a missing lineage because both inputs exist but are disconnected under the retained representation.
 
-Clustering, ordination, and heatmap methods require a finite, complete matrix. Version 0.6.0 checks these conditions and returns an informative fallback object when they are not satisfied.
+Clustering, ordination, and heatmap methods require a finite, complete matrix. Version 0.7.0 checks these conditions and returns an informative fallback object when they are not satisfied.
 
 ## Interpretation
 
@@ -242,7 +242,7 @@ Use `save_cache()` when the exact retrieved lineages must be reused. Cache files
 
 A concise description may be adapted as follows:
 
-> Ordered taxonomic lineages were retrieved from The Taxonomicon using `taxodist` version 0.6.0. For distinct nodes, distance was defined as the reciprocal of the depth of their most recent common ancestor in the continuous common lineage prefix; identical complete lineages received distance zero. The resulting values represent classification depth rather than evolutionary time or phylogenetic branch length.
+> Ordered taxonomic lineages were retrieved from The Taxonomicon using `taxodist` version 0.7.0. For distinct nodes, distance was defined as the reciprocal of the depth of their most recent common ancestor in the continuous common lineage prefix; identical complete lineages received distance zero. The resulting values represent classification depth rather than evolutionary time or phylogenetic branch length.
 
 Report retrieval dates, unresolved taxa, and downstream analysis details separately.
 

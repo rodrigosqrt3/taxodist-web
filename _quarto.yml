@@ -41,7 +41,7 @@ website:
             href: https://github.com/rodrigosqrt3/taxodist-jl
 
   page-footer:
-    left: "taxodist 0.6.0"
+    left: "taxodist 0.7.0"
     right:
       - text: R
         href: https://cran.r-project.org/package=taxodist

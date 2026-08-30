@@ -1,6 +1,6 @@
 ---
 title: "Function Reference"
-subtitle: "Public API for taxodist 0.6.0 in R, Python, and Julia."
+subtitle: "Public API for taxodist 0.7.0 in R, Python, and Julia."
 ---
 
 The R, Python, and Julia implementations share the same distance semantics and principal function names. Native return types follow the conventions of each language.
@@ -88,7 +88,7 @@ d(A,B)=
 \end{cases}
 $$
 
-MRCA detection uses only the continuous common prefix from the root. Distinct ancestor–descendant nodes therefore retain a positive distance. Lineages without a shared root have infinite distance and no MRCA.
+MRCA detection uses only the continuous common prefix from the root. Distinct ancestor–descendant nodes therefore retain a positive distance. Root depth is 1, so distinct valid Taxonomicon nodes have distances in $(0,1]$. Infinite distance is retained as a defensive result for disconnected input lineages.
 
 **Returns:** an S3 list in R, `dict` in Python, or named tuple in Julia with:
 
@@ -333,7 +333,7 @@ Python: taxobase = load_taxobase()
 Julia:  taxobase = load_taxobase()
 ```
 
-Loads the fixed reference object distributed with release 0.6.0. Components include taxa, coverage, lineages, pairwise examples, search results, general and statistical distance matrices, and provenance metadata.
+Loads the fixed reference object distributed with release 0.7.0. Components include taxa, coverage, lineages, pairwise examples, search results, general and statistical distance matrices, and provenance metadata.
 
 R stores distance components as `dist`; Python converts matrices to labeled `pandas.DataFrame` objects; Julia converts them to labeled `TaxonomicDistanceMatrix` objects.
 

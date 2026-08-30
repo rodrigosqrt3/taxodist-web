@@ -239,8 +239,21 @@ Classification distance, not evolutionary distance
 <p>The values describe separation in a taxonomic classification. They are <strong>not</strong> evolutionary time, genetic distance, morphological divergence, or phylogenetic branch length. Dendrograms produced from the matrix summarize these classification distances and must not be interpreted as inferred phylogenetic trees.</p>
 </div>
 </div>
-<p>Within each connected hierarchy, the definition is an ultrametric. Lineages with no shared root have infinite distance, while taxa whose lineages cannot be retrieved produce missing values in multi-taxon results.</p>
+<p>Within the Taxonomicon hierarchy, depth begins at 1 for <code>Biota</code>, so distinct valid nodes have distances in <span class="math inline">\((0,1]\)</span>. The definition is an ultrametric. Taxa whose lineages cannot be retrieved produce missing values in multi-taxon results; infinite distance is retained only as a defensive result for disconnected input lineages.</p>
 <p><a href="./methodology.html">Methodology</a></p>
+<div class="callout callout-style-default callout-note callout-titled" title="Release 0.7.0">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Release 0.7.0
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Version 0.7.0 optimizes cached matrix construction while preserving the public API and distance semantics. All implementations use streamlined numeric pairwise paths and reuse resolved lineages more efficiently; R now fills compact <code>dist</code> storage directly, Python reuses HTTP connections, and Julia more completely parses intermediate hierarchy nodes. Cross-language validation confirmed matching resolved identifiers, lineage audits, and matrix values.</p>
+</div>
+</div>
 </section>
 <section id="software-interfaces" class="level2">
 <h2 class="anchored" data-anchor-id="software-interfaces">Software interfaces</h2>
@@ -403,7 +416,7 @@ Classification distance, not evolutionary distance
 </section>
 <section id="reproducible-reference-data" class="level2">
 <h2 class="anchored" data-anchor-id="reproducible-reference-data">Reproducible reference data</h2>
-<p>R provides the <code>taxobase</code> data object, while Python and Julia provide <code>load_taxobase()</code>. Release 0.6.0 preserves the same component structure, taxon order, matrices, examples, and provenance metadata across the three implementations, using native containers in each language.</p>
+<p>R provides the <code>taxobase</code> data object, while Python and Julia provide <code>load_taxobase()</code>. Release 0.7.0 preserves the same component structure, taxon order, matrices, examples, and provenance metadata across the three implementations, using native containers in each language.</p>
 <p>This object is useful for demonstrations, tests, and reproducible examples that should not depend on live network access. Live Taxonomicon queries may change as the underlying classification is updated.</p>
 </section>
 <section id="data-source-and-citation" class="level2">
@@ -769,7 +782,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left">taxodist 0.6.0</div>   
+    <div class="nav-footer-left">taxodist 0.7.0</div>   
     <div class="nav-footer-center">
       &nbsp;
     </div>

@@ -123,7 +123,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./getting-started.html" rel="" target="">
- <span class="menu-text">Get Started</span></a>
+ <span class="menu-text">Guide</span></a>
   </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-articles" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
@@ -139,7 +139,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">Statistical Applications</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./cross-language-compatibility.qmd" rel="" target="">
+    <a class="dropdown-item" href="./cross-language-compatibility.html" rel="" target="">
  <span class="dropdown-text">Cross-language Compatibility</span></a>
   </li>  
     </ul>
@@ -160,7 +160,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
     <a class="nav-link" href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/" rel="" target="">
- <span class="menu-text">Launch App ↗</span></a>
+ <span class="menu-text">Web app</span></a>
   </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-source" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
@@ -244,7 +244,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="methodological-position">Methodological position</h2>
 <p>The distance between distinct hierarchy nodes is the reciprocal of MRCA depth. Identical complete lineages receive distance zero. Within a connected hierarchy, this produces an ultrametric.</p>
 <p>These values measure classification depth. They do not estimate evolutionary time, genetic or morphological divergence, phylogenetic branch length, or statistical support for ancestry. The interpretation of every analysis is conditional on the source classification and the intermediate nodes it records.</p>
-<p>Version 0.6.0 formalized this distinction across the R package, Python package, application, reference data, and documentation.</p>
+<p>Version 0.6.0 formalized this distinction across the R package, Python package, application, reference data, and documentation. Version 0.7.0 preserved the semantics while optimizing cached matrix construction and revalidating equivalent results across all three implementations.</p>
 </section>
 <section id="project-history" class="level2">
 <h2 class="anchored" data-anchor-id="project-history">Project history</h2>
@@ -269,7 +269,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="citation">Citation</h2>
 <p>The R, Python, and Julia implementations are parts of the same software project and may be cited with a common project-level reference:</p>
 <blockquote class="blockquote">
-<p>Villa, R. F. (2026). <em>taxodist: Taxonomic Hierarchy Distances and Lineage Analysis</em> (version 0.6.0). Open-source software. <a href="https://rodrigosqrt3.github.io/taxodist-web/" class="uri">https://rodrigosqrt3.github.io/taxodist-web/</a>.</p>
+<p>Villa, R. F. (2026). <em>taxodist: Taxonomic Hierarchy Distances and Lineage Analysis</em> (version 0.7.0). Open-source software. <a href="https://rodrigosqrt3.github.io/taxodist-web/" class="uri">https://rodrigosqrt3.github.io/taxodist-web/</a>.</p>
 </blockquote>
 <p>In the methods section, identify the implementation used:</p>
 <ul>
@@ -661,8 +661,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left">taxodist 0.6.0</div>   
-    <div class="nav-footer-center">Taxonomic hierarchy distances — not evolutionary time or branch length.</div>
+    <div class="nav-footer-left">taxodist 0.7.0</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">

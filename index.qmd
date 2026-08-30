@@ -39,9 +39,13 @@ A deeper shared ancestor produces a smaller distance. Zero is reserved for ident
 The values describe separation in a taxonomic classification. They are **not** evolutionary time, genetic distance, morphological divergence, or phylogenetic branch length. Dendrograms produced from the matrix summarize these classification distances and must not be interpreted as inferred phylogenetic trees.
 :::
 
-Within each connected hierarchy, the definition is an ultrametric. Lineages with no shared root have infinite distance, while taxa whose lineages cannot be retrieved produce missing values in multi-taxon results.
+Within the Taxonomicon hierarchy, depth begins at 1 for `Biota`, so distinct valid nodes have distances in $(0,1]$. The definition is an ultrametric. Taxa whose lineages cannot be retrieved produce missing values in multi-taxon results; infinite distance is retained only as a defensive result for disconnected input lineages.
 
 [Methodology](methodology.qmd)
+
+::: {.callout-note title="Release 0.7.0"}
+Version 0.7.0 optimizes cached matrix construction while preserving the public API and distance semantics. All implementations use streamlined numeric pairwise paths and reuse resolved lineages more efficiently; R now fills compact `dist` storage directly, Python reuses HTTP connections, and Julia more completely parses intermediate hierarchy nodes. Cross-language validation confirmed matching resolved identifiers, lineage audits, and matrix values.
+:::
 
 ## Software interfaces
 
@@ -153,7 +157,7 @@ ordination = taxo_ordinate(matrix)
 
 ## Reproducible reference data
 
-R provides the `taxobase` data object, while Python and Julia provide `load_taxobase()`. Release 0.6.0 preserves the same component structure, taxon order, matrices, examples, and provenance metadata across the three implementations, using native containers in each language.
+R provides the `taxobase` data object, while Python and Julia provide `load_taxobase()`. Release 0.7.0 preserves the same component structure, taxon order, matrices, examples, and provenance metadata across the three implementations, using native containers in each language.
 
 This object is useful for demonstrations, tests, and reproducible examples that should not depend on live network access. Live Taxonomicon queries may change as the underlying classification is updated.
 

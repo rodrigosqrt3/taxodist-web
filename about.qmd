@@ -17,7 +17,7 @@ The distance between distinct hierarchy nodes is the reciprocal of MRCA depth. I
 
 These values measure classification depth. They do not estimate evolutionary time, genetic or morphological divergence, phylogenetic branch length, or statistical support for ancestry. The interpretation of every analysis is conditional on the source classification and the intermediate nodes it records.
 
-Version 0.6.0 formalized this distinction across the R package, Python package, application, reference data, and documentation.
+Version 0.6.0 formalized this distinction across the R package, Python package, application, reference data, and documentation. Version 0.7.0 preserved the semantics while optimizing cached matrix construction and revalidating equivalent results across all three implementations.
 
 ## Project history
 
@@ -44,7 +44,7 @@ The fixed `taxobase` object is distributed for examples, tests, and comparisons 
 
 The R, Python, and Julia implementations are parts of the same software project and may be cited with a common project-level reference:
 
-> Villa, R. F. (2026). *taxodist: Taxonomic Hierarchy Distances and Lineage Analysis* (version 0.6.0). Open-source software. <https://rodrigosqrt3.github.io/taxodist-web/>.
+> Villa, R. F. (2026). *taxodist: Taxonomic Hierarchy Distances and Lineage Analysis* (version 0.7.0). Open-source software. <https://rodrigosqrt3.github.io/taxodist-web/>.
 
 In the methods section, identify the implementation used:
 

@@ -125,7 +125,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./getting-started.html" rel="" target="">
- <span class="menu-text">Get Started</span></a>
+ <span class="menu-text">Guide</span></a>
   </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-articles" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
@@ -162,7 +162,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
     <a class="nav-link" href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/" rel="" target="">
- <span class="menu-text">Launch App ↗</span></a>
+ <span class="menu-text">Web app</span></a>
   </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-source" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
@@ -221,6 +221,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#compare-in-python" id="toc-compare-in-python" class="nav-link" data-scroll-target="#compare-in-python">Compare in Python</a></li>
   <li><a href="#compare-in-julia" id="toc-compare-in-julia" class="nav-link" data-scroll-target="#compare-in-julia">Compare in Julia</a></li>
   </ul></li>
+  <li><a href="#version-0.7.0-validation-and-performance" id="toc-version-0.7.0-validation-and-performance" class="nav-link" data-scroll-target="#version-0.7.0-validation-and-performance">Version 0.7.0 validation and performance</a></li>
   <li><a href="#cache-compatibility" id="toc-cache-compatibility" class="nav-link" data-scroll-target="#cache-compatibility">Cache compatibility</a></li>
   <li><a href="#live-retrieval-may-differ-over-time" id="toc-live-retrieval-may-differ-over-time" class="nav-link" data-scroll-target="#live-retrieval-may-differ-over-time">Live retrieval may differ over time</a></li>
   <li><a href="#what-compatibility-does-not-guarantee" id="toc-what-compatibility-does-not-guarantee" class="nav-link" data-scroll-target="#what-compatibility-does-not-guarantee">What compatibility does not guarantee</a></li>
@@ -251,12 +252,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="compatibility-contract" class="level2">
 <h2 class="anchored" data-anchor-id="compatibility-contract">Compatibility contract</h2>
-<p>The R, Python, and Julia packages are separate implementations of the same taxonomic hierarchy distance. Version 0.6.0 aligns their core behavioral contract:</p>
+<p>The R, Python, and Julia packages are separate implementations of the same taxonomic hierarchy distance. Version 0.7.0 preserves their core behavioral contract:</p>
 <ul>
 <li>ordered lineages are compared through their continuous common prefix;</li>
 <li>identical complete lineages receive distance zero;</li>
 <li>distinct nodes receive <span class="math inline">\(1 / \operatorname{depth}(\operatorname{MRCA})\)</span>;</li>
-<li>lineages without a common root receive infinite distance;</li>
+<li>valid Taxonomicon nodes have distances in <span class="math inline">\((0,1]\)</span>, while disconnected inputs retain infinite distance as a defensive result;</li>
 <li>unresolved lineages produce missing values in multi-taxon results;</li>
 <li>ancestor–descendant pairs retain positive distance;</li>
 <li>clade membership uses exact, case-insensitive matching;</li>
@@ -580,7 +581,7 @@ Compare geometry, not axis orientation
 </section>
 <section id="reference-data-parity" class="level2">
 <h2 class="anchored" data-anchor-id="reference-data-parity">Reference data parity</h2>
-<p>Release 0.6.0 distributes equivalent <code>taxobase</code> content in all three packages. Python and Julia load the neutral JSON reference into their native labeled containers.</p>
+<p>Release 0.7.0 distributes equivalent <code>taxobase</code> content in all three packages. Python and Julia load the neutral JSON reference into their native labeled containers.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Julia</a></li></ul>
 <div class="tab-content">
@@ -662,6 +663,42 @@ Compare geometry, not axis orientation
 <span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This checks labels, order, and numerical values without depending on language-specific serialization.</p>
 </section>
+</section>
+<section id="version-0.7.0-validation-and-performance" class="level2">
+<h2 class="anchored" data-anchor-id="version-0.7.0-validation-and-performance">Version 0.7.0 validation and performance</h2>
+<p>Release 0.7.0 was revalidated with the same 52-taxon reference set in three order-rotated runs. Across languages, all 468 lineage audit records, resolved identifiers, finite-pair counts, and matrix checksums agreed.</p>
+<p>Cached timings below are medians across the three runs; each timing summarizes 15 adaptively calibrated batches on the validation system.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Cached operation, <span class="math inline">\(n=52\)</span></th>
+<th style="text-align: right;">R</th>
+<th style="text-align: right;">Python</th>
+<th style="text-align: right;">Julia</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Distance matrix</td>
+<td style="text-align: right;">9.250 ms</td>
+<td style="text-align: right;">4.358 ms</td>
+<td style="text-align: right;"><strong>0.369 ms</strong></td>
+</tr>
+<tr class="even">
+<td>Clustering</td>
+<td style="text-align: right;">0.086 ms</td>
+<td style="text-align: right;">0.124 ms</td>
+<td style="text-align: right;"><strong>0.030 ms</strong></td>
+</tr>
+<tr class="odd">
+<td>Ordination</td>
+<td style="text-align: right;">0.633 ms</td>
+<td style="text-align: right;">0.675 ms</td>
+<td style="text-align: right;"><strong>0.398 ms</strong></td>
+</tr>
+</tbody>
+</table>
+<p>At this size, Julia constructed the cached matrix 11.8 times faster than Python and 25.1 times faster than R. These values describe this implementation version, dataset, and validation system; they are not universal language benchmarks. Initial lineage retrieval was network-dominated and varied substantially between runs, so it should not be used to rank language performance.</p>
 </section>
 <section id="cache-compatibility" class="level2">
 <h2 class="anchored" data-anchor-id="cache-compatibility">Cache compatibility</h2>
@@ -1094,8 +1131,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left">taxodist 0.6.0</div>   
-    <div class="nav-footer-center">Taxonomic hierarchy distances — not evolutionary time or branch length.</div>
+    <div class="nav-footer-left">taxodist 0.7.0</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
