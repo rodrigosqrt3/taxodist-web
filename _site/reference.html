@@ -24,12 +24,12 @@ ul.task-list li input[type="checkbox"] {
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./images/taxodist_sepia.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -66,6 +66,12 @@ ul.task-list li input[type="checkbox"] {
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="taxodist - Function Reference">
+<meta property="og:description" content="Public API for taxodist 0.8.0 in R, Python, and Julia.">
+<meta property="og:site-name" content="taxodist">
+<meta name="twitter:title" content="taxodist - Function Reference">
+<meta name="twitter:description" content="Public API for taxodist 0.8.0 in R, Python, and Julia.">
+<meta name="twitter:card" content="summary">
 </head>
 
 <body class="nav-fixed">
@@ -146,7 +152,7 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Python source</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="https://github.com/rodrigosqrt3/taxodist-jl" rel="" target="">
+    <a class="dropdown-item" href="https://github.com/rodrigosqrt3/Taxodist.jl" rel="" target="">
  <span class="dropdown-text">Julia source</span></a>
   </li>  
     </ul>
@@ -174,6 +180,13 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#get_lineage_by_id" id="toc-get_lineage_by_id" class="nav-link" data-scroll-target="#get_lineage_by_id"><code>get_lineage_by_id()</code></a></li>
   <li><a href="#get_lineage" id="toc-get_lineage" class="nav-link" data-scroll-target="#get_lineage"><code>get_lineage()</code></a></li>
   <li><a href="#taxo_search" id="toc-taxo_search" class="nav-link" data-scroll-target="#taxo_search"><code>taxo_search()</code></a></li>
+  </ul></li>
+  <li><a href="#auditable-resolution-and-portable-bundles" id="toc-auditable-resolution-and-portable-bundles" class="nav-link" data-scroll-target="#auditable-resolution-and-portable-bundles">Auditable resolution and portable bundles</a>
+  <ul class="collapse">
+  <li><a href="#taxo_resolve" id="toc-taxo_resolve" class="nav-link" data-scroll-target="#taxo_resolve"><code>taxo_resolve()</code></a></li>
+  <li><a href="#taxo_from_lineages" id="toc-taxo_from_lineages" class="nav-link" data-scroll-target="#taxo_from_lineages"><code>taxo_from_lineages()</code></a></li>
+  <li><a href="#taxo_bundle" id="toc-taxo_bundle" class="nav-link" data-scroll-target="#taxo_bundle"><code>taxo_bundle()</code></a></li>
+  <li><a href="#write_taxodist_bundle-read_taxodist_bundle" id="toc-write_taxodist_bundle-read_taxodist_bundle" class="nav-link" data-scroll-target="#write_taxodist_bundle-read_taxodist_bundle"><code>write_taxodist_bundle()</code> / <code>read_taxodist_bundle()</code></a></li>
   </ul></li>
   <li><a href="#distance-computation" id="toc-distance-computation" class="nav-link" data-scroll-target="#distance-computation">Distance computation</a>
   <ul class="collapse">
@@ -220,7 +233,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Function Reference</h1>
-<p class="subtitle lead">Public API for taxodist 0.7.0 in R, Python, and Julia.</p>
+<p class="subtitle lead">Public API for taxodist 0.8.0 in R, Python, and Julia.</p>
 </div>
 
 
@@ -325,6 +338,91 @@ Reproducible name resolution
 <p>For ambiguous names, inspect <code>taxo_search()</code> and record the selected numeric ID and retrieval date. The Taxonomicon is external to the package and its classifications may change.</p>
 </div>
 </div>
+</section>
+</section>
+<section id="auditable-resolution-and-portable-bundles" class="level2">
+<h2 class="anchored" data-anchor-id="auditable-resolution-and-portable-bundles">Auditable resolution and portable bundles</h2>
+<section id="taxo_resolve" class="level3">
+<h3 class="anchored" data-anchor-id="taxo_resolve"><code>taxo_resolve()</code></h3>
+<pre class="text"><code>R:      taxo_resolve(taxa, ambiguity = "warn", verbose = FALSE, progress = TRUE)
+Python: taxo_resolve(taxa, ambiguity="warn", verbose=False, progress=True)
+Julia:  taxo_resolve(taxa; ambiguity="warn", verbose=false, progress=true)</code></pre>
+<p>Resolves a complete input vector before analysis. Repeated names retain their original positions but are retrieved only once. Numeric identifiers bypass name search.</p>
+<p><code>ambiguity</code> accepts <code>"warn"</code>, <code>"first"</code>, or <code>"error"</code>. Ambiguous rows retain <code>status = "ambiguous"</code> even when the first candidate is selected.</p>
+<p><strong>Returns:</strong> a <code>taxodist_resolution</code> data frame in R, <code>TaxodistResolution</code> in Python, or <code>TaxodistResolution</code> wrapping a Julia <code>DataFrame</code>. Each input has:</p>
+<table class="table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>input</code></td>
+<td>Original queried label</td>
+</tr>
+<tr class="even">
+<td><code>resolved_name</code></td>
+<td>Final node of the selected lineage</td>
+</tr>
+<tr class="odd">
+<td><code>id</code></td>
+<td>Selected Taxonomicon or custom identifier</td>
+</tr>
+<tr class="even">
+<td><code>status</code></td>
+<td><code>resolved</code>, <code>ambiguous</code>, <code>unresolved</code>, or <code>retrieval_error</code></td>
+</tr>
+<tr class="odd">
+<td><code>n_candidates</code></td>
+<td>Number of retained candidates</td>
+</tr>
+<tr class="even">
+<td><code>lineage_depth</code></td>
+<td>Number of nodes in the selected lineage</td>
+</tr>
+<tr class="odd">
+<td><code>lineage</code></td>
+<td>Stored root-to-tip lineage</td>
+</tr>
+<tr class="even">
+<td><code>candidates</code></td>
+<td>Candidate table used by the decision</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="taxo_from_lineages" class="level3">
+<h3 class="anchored" data-anchor-id="taxo_from_lineages"><code>taxo_from_lineages()</code></h3>
+<pre class="text"><code>R:      taxo_from_lineages(lineages, ids = NULL, source = "user-supplied")
+Python: taxo_from_lineages(lineages, ids=None, source="user-supplied")
+Julia:  taxo_from_lineages(lineages; ids=nothing, source="user-supplied")</code></pre>
+<p>Creates an auditable resolution from named, root-to-tip lineages without network access. Optional identifiers must be unique and complete; otherwise deterministic custom identifiers are generated.</p>
+<p><strong>Returns:</strong> the same resolution type produced by <code>taxo_resolve()</code>, with every valid input marked <code>resolved</code> and source provenance retained.</p>
+</section>
+<section id="taxo_bundle" class="level3">
+<h3 class="anchored" data-anchor-id="taxo_bundle"><code>taxo_bundle()</code></h3>
+<pre class="text"><code>R:      taxo_bundle(taxa, ambiguity = "warn", verbose = FALSE, progress = TRUE)
+Python: taxo_bundle(taxa, ambiguity="warn", verbose=False, progress=True)
+Julia:  taxo_bundle(taxa; ambiguity="warn", verbose=false, progress=true)</code></pre>
+<p>Combines a resolution object, its distance matrix, source metadata, software metadata, and the metric definition. <code>taxa</code> may be raw names or an existing resolution.</p>
+<p><strong>Returns:</strong> <code>taxodist_bundle</code> in R or <code>TaxodistBundle</code> in Python and Julia.</p>
+</section>
+<section id="write_taxodist_bundle-read_taxodist_bundle" class="level3">
+<h3 class="anchored" data-anchor-id="write_taxodist_bundle-read_taxodist_bundle"><code>write_taxodist_bundle()</code> / <code>read_taxodist_bundle()</code></h3>
+<pre class="text"><code>R:      write_taxodist_bundle(bundle, file, pretty = TRUE)
+        read_taxodist_bundle(file)
+Python: write_taxodist_bundle(bundle, file, pretty=True)
+        read_taxodist_bundle(file)
+Julia:  write_taxodist_bundle(bundle, file; pretty=true)
+        read_taxodist_bundle(file)</code></pre>
+<p>Writes or reads the shared JSON bundle schema, currently version 1.0. Readers validate structure, statuses, candidate counts, lineage depths, labels, matrix symmetry, and agreement between distances and stored lineages.</p>
+<p>Bundle JSON is cross-language; cache files are not. Missing distances use JSON <code>null</code>, while disconnected infinities use <code>"Infinity"</code> or <code>"-Infinity"</code>.</p>
 </section>
 </section>
 <section id="distance-computation" class="level2">
@@ -562,7 +660,7 @@ Python cache security
 <pre class="text"><code>R:      data(taxobase, package = "taxodist")
 Python: taxobase = load_taxobase()
 Julia:  taxobase = load_taxobase()</code></pre>
-<p>Loads the fixed reference object distributed with release 0.7.0. Components include taxa, coverage, lineages, pairwise examples, search results, general and statistical distance matrices, and provenance metadata.</p>
+<p>Loads the fixed reference object distributed with release 0.8.0. Components include taxa, coverage, lineages, pairwise examples, search results, general and statistical distance matrices, and provenance metadata.</p>
 <p>R stores distance components as <code>dist</code>; Python converts matrices to labeled <code>pandas.DataFrame</code> objects; Julia converts them to labeled <code>TaxonomicDistanceMatrix</code> objects.</p>
 </section>
 </section>
@@ -574,7 +672,7 @@ Julia:  taxobase = load_taxobase()</code></pre>
 
 </section>
 
-</main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -926,7 +1024,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left">taxodist 0.7.0</div>   
+    <div class="nav-footer-left">taxodist 0.8.0</div>   
     <div class="nav-footer-center">
       &nbsp;
     </div>

@@ -5,7 +5,7 @@ subtitle: "Shared semantics, native return types, and reproducible workflows in 
 
 ## Compatibility contract
 
-The R, Python, and Julia packages are separate implementations of the same taxonomic hierarchy distance. Version 0.7.0 preserves their core behavioral contract:
+The R, Python, and Julia packages are separate implementations of the same taxonomic hierarchy distance. Version 0.8.0 extends their shared behavioral contract:
 
 - ordered lineages are compared through their continuous common prefix;
 - identical complete lineages receive distance zero;
@@ -14,7 +14,9 @@ The R, Python, and Julia packages are separate implementations of the same taxon
 - unresolved lineages produce missing values in multi-taxon results;
 - ancestor–descendant pairs retain positive distance;
 - clade membership uses exact, case-insensitive matching;
-- the packaged reference data preserve the same component structure, taxa, order, values, and provenance.
+- the packaged reference data preserve the same component structure, taxa, order, values, and provenance;
+- resolution audits use the same fields and status vocabulary;
+- portable bundles use the same schema version 1.0 and matrix encoding.
 
 Compatibility means equivalent scientific semantics and labeled results. It does not mean that every object has the same internal representation or printed appearance.
 
@@ -96,6 +98,8 @@ For lineages retrieved from the same Taxonomicon record and processed under the 
 | Resolve a name | `get_taxonomicon_id()` |
 | Search candidates | `taxo_search()` |
 | Retrieve a lineage | `get_lineage()`, `get_lineage_by_id()` |
+| Audit a batch resolution | `taxo_resolve()` |
+| Supply offline lineages | `taxo_from_lineages()` |
 | Compare two nodes | `taxo_distance()`, `mrca()` |
 | Construct a matrix | `distance_matrix()` |
 | Compare a focal taxon | `focal_distances()`, `closest_relative()` |
@@ -104,6 +108,7 @@ For lineages retrieved from the same Taxonomicon record and processed under the 
 | Check availability | `check_coverage()`, `lineage_depth()` |
 | Analyze a matrix | `taxo_cluster()`, `taxo_ordinate()`, `taxo_heatmap()` |
 | Manage the cache | `cache_info()`, `save_cache()`, `load_cache()`, `clear_cache()` |
+| Preserve or exchange an analysis | `taxo_bundle()`, `write_taxodist_bundle()`, `read_taxodist_bundle()` |
 | Load reference data | R: `data(taxobase)`; Python and Julia: `load_taxobase()` |
 
 Argument names and defaults are matched where language conventions permit. All three implementations support `verbose`; progress reporting is available for matrix operations, with minor interface differences documented in the API reference.
@@ -114,6 +119,8 @@ Argument names and defaults are matched where language conventions permit. All t
 |---|---|---|---|
 | Lineage | Character vector | List of strings | `Vector{String}` |
 | Pairwise distance | S3 list, class `taxodist_result` | Dictionary | Named tuple |
+| Resolution audit | `taxodist_resolution` data frame | `TaxodistResolution` | `TaxodistResolution` with a `DataFrame` |
+| Portable bundle | `taxodist_bundle` list | `TaxodistBundle` | `TaxodistBundle` |
 | Distance matrix | Base R `dist` | Labeled `pandas.DataFrame` | `TaxonomicDistanceMatrix` |
 | Coverage | Named logical vector | Boolean `pandas.Series` | `DataFrame` |
 | Closest/focal results | Data frame, with S3 class for focal results | `pandas.DataFrame` with attributes | `DataFrame` or named tuple containing one |
@@ -125,6 +132,62 @@ Argument names and defaults are matched where language conventions permit. All t
 | Missing object | `NULL` | `None` | `nothing` |
 
 These differences are intentional. They allow results to integrate naturally with each language rather than imitating the other language's object system.
+
+## Auditable resolution parity
+
+All three implementations assign the same four resolution statuses:
+
+| Status | Meaning |
+|---|---|
+| `resolved` | One valid candidate was selected |
+| `ambiguous` | Multiple valid candidates remained and the first was selected by policy |
+| `unresolved` | Search completed but produced no valid candidate |
+| `retrieval_error` | Search, lineage retrieval, or response parsing failed |
+
+Resolution rows share the fields `input`, `resolved_name`, `id`, `status`, `n_candidates`, `lineage_depth`, `lineage`, and `candidates`. `distance_matrix()` consumes these objects directly and reuses stored lineages without new requests.
+
+::: {.panel-tabset}
+
+### R
+
+```r
+resolution <- taxo_resolve(taxa, ambiguity = "warn", progress = FALSE)
+table(resolution$status)
+matrix <- distance_matrix(resolution, progress = FALSE)
+```
+
+### Python
+
+```python
+resolution = td.taxo_resolve(taxa, ambiguity="warn", progress=False)
+resolution["status"].value_counts()
+matrix = td.distance_matrix(resolution, progress=False)
+```
+
+### Julia
+
+```julia
+resolution = taxo_resolve(taxa; ambiguity="warn", progress=false)
+summary_counts(resolution)
+matrix = distance_matrix(resolution; progress=false)
+```
+
+:::
+
+## Portable bundle interoperability
+
+Version 0.8.0 introduces a neutral JSON record for transferring complete analyses rather than language-specific cache internals. A bundle contains:
+
+- schema and creation timestamps;
+- source name, URL, and retrieval timestamp;
+- software name, version, and language;
+- metric definition and root-depth convention;
+- complete resolution records and candidate decisions;
+- labeled distance matrix values.
+
+The shared encoding uses JSON `null` for missing distances and the strings `"Infinity"` and `"-Infinity"` for disconnected infinities. Each reader validates imported data before constructing native objects.
+
+This enables a resolution performed in one implementation to be inspected and analyzed in another without repeating live taxonomy requests.
 
 ## Pairwise result fields
 
@@ -205,7 +268,7 @@ Typography, plotting backends, colors, dendrogram orientation, and console forma
 
 ## Reference data parity
 
-Release 0.7.0 distributes equivalent `taxobase` content in all three packages. Python and Julia load the neutral JSON reference into their native labeled containers.
+Release 0.8.0 preserves equivalent `taxobase` content in all three packages. Python and Julia load the neutral JSON reference into their native labeled containers.
 
 ::: {.panel-tabset}
 
@@ -326,7 +389,7 @@ Cache contents have the same conceptual keys—resolved IDs and lineages—but t
 - Python uses `pickle` and `.pkl` files;
 - Julia uses JSON and `.json` files.
 
-Do not rename one format to imitate another. For a cross-language archival record, export resolved numeric IDs and lineages to a neutral format such as CSV or JSON.
+Do not rename one format to imitate another. For a cross-language archival record, use the portable bundle format introduced in version 0.8.0.
 
 ::: {.callout-warning title="Untrusted Python cache files"}
 Only load `.pkl` files from trusted sources. Python's pickle format can execute code during deserialization.

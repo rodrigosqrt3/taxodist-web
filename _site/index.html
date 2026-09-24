@@ -58,12 +58,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./images/taxodist_sepia.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -100,6 +100,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="taxodist -">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://rodrigosqrt3.github.io/taxodist-web/images/taxodist_sepia.png">
+<meta property="og:site-name" content="taxodist">
+<meta property="og:image:height" content="1640">
+<meta property="og:image:width" content="1417">
+<meta name="twitter:title" content="taxodist -">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://rodrigosqrt3.github.io/taxodist-web/images/taxodist_sepia.png">
+<meta name="twitter:image-height" content="1640">
+<meta name="twitter:image-width" content="1417">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed fullcontent">
@@ -180,7 +192,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">Python source</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="https://github.com/rodrigosqrt3/taxodist-jl" rel="" target="">
+    <a class="dropdown-item" href="https://github.com/rodrigosqrt3/Taxodist.jl" rel="" target="">
  <span class="dropdown-text">Julia source</span></a>
   </li>  
     </ul>
@@ -203,29 +215,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
+<div class="homepage-header">
 <div class="grid align-items-center">
 <section id="taxodist" class="level1 g-col-12 g-col-md-9">
 <h1>taxodist</h1>
-<p>Taxonomic hierarchy distances and lineage analysis in R, Python, and Julia</p>
+<p><strong>Taxonomic hierarchy distances and lineage analysis in R, Python, and Julia</strong></p>
+<p><code>taxodist</code> retrieves ordered taxonomic lineages, documents name-resolution decisions, and computes distances from the depth of the most recent common ancestor in the continuous shared lineage prefix.</p>
+<p><a href="./getting-started.html">Introduction and usage</a> · <a href="./methodology.html">Methodology</a> · <a href="./reference.html">Function reference</a> · <a href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/">Web application</a></p>
 </section>
 <div class="g-col-12 g-col-md-3 text-center">
 <p><img src="images/taxodist_sepia.png" class="homepage-logo img-fluid" alt="taxodist logo" width="160"></p>
 </div>
 </div>
-<p><a href="https://cran.r-project.org/package=taxodist"><img src="https://img.shields.io/cran/v/taxodist?color=green.png" class="img-fluid" alt="CRAN status"></a> &nbsp; <a href="https://pypi.org/project/taxodist"><img src="https://img.shields.io/pypi/v/taxodist?color=green.png" class="img-fluid" alt="PyPI version"></a> &nbsp; <a href="https://platform.juliahub.com/ui/Packages/General/Taxodist/"><img src="https://juliahub.com/docs/Taxodist/version.svg" class="img-fluid" alt="JuliaHub version"></a></p>
-<p><code>taxodist</code> retrieves ordered taxonomic lineages from <a href="http://taxonomicon.taxonomy.nl">The Taxonomicon</a> and compares hierarchy nodes through the depth of their most recent common ancestor (MRCA). The R, Python, and Julia packages implement the same distance definition and lineage semantics.</p>
-<p><a href="./getting-started.html">Usage guide</a> · <a href="https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/">Web application</a> · <a href="./reference.html">Function reference</a></p>
+</div>
+<div class="release-meta">
+<p><strong>Current coordinated release: 0.8.0</strong></p>
+<p><a href="https://cran.r-project.org/package=taxodist"><img src="https://img.shields.io/cran/v/taxodist?color=2f855a.png" class="img-fluid" alt="CRAN status"></a> <a href="https://pypi.org/project/taxodist"><img src="https://img.shields.io/pypi/v/taxodist?color=2f855a.png" class="img-fluid" alt="PyPI version"></a> <a href="https://platform.juliahub.com/ui/Packages/General/Taxodist/"><img src="https://juliahub.com/docs/Taxodist/version.svg" class="img-fluid" alt="JuliaHub version"></a></p>
+</div>
 <section id="what-does-taxodist-measure" class="level2">
 <h2 class="anchored" data-anchor-id="what-does-taxodist-measure">What does taxodist measure?</h2>
-<p>For two ordered lineages, <code>taxodist</code> finds their continuous common prefix. The final node in that prefix is their MRCA. Distance is then defined as</p>
+<p>For two ordered lineages, <code>taxodist</code> finds their continuous common prefix. Its final node is their most recent common ancestor (MRCA):</p>
 <p><span class="math display">\[
 d(A,B)=
 \begin{cases}
-0, &amp; \text{if the complete lineages of } A \text{ and } B \text{ are identical}, \\
+0, &amp; \text{if the complete lineages are identical}, \\
 \dfrac{1}{\operatorname{depth}(\operatorname{MRCA}(A,B))}, &amp; \text{otherwise}.
 \end{cases}
 \]</span></p>
-<p>A deeper shared ancestor produces a smaller distance. Zero is reserved for identical hierarchy nodes; distinct nodes always have a positive distance, including when one taxon is an ancestor of the other.</p>
+<p>A deeper shared ancestor produces a smaller distance. Zero is reserved for identical hierarchy nodes; distinct ancestor–descendant nodes retain a positive distance.</p>
 <div class="callout callout-style-default callout-important callout-titled" title="Classification distance, not evolutionary distance">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -236,24 +253,120 @@ Classification distance, not evolutionary distance
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The values describe separation in a taxonomic classification. They are <strong>not</strong> evolutionary time, genetic distance, morphological divergence, or phylogenetic branch length. Dendrograms produced from the matrix summarize these classification distances and must not be interpreted as inferred phylogenetic trees.</p>
+<p>These values describe separation within a recorded classification. They are <strong>not</strong> evolutionary time, genetic distance, morphological divergence, phylogenetic branch length, or evidence that a particular phylogeny is correct.</p>
 </div>
 </div>
-<p>Within the Taxonomicon hierarchy, depth begins at 1 for <code>Biota</code>, so distinct valid nodes have distances in <span class="math inline">\((0,1]\)</span>. The definition is an ultrametric. Taxa whose lineages cannot be retrieved produce missing values in multi-taxon results; infinite distance is retained only as a defensive result for disconnected input lineages.</p>
-<p><a href="./methodology.html">Methodology</a></p>
-<div class="callout callout-style-default callout-note callout-titled" title="Release 0.7.0">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<p><a href="./methodology.html">Detailed definition and assumptions</a></p>
+</section>
+<section id="version-0.8.0" class="level2">
+<h2 class="anchored" data-anchor-id="version-0.8.0">Version 0.8.0</h2>
+<p>Version 0.8.0 extends the reproducibility layer while preserving the distance definition and established interfaces.</p>
+<ul>
+<li><code>taxo_resolve()</code> records queried names, candidate matches, selected identifiers, statuses, lineage depths, and retrieved lineages before matrix construction.</li>
+<li><code>taxo_from_lineages()</code> creates the same structured resolution from curated or unpublished lineages without network access.</li>
+<li><code>taxo_bundle()</code> stores the resolution record, labeled matrix, metric definition, software metadata, and source provenance in a shared JSON format.</li>
+<li>R, Python, and Julia read and validate the same bundle schema while returning native language-specific objects.</li>
+</ul>
+<p>The four resolution statuses are <code>resolved</code>, <code>ambiguous</code>, <code>unresolved</code>, and <code>retrieval_error</code>. This distinction separates a missing name from a failed request or malformed response.</p>
+</section>
+<section id="one-workflow-three-languages" class="level2">
+<h2 class="anchored" data-anchor-id="one-workflow-three-languages">One workflow, three languages</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Julia</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(taxodist)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>resolution <span class="ot">&lt;-</span> <span class="fu">taxo_resolve</span>(</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Nereis"</span>, <span class="st">"50841"</span>),</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ambiguity =</span> <span class="st">"warn"</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>resolution[, <span class="fu">c</span>(<span class="st">"input"</span>, <span class="st">"id"</span>, <span class="st">"status"</span>, <span class="st">"lineage_depth"</span>)]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>matrix <span class="ot">&lt;-</span> <span class="fu">distance_matrix</span>(resolution)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>bundle <span class="ot">&lt;-</span> <span class="fu">taxo_bundle</span>(resolution)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">write_taxodist_bundle</span>(bundle, <span class="st">"analysis.taxodist.json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="callout-title-container flex-fill">
-Release 0.7.0
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> taxodist <span class="im">as</span> td</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>resolution <span class="op">=</span> td.taxo_resolve(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    [<span class="st">"Tyrannosaurus"</span>, <span class="st">"Nereis"</span>, <span class="st">"50841"</span>],</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    ambiguity<span class="op">=</span><span class="st">"warn"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>resolution[[<span class="st">"input"</span>, <span class="st">"id"</span>, <span class="st">"status"</span>, <span class="st">"lineage_depth"</span>]]</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>matrix <span class="op">=</span> td.distance_matrix(resolution)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>bundle <span class="op">=</span> td.taxo_bundle(resolution)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>td.write_taxodist_bundle(bundle, <span class="st">"analysis.taxodist.json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="sourceCode" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Taxodist</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>resolution <span class="op">=</span> <span class="fu">taxo_resolve</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    [<span class="st">"Tyrannosaurus"</span>, <span class="st">"Nereis"</span>, <span class="st">"50841"</span>];</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    ambiguity<span class="op">=</span><span class="st">"warn"</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>resolution[<span class="op">:</span>, [<span class="op">:</span>input, <span class="op">:</span>id, <span class="op">:</span>status, <span class="op">:</span>lineage_depth]]</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>matrix <span class="op">=</span> <span class="fu">distance_matrix</span>(resolution)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>bundle <span class="op">=</span> <span class="fu">taxo_bundle</span>(resolution; progress<span class="op">=</span><span class="cn">false</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">write_taxodist_bundle</span>(bundle, <span class="st">"analysis.taxodist.json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<div class="callout-body-container callout-body">
-<p>Version 0.7.0 optimizes cached matrix construction while preserving the public API and distance semantics. All implementations use streamlined numeric pairwise paths and reuse resolved lineages more efficiently; R now fills compact <code>dist</code> storage directly, Python reuses HTTP connections, and Julia more completely parses intermediate hierarchy nodes. Cross-language validation confirmed matching resolved identifiers, lineage audits, and matrix values.</p>
 </div>
-</div>
+</section>
+<section id="core-capabilities" class="level2">
+<h2 class="anchored" data-anchor-id="core-capabilities">Core capabilities</h2>
+<table class="table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Goal</th>
+<th>Main functions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Retrieve or search live taxonomy</td>
+<td><code>get_lineage()</code>, <code>get_lineage_by_id()</code>, <code>get_taxonomicon_id()</code>, <code>taxo_search()</code></td>
+</tr>
+<tr class="even">
+<td>Create an auditable resolution</td>
+<td><code>taxo_resolve()</code>, <code>taxo_from_lineages()</code></td>
+</tr>
+<tr class="odd">
+<td>Compare hierarchy nodes</td>
+<td><code>taxo_distance()</code>, <code>mrca()</code>, <code>shared_clades()</code>, <code>taxo_path()</code></td>
+</tr>
+<tr class="even">
+<td>Build community distances</td>
+<td><code>distance_matrix()</code>, <code>focal_distances()</code>, <code>closest_relative()</code></td>
+</tr>
+<tr class="odd">
+<td>Test membership</td>
+<td><code>is_member()</code>, <code>filter_clade()</code></td>
+</tr>
+<tr class="even">
+<td>Analyze and visualize</td>
+<td><code>taxo_cluster()</code>, <code>taxo_ordinate()</code>, <code>taxo_heatmap()</code></td>
+</tr>
+<tr class="odd">
+<td>Preserve a complete analysis</td>
+<td><code>taxo_bundle()</code>, <code>write_taxodist_bundle()</code>, <code>read_taxodist_bundle()</code></td>
+</tr>
+<tr class="even">
+<td>Work reproducibly offline</td>
+<td><code>taxo_from_lineages()</code>, <code>load_taxobase()</code></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="software-interfaces" class="level2">
 <h2 class="anchored" data-anchor-id="software-interfaces">Software interfaces</h2>
@@ -268,18 +381,18 @@ Release 0.7.0
 <tbody>
 <tr class="odd">
 <td>R</td>
-<td><a href="https://cran.r-project.org/package=taxodist">CRAN</a> and <a href="https://github.com/rodrigosqrt3/taxodist">source code</a></td>
-<td>Base R <code>dist</code> objects and S3 analysis methods</td>
+<td><a href="https://cran.r-project.org/package=taxodist">CRAN</a> · <a href="https://github.com/rodrigosqrt3/taxodist">source</a></td>
+<td>Base R <code>dist</code>, <code>taxodist_resolution</code>, and <code>taxodist_bundle</code> objects</td>
 </tr>
 <tr class="even">
 <td>Python</td>
-<td><a href="https://pypi.org/project/taxodist">PyPI</a> and <a href="https://github.com/rodrigosqrt3/taxodist-py">source code</a></td>
-<td>Labeled <code>pandas</code> objects and analysis dictionaries</td>
+<td><a href="https://pypi.org/project/taxodist/">PyPI</a> · <a href="https://github.com/rodrigosqrt3/taxodist-py">source</a></td>
+<td>Labeled <code>pandas</code> objects, <code>TaxodistResolution</code>, and <code>TaxodistBundle</code></td>
 </tr>
 <tr class="odd">
 <td>Julia</td>
-<td><a href="https://platform.juliahub.com/ui/Packages/General/Taxodist/">JuliaHub</a> and <a href="https://github.com/rodrigosqrt3/taxodist-jl">source code</a></td>
-<td>Labeled <code>TaxonomicDistanceMatrix</code> objects and native named tuples</td>
+<td><a href="https://platform.juliahub.com/ui/Packages/General/Taxodist/">JuliaHub</a> · <a href="https://github.com/rodrigosqrt3/Taxodist.jl">source</a></td>
+<td><code>TaxonomicDistanceMatrix</code>, <code>TaxodistResolution</code>, and <code>TaxodistBundle</code></td>
 </tr>
 <tr class="even">
 <td>Web application</td>
@@ -289,148 +402,18 @@ Release 0.7.0
 </tbody>
 </table>
 </section>
-<section id="basic-workflow" class="level2">
-<h2 class="anchored" data-anchor-id="basic-workflow">Basic workflow</h2>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Julia</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(taxodist)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>taxa <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Tyrannosaurus"</span>,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Velociraptor"</span>,</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Triceratops"</span>,</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Homo sapiens"</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve an ordered lineage</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>lineage <span class="ot">&lt;-</span> <span class="fu">get_lineage</span>(<span class="st">"Tyrannosaurus"</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare two hierarchy nodes</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">taxo_distance</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Velociraptor"</span>)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>mrca</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>distance</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Build and analyze a community matrix</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">distance_matrix</span>(taxa)</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>cluster <span class="ot">&lt;-</span> <span class="fu">taxo_cluster</span>(mat)</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>ordination <span class="ot">&lt;-</span> <span class="fu">taxo_ordinate</span>(mat)</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cluster)</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ordination)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> taxodist <span class="im">as</span> td</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>taxa <span class="op">=</span> [</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Tyrannosaurus"</span>,</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Velociraptor"</span>,</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Triceratops"</span>,</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Homo sapiens"</span>,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve an ordered lineage</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>lineage <span class="op">=</span> td.get_lineage(<span class="st">"Tyrannosaurus"</span>)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare two hierarchy nodes</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> td.taxo_distance(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Velociraptor"</span>)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>result[<span class="st">"mrca"</span>]</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>result[<span class="st">"distance"</span>]</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Build and analyze a community matrix</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>matrix <span class="op">=</span> td.distance_matrix(taxa)</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>cluster <span class="op">=</span> td.taxo_cluster(matrix)</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>ordination <span class="op">=</span> td.taxo_ordinate(matrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div class="sourceCode" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Taxodist</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>taxa <span class="op">=</span> [</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Tyrannosaurus"</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Velociraptor"</span>,</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Triceratops"</span>,</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Homo sapiens"</span>,</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve an ordered lineage</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>lineage <span class="op">=</span> <span class="fu">get_lineage</span>(<span class="st">"Tyrannosaurus"</span>)</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare two hierarchy nodes</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> <span class="fu">taxo_distance</span>(<span class="st">"Tyrannosaurus"</span>, <span class="st">"Velociraptor"</span>)</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>result.mrca</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>result.distance</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Build and analyze a community matrix</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>matrix <span class="op">=</span> <span class="fu">distance_matrix</span>(taxa)</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>cluster <span class="op">=</span> <span class="fu">taxo_cluster</span>(matrix)</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>ordination <span class="op">=</span> <span class="fu">taxo_ordinate</span>(matrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="core-api" class="level2">
-<h2 class="anchored" data-anchor-id="core-api">Core API</h2>
-<table class="table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Task</th>
-<th>Functions</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Retrieve and resolve taxa</td>
-<td><code>get_lineage()</code>, <code>get_lineage_by_id()</code>, <code>get_taxonomicon_id()</code>, <code>taxo_search()</code></td>
-</tr>
-<tr class="even">
-<td>Compare two lineages</td>
-<td><code>taxo_distance()</code>, <code>mrca()</code>, <code>shared_clades()</code>, <code>compare_lineages()</code>, <code>taxo_path()</code></td>
-</tr>
-<tr class="odd">
-<td>Work with communities</td>
-<td><code>distance_matrix()</code>, <code>focal_distances()</code>, <code>closest_relative()</code>, <code>check_coverage()</code></td>
-</tr>
-<tr class="even">
-<td>Test clade membership</td>
-<td><code>is_member()</code>, <code>filter_clade()</code></td>
-</tr>
-<tr class="odd">
-<td>Analyze and visualize</td>
-<td><code>taxo_cluster()</code>, <code>taxo_ordinate()</code>, <code>taxo_heatmap()</code></td>
-</tr>
-<tr class="even">
-<td>Manage retrieval caches</td>
-<td><code>cache_info()</code>, <code>save_cache()</code>, <code>load_cache()</code>, <code>clear_cache()</code></td>
-</tr>
-<tr class="odd">
-<td>Load the offline reference object</td>
-<td><code>load_taxobase()</code></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="reproducible-reference-data" class="level2">
-<h2 class="anchored" data-anchor-id="reproducible-reference-data">Reproducible reference data</h2>
-<p>R provides the <code>taxobase</code> data object, while Python and Julia provide <code>load_taxobase()</code>. Release 0.7.0 preserves the same component structure, taxon order, matrices, examples, and provenance metadata across the three implementations, using native containers in each language.</p>
-<p>This object is useful for demonstrations, tests, and reproducible examples that should not depend on live network access. Live Taxonomicon queries may change as the underlying classification is updated.</p>
-</section>
 <section id="data-source-and-citation" class="level2">
 <h2 class="anchored" data-anchor-id="data-source-and-citation">Data source and citation</h2>
-<p>All retrieved lineage data originate from <strong>The Taxonomicon</strong>, based on <em>Systema Naturae 2000</em>. Published analyses should cite both the <code>taxodist</code> software and the underlying classification source:</p>
+<p>Live lineages originate from <strong>The Taxonomicon</strong>, based on <em>Systema Naturae 2000</em>. Empirical work should record the package version, implementation, retrieval date, selected numeric identifiers, unresolved taxa, and lineage source.</p>
 <blockquote class="blockquote">
 <p>Brands, S.J. (1989 onwards). <em>Systema Naturae 2000</em>. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, <a href="http://taxonomicon.taxonomy.nl" class="uri">http://taxonomicon.taxonomy.nl</a>.</p>
 </blockquote>
-<p><a href="./getting-started.html">Introduction and usage</a></p>
+<p><a href="./getting-started.html">Introduction and usage</a> · <a href="./cross-language-compatibility.html">Cross-language compatibility</a></p>
 
 
 </section>
 
-</main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -782,7 +765,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left">taxodist 0.7.0</div>   
+    <div class="nav-footer-left">taxodist 0.8.0</div>   
     <div class="nav-footer-center">
       &nbsp;
     </div>

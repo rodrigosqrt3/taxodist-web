@@ -2,7 +2,7 @@
 
 Documentation website for [`taxodist`](https://rodrigosqrt3.github.io/taxodist-web/), an open-source project for taxonomic hierarchy distances and lineage analysis in R, Python, and Julia.
 
-The current coordinated release is **0.7.0**.
+The current coordinated release is **0.8.0**.
 
 The site documents how `taxodist` retrieves ordered lineages from [The Taxonomicon](http://taxonomicon.taxonomy.nl), compares taxa through the depth of their most recent common ancestor, and integrates the resulting distance objects with multivariate analysis workflows.
 
@@ -16,6 +16,8 @@ The website includes:
 - the definition, properties, assumptions, and limitations of the distance measure;
 - statistical applications using clustering, ordination, taxonomic distinctness, Mantel tests, and PERMANOVA;
 - a cross-language compatibility guide;
+- auditable name-resolution and fully offline lineage workflows;
+- portable JSON analysis bundles shared by R, Python, and Julia;
 - a complete function reference and changelog;
 - citation, data-source, and reproducibility guidance.
 
@@ -27,7 +29,7 @@ Visit the published site at:
 
 - [R package](https://cran.r-project.org/package=taxodist) — [source code](https://github.com/rodrigosqrt3/taxodist)
 - [Python package](https://pypi.org/project/taxodist/) — [source code](https://github.com/rodrigosqrt3/taxodist-py)
-- [Julia package](https://platform.juliahub.com/ui/Packages/General/Taxodist/) — [source code](https://github.com/rodrigosqrt3/taxodist-jl)
+- [Julia package](https://platform.juliahub.com/ui/Packages/General/Taxodist/) — [source code](https://github.com/rodrigosqrt3/Taxodist.jl)
 - [Interactive web application](https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/)
 
 ## Local preview

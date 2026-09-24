@@ -1,6 +1,6 @@
 ---
 title: "Function Reference"
-subtitle: "Public API for taxodist 0.7.0 in R, Python, and Julia."
+subtitle: "Public API for taxodist 0.8.0 in R, Python, and Julia."
 ---
 
 The R, Python, and Julia implementations share the same distance semantics and principal function names. Native return types follow the conventions of each language.
@@ -67,6 +67,72 @@ Lists biological Taxonomicon search results after removing astronomical entries 
 ::: {.callout-note title="Reproducible name resolution"}
 For ambiguous names, inspect `taxo_search()` and record the selected numeric ID and retrieval date. The Taxonomicon is external to the package and its classifications may change.
 :::
+
+## Auditable resolution and portable bundles
+
+### `taxo_resolve()`
+
+```text
+R:      taxo_resolve(taxa, ambiguity = "warn", verbose = FALSE, progress = TRUE)
+Python: taxo_resolve(taxa, ambiguity="warn", verbose=False, progress=True)
+Julia:  taxo_resolve(taxa; ambiguity="warn", verbose=false, progress=true)
+```
+
+Resolves a complete input vector before analysis. Repeated names retain their original positions but are retrieved only once. Numeric identifiers bypass name search.
+
+`ambiguity` accepts `"warn"`, `"first"`, or `"error"`. Ambiguous rows retain `status = "ambiguous"` even when the first candidate is selected.
+
+**Returns:** a `taxodist_resolution` data frame in R, `TaxodistResolution` in Python, or `TaxodistResolution` wrapping a Julia `DataFrame`. Each input has:
+
+| Field | Meaning |
+|---|---|
+| `input` | Original queried label |
+| `resolved_name` | Final node of the selected lineage |
+| `id` | Selected Taxonomicon or custom identifier |
+| `status` | `resolved`, `ambiguous`, `unresolved`, or `retrieval_error` |
+| `n_candidates` | Number of retained candidates |
+| `lineage_depth` | Number of nodes in the selected lineage |
+| `lineage` | Stored root-to-tip lineage |
+| `candidates` | Candidate table used by the decision |
+
+### `taxo_from_lineages()`
+
+```text
+R:      taxo_from_lineages(lineages, ids = NULL, source = "user-supplied")
+Python: taxo_from_lineages(lineages, ids=None, source="user-supplied")
+Julia:  taxo_from_lineages(lineages; ids=nothing, source="user-supplied")
+```
+
+Creates an auditable resolution from named, root-to-tip lineages without network access. Optional identifiers must be unique and complete; otherwise deterministic custom identifiers are generated.
+
+**Returns:** the same resolution type produced by `taxo_resolve()`, with every valid input marked `resolved` and source provenance retained.
+
+### `taxo_bundle()`
+
+```text
+R:      taxo_bundle(taxa, ambiguity = "warn", verbose = FALSE, progress = TRUE)
+Python: taxo_bundle(taxa, ambiguity="warn", verbose=False, progress=True)
+Julia:  taxo_bundle(taxa; ambiguity="warn", verbose=false, progress=true)
+```
+
+Combines a resolution object, its distance matrix, source metadata, software metadata, and the metric definition. `taxa` may be raw names or an existing resolution.
+
+**Returns:** `taxodist_bundle` in R or `TaxodistBundle` in Python and Julia.
+
+### `write_taxodist_bundle()` / `read_taxodist_bundle()`
+
+```text
+R:      write_taxodist_bundle(bundle, file, pretty = TRUE)
+        read_taxodist_bundle(file)
+Python: write_taxodist_bundle(bundle, file, pretty=True)
+        read_taxodist_bundle(file)
+Julia:  write_taxodist_bundle(bundle, file; pretty=true)
+        read_taxodist_bundle(file)
+```
+
+Writes or reads the shared JSON bundle schema, currently version 1.0. Readers validate structure, statuses, candidate counts, lineage depths, labels, matrix symmetry, and agreement between distances and stored lineages.
+
+Bundle JSON is cross-language; cache files are not. Missing distances use JSON `null`, while disconnected infinities use `"Infinity"` or `"-Infinity"`.
 
 ## Distance computation
 
@@ -333,7 +399,7 @@ Python: taxobase = load_taxobase()
 Julia:  taxobase = load_taxobase()
 ```
 
-Loads the fixed reference object distributed with release 0.7.0. Components include taxa, coverage, lineages, pairwise examples, search results, general and statistical distance matrices, and provenance metadata.
+Loads the fixed reference object distributed with release 0.8.0. Components include taxa, coverage, lineages, pairwise examples, search results, general and statistical distance matrices, and provenance metadata.
 
 R stores distance components as `dist`; Python converts matrices to labeled `pandas.DataFrame` objects; Julia converts them to labeled `TaxonomicDistanceMatrix` objects.
 

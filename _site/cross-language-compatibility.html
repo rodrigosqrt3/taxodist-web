@@ -58,12 +58,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./images/taxodist_sepia.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -100,6 +100,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="taxodist - Cross-language Compatibility">
+<meta property="og:description" content="Shared semantics, native return types, and reproducible workflows in R, Python, and Julia.">
+<meta property="og:site-name" content="taxodist">
+<meta name="twitter:title" content="taxodist - Cross-language Compatibility">
+<meta name="twitter:description" content="Shared semantics, native return types, and reproducible workflows in R, Python, and Julia.">
+<meta name="twitter:card" content="summary">
 </head>
 
 <body class="nav-fixed">
@@ -180,7 +186,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">Python source</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="https://github.com/rodrigosqrt3/taxodist-jl" rel="" target="">
+    <a class="dropdown-item" href="https://github.com/rodrigosqrt3/Taxodist.jl" rel="" target="">
  <span class="dropdown-text">Julia source</span></a>
   </li>  
     </ul>
@@ -206,6 +212,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#equivalent-basic-workflow" id="toc-equivalent-basic-workflow" class="nav-link" data-scroll-target="#equivalent-basic-workflow">Equivalent basic workflow</a></li>
   <li><a href="#function-correspondence" id="toc-function-correspondence" class="nav-link" data-scroll-target="#function-correspondence">Function correspondence</a></li>
   <li><a href="#native-object-differences" id="toc-native-object-differences" class="nav-link" data-scroll-target="#native-object-differences">Native object differences</a></li>
+  <li><a href="#auditable-resolution-parity" id="toc-auditable-resolution-parity" class="nav-link" data-scroll-target="#auditable-resolution-parity">Auditable resolution parity</a></li>
+  <li><a href="#portable-bundle-interoperability" id="toc-portable-bundle-interoperability" class="nav-link" data-scroll-target="#portable-bundle-interoperability">Portable bundle interoperability</a></li>
   <li><a href="#pairwise-result-fields" id="toc-pairwise-result-fields" class="nav-link" data-scroll-target="#pairwise-result-fields">Pairwise result fields</a></li>
   <li><a href="#distance-matrices" id="toc-distance-matrices" class="nav-link" data-scroll-target="#distance-matrices">Distance matrices</a></li>
   <li><a href="#clustering-and-ordination" id="toc-clustering-and-ordination" class="nav-link" data-scroll-target="#clustering-and-ordination">Clustering and ordination</a>
@@ -252,7 +260,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="compatibility-contract" class="level2">
 <h2 class="anchored" data-anchor-id="compatibility-contract">Compatibility contract</h2>
-<p>The R, Python, and Julia packages are separate implementations of the same taxonomic hierarchy distance. Version 0.7.0 preserves their core behavioral contract:</p>
+<p>The R, Python, and Julia packages are separate implementations of the same taxonomic hierarchy distance. Version 0.8.0 extends their shared behavioral contract:</p>
 <ul>
 <li>ordered lineages are compared through their continuous common prefix;</li>
 <li>identical complete lineages receive distance zero;</li>
@@ -261,7 +269,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>unresolved lineages produce missing values in multi-taxon results;</li>
 <li>ancestor–descendant pairs retain positive distance;</li>
 <li>clade membership uses exact, case-insensitive matching;</li>
-<li>the packaged reference data preserve the same component structure, taxa, order, values, and provenance.</li>
+<li>the packaged reference data preserve the same component structure, taxa, order, values, and provenance;</li>
+<li>resolution audits use the same fields and status vocabulary;</li>
+<li>portable bundles use the same schema version 1.0 and matrix encoding.</li>
 </ul>
 <p>Compatibility means equivalent scientific semantics and labeled results. It does not mean that every object has the same internal representation or printed appearance.</p>
 </section>
@@ -355,6 +365,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td><code>get_lineage()</code>, <code>get_lineage_by_id()</code></td>
 </tr>
 <tr class="even">
+<td>Audit a batch resolution</td>
+<td><code>taxo_resolve()</code></td>
+</tr>
+<tr class="odd">
+<td>Supply offline lineages</td>
+<td><code>taxo_from_lineages()</code></td>
+</tr>
+<tr class="even">
 <td>Compare two nodes</td>
 <td><code>taxo_distance()</code>, <code>mrca()</code></td>
 </tr>
@@ -387,6 +405,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td><code>cache_info()</code>, <code>save_cache()</code>, <code>load_cache()</code>, <code>clear_cache()</code></td>
 </tr>
 <tr class="even">
+<td>Preserve or exchange an analysis</td>
+<td><code>taxo_bundle()</code>, <code>write_taxodist_bundle()</code>, <code>read_taxodist_bundle()</code></td>
+</tr>
+<tr class="odd">
 <td>Load reference data</td>
 <td>R: <code>data(taxobase)</code>; Python and Julia: <code>load_taxobase()</code></td>
 </tr>
@@ -423,6 +445,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>S3 list, class <code>taxodist_result</code></td>
 <td>Dictionary</td>
 <td>Named tuple</td>
+</tr>
+<tr class="odd">
+<td>Resolution audit</td>
+<td><code>taxodist_resolution</code> data frame</td>
+<td><code>TaxodistResolution</code></td>
+<td><code>TaxodistResolution</code> with a <code>DataFrame</code></td>
+</tr>
+<tr class="even">
+<td>Portable bundle</td>
+<td><code>taxodist_bundle</code> list</td>
+<td><code>TaxodistBundle</code></td>
+<td><code>TaxodistBundle</code></td>
 </tr>
 <tr class="odd">
 <td>Distance matrix</td>
@@ -482,6 +516,75 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p>These differences are intentional. They allow results to integrate naturally with each language rather than imitating the other language’s object system.</p>
 </section>
+<section id="auditable-resolution-parity" class="level2">
+<h2 class="anchored" data-anchor-id="auditable-resolution-parity">Auditable resolution parity</h2>
+<p>All three implementations assign the same four resolution statuses:</p>
+<table class="table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>resolved</code></td>
+<td>One valid candidate was selected</td>
+</tr>
+<tr class="even">
+<td><code>ambiguous</code></td>
+<td>Multiple valid candidates remained and the first was selected by policy</td>
+</tr>
+<tr class="odd">
+<td><code>unresolved</code></td>
+<td>Search completed but produced no valid candidate</td>
+</tr>
+<tr class="even">
+<td><code>retrieval_error</code></td>
+<td>Search, lineage retrieval, or response parsing failed</td>
+</tr>
+</tbody>
+</table>
+<p>Resolution rows share the fields <code>input</code>, <code>resolved_name</code>, <code>id</code>, <code>status</code>, <code>n_candidates</code>, <code>lineage_depth</code>, <code>lineage</code>, and <code>candidates</code>. <code>distance_matrix()</code> consumes these objects directly and reuses stored lineages without new requests.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Julia</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>resolution <span class="ot">&lt;-</span> <span class="fu">taxo_resolve</span>(taxa, <span class="at">ambiguity =</span> <span class="st">"warn"</span>, <span class="at">progress =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(resolution<span class="sc">$</span>status)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>matrix <span class="ot">&lt;-</span> <span class="fu">distance_matrix</span>(resolution, <span class="at">progress =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>resolution <span class="op">=</span> td.taxo_resolve(taxa, ambiguity<span class="op">=</span><span class="st">"warn"</span>, progress<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>resolution[<span class="st">"status"</span>].value_counts()</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>matrix <span class="op">=</span> td.distance_matrix(resolution, progress<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+<div class="sourceCode" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>resolution <span class="op">=</span> <span class="fu">taxo_resolve</span>(taxa; ambiguity<span class="op">=</span><span class="st">"warn"</span>, progress<span class="op">=</span><span class="cn">false</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary_counts</span>(resolution)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>matrix <span class="op">=</span> <span class="fu">distance_matrix</span>(resolution; progress<span class="op">=</span><span class="cn">false</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="portable-bundle-interoperability" class="level2">
+<h2 class="anchored" data-anchor-id="portable-bundle-interoperability">Portable bundle interoperability</h2>
+<p>Version 0.8.0 introduces a neutral JSON record for transferring complete analyses rather than language-specific cache internals. A bundle contains:</p>
+<ul>
+<li>schema and creation timestamps;</li>
+<li>source name, URL, and retrieval timestamp;</li>
+<li>software name, version, and language;</li>
+<li>metric definition and root-depth convention;</li>
+<li>complete resolution records and candidate decisions;</li>
+<li>labeled distance matrix values.</li>
+</ul>
+<p>The shared encoding uses JSON <code>null</code> for missing distances and the strings <code>"Infinity"</code> and <code>"-Infinity"</code> for disconnected infinities. Each reader validates imported data before constructing native objects.</p>
+<p>This enables a resolution performed in one implementation to be inspected and analyzed in another without repeating live taxonomy requests.</p>
+</section>
 <section id="pairwise-result-fields" class="level2">
 <h2 class="anchored" data-anchor-id="pairwise-result-fields">Pairwise result fields</h2>
 <p>All three implementations return the same named information from <code>taxo_distance()</code>:</p>
@@ -531,15 +634,15 @@ Julia:  result.mrca</code></pre>
 <section id="distance-matrices" class="level2">
 <h2 class="anchored" data-anchor-id="distance-matrices">Distance matrices</h2>
 <p>R stores only the lower triangle in a compact <code>dist</code> object. Convert it when a square matrix is required:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">distance_matrix</span>(taxa)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">distance_matrix</span>(taxa)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Python returns the square labeled matrix directly:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> td.distance_matrix(taxa)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> d.to_numpy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> td.distance_matrix(taxa)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> d.to_numpy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Julia returns a square labeled matrix type directly:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> <span class="fu">distance_matrix</span>(taxa)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> <span class="fu">Matrix</span>(d)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>value <span class="op">=</span> d[<span class="st">"Tyrannosaurus"</span>, <span class="st">"Velociraptor"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> <span class="fu">distance_matrix</span>(taxa)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> <span class="fu">Matrix</span>(d)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>value <span class="op">=</span> d[<span class="st">"Tyrannosaurus"</span>, <span class="st">"Velociraptor"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>All three preserve input taxon order. Unresolved taxa remain labeled and have missing off-diagonal distances.</p>
 </section>
 <section id="clustering-and-ordination" class="level2">
@@ -581,30 +684,30 @@ Compare geometry, not axis orientation
 </section>
 <section id="reference-data-parity" class="level2">
 <h2 class="anchored" data-anchor-id="reference-data-parity">Reference data parity</h2>
-<p>Release 0.7.0 distributes equivalent <code>taxobase</code> content in all three packages. Python and Julia load the neutral JSON reference into their native labeled containers.</p>
+<p>Release 0.8.0 preserves equivalent <code>taxobase</code> content in all three packages. Python and Julia load the neutral JSON reference into their native labeled containers.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Julia</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false">Julia</a></li></ul>
 <div class="tab-content">
-<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(taxobase, <span class="at">package =</span> <span class="st">"taxodist"</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(taxobase)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>taxobase<span class="sc">$</span>metadata</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">labels</span>(taxobase<span class="sc">$</span>statistical_matrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(taxobase, <span class="at">package =</span> <span class="st">"taxodist"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(taxobase)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>taxobase<span class="sc">$</span>metadata</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">labels</span>(taxobase<span class="sc">$</span>statistical_matrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>taxobase <span class="op">=</span> td.load_taxobase()</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>taxobase.keys()</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>taxobase[<span class="st">"metadata"</span>]</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>taxobase[<span class="st">"statistical_matrix"</span>].index.tolist()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>taxobase <span class="op">=</span> td.load_taxobase()</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>taxobase.keys()</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>taxobase[<span class="st">"metadata"</span>]</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>taxobase[<span class="st">"statistical_matrix"</span>].index.tolist()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
-<div class="sourceCode" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>taxobase <span class="op">=</span> <span class="fu">load_taxobase</span>()</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">keys</span>(taxobase)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>taxobase.metadata</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>taxobase.statistical_matrix.taxa</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
+<div class="sourceCode" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>taxobase <span class="op">=</span> <span class="fu">load_taxobase</span>()</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">keys</span>(taxobase)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>taxobase.metadata</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>taxobase.statistical_matrix.taxa</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -615,52 +718,52 @@ Compare geometry, not axis orientation
 <p>A simple independent comparison can be performed through a neutral CSV representation.</p>
 <section id="export-from-r" class="level3">
 <h3 class="anchored" data-anchor-id="export-from-r">Export from R</h3>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(taxobase, <span class="at">package =</span> <span class="st">"taxodist"</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>(taxobase<span class="sc">$</span>statistical_matrix),</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"taxobase-statistical-matrix.csv"</span>,</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">quote =</span> <span class="cn">FALSE</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(taxobase, <span class="at">package =</span> <span class="st">"taxodist"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>(taxobase<span class="sc">$</span>statistical_matrix),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"taxobase-statistical-matrix.csv"</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">quote =</span> <span class="cn">FALSE</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="compare-in-python" class="level3">
 <h3 class="anchored" data-anchor-id="compare-in-python">Compare in Python</h3>
-<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> taxodist <span class="im">as</span> td</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>from_r <span class="op">=</span> pd.read_csv(</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"taxobase-statistical-matrix.csv"</span>,</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    index_col<span class="op">=</span><span class="dv">0</span>,</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>from_python <span class="op">=</span> td.load_taxobase()[<span class="st">"statistical_matrix"</span>]</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> from_r.index.tolist() <span class="op">==</span> from_python.index.tolist()</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> from_r.columns.tolist() <span class="op">==</span> from_python.columns.tolist()</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> np.allclose(</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    from_r.to_numpy(),</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    from_python.to_numpy(),</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    rtol<span class="op">=</span><span class="dv">0</span>,</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    atol<span class="op">=</span><span class="fl">1e-12</span>,</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> taxodist <span class="im">as</span> td</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>from_r <span class="op">=</span> pd.read_csv(</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"taxobase-statistical-matrix.csv"</span>,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    index_col<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>from_python <span class="op">=</span> td.load_taxobase()[<span class="st">"statistical_matrix"</span>]</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> from_r.index.tolist() <span class="op">==</span> from_python.index.tolist()</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> from_r.columns.tolist() <span class="op">==</span> from_python.columns.tolist()</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> np.allclose(</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    from_r.to_numpy(),</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    from_python.to_numpy(),</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>    rtol<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    atol<span class="op">=</span><span class="fl">1e-12</span>,</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="compare-in-julia" class="level3">
 <h3 class="anchored" data-anchor-id="compare-in-julia">Compare in Julia</h3>
-<div class="sourceCode" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DelimitedFiles</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Taxodist</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> <span class="fu">readdlm</span>(<span class="st">"taxobase-statistical-matrix.csv"</span>, <span class="ch">','</span>, <span class="dt">Any</span>, <span class="ch">'\n'</span>)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>labels_from_r <span class="op">=</span> <span class="fu">String</span>.(raw[<span class="fl">2</span><span class="op">:</span><span class="kw">end</span>, <span class="fl">1</span>])</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>matrix_from_r <span class="op">=</span> <span class="fu">Float64</span>.(raw[<span class="fl">2</span><span class="op">:</span><span class="kw">end</span>, <span class="fl">2</span><span class="op">:</span><span class="kw">end</span>])</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>from_julia <span class="op">=</span> <span class="fu">load_taxobase</span>().statistical_matrix</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> labels_from_r <span class="op">==</span> from_julia.taxa</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">all</span>(<span class="fu">isapprox</span>.(</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    matrix_from_r,</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Matrix</span>(from_julia);</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    rtol<span class="op">=</span><span class="fl">0</span>,</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    atol<span class="op">=</span><span class="fl">1e-12</span>,</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DelimitedFiles</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Taxodist</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> <span class="fu">readdlm</span>(<span class="st">"taxobase-statistical-matrix.csv"</span>, <span class="ch">','</span>, <span class="dt">Any</span>, <span class="ch">'\n'</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>labels_from_r <span class="op">=</span> <span class="fu">String</span>.(raw[<span class="fl">2</span><span class="op">:</span><span class="kw">end</span>, <span class="fl">1</span>])</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>matrix_from_r <span class="op">=</span> <span class="fu">Float64</span>.(raw[<span class="fl">2</span><span class="op">:</span><span class="kw">end</span>, <span class="fl">2</span><span class="op">:</span><span class="kw">end</span>])</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>from_julia <span class="op">=</span> <span class="fu">load_taxobase</span>().statistical_matrix</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> labels_from_r <span class="op">==</span> from_julia.taxa</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">all</span>(<span class="fu">isapprox</span>.(</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    matrix_from_r,</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Matrix</span>(from_julia);</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    rtol<span class="op">=</span><span class="fl">0</span>,</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    atol<span class="op">=</span><span class="fl">1e-12</span>,</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This checks labels, order, and numerical values without depending on language-specific serialization.</p>
 </section>
 </section>
@@ -708,7 +811,7 @@ Compare geometry, not axis orientation
 <li>Python uses <code>pickle</code> and <code>.pkl</code> files;</li>
 <li>Julia uses JSON and <code>.json</code> files.</li>
 </ul>
-<p>Do not rename one format to imitate another. For a cross-language archival record, export resolved numeric IDs and lineages to a neutral format such as CSV or JSON.</p>
+<p>Do not rename one format to imitate another. For a cross-language archival record, use the portable bundle format introduced in version 0.8.0.</p>
 <div class="callout callout-style-default callout-warning callout-titled" title="Untrusted Python cache files">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -752,24 +855,24 @@ Untrusted Python cache files
 <section id="version-reporting" class="level2">
 <h2 class="anchored" data-anchor-id="version-reporting">Version reporting</h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false">Julia</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-3" role="tab" aria-controls="tabset-4-3" aria-selected="false">Julia</a></li></ul>
 <div class="tab-content">
-<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">packageVersion</span>(<span class="st">"taxodist"</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">packageVersion</span>(<span class="st">"taxodist"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
-<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> platform</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> taxodist <span class="im">as</span> td</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>td.__version__</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>platform.python_version()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> platform</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> taxodist <span class="im">as</span> td</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>td.__version__</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>platform.python_version()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
-<div class="sourceCode" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Pkg</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">status</span>(<span class="st">"Taxodist"</span>)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="cn">VERSION</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="tabset-4-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-3-tab">
+<div class="sourceCode" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Pkg</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">status</span>(<span class="st">"Taxodist"</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="cn">VERSION</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -779,7 +882,7 @@ Untrusted Python cache files
 
 </section>
 
-</main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1131,7 +1234,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left">taxodist 0.7.0</div>   
+    <div class="nav-footer-left">taxodist 0.8.0</div>   
     <div class="nav-footer-center">
       &nbsp;
     </div>

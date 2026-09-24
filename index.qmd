@@ -3,60 +3,62 @@ title: ""
 toc: false
 ---
 
+::: {.homepage-header}
 ::: {.grid .align-items-center}
 ::: {.g-col-12 .g-col-md-9}
 # taxodist
 
-Taxonomic hierarchy distances and lineage analysis in R, Python, and Julia
+**Taxonomic hierarchy distances and lineage analysis in R, Python, and Julia**
+
+`taxodist` retrieves ordered taxonomic lineages, documents name-resolution decisions, and computes distances from the depth of the most recent common ancestor in the continuous shared lineage prefix.
+
+[Introduction and usage](getting-started.qmd) · [Methodology](methodology.qmd) · [Function reference](reference.qmd) · [Web application](https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/)
 :::
 
 ::: {.g-col-12 .g-col-md-3 .text-center}
 ![](images/taxodist_sepia.png){.homepage-logo width="160" fig-alt="taxodist logo"}
 :::
 :::
+:::
 
-[![CRAN status](https://img.shields.io/cran/v/taxodist?color=green)](https://cran.r-project.org/package=taxodist) &nbsp; [![PyPI version](https://img.shields.io/pypi/v/taxodist?color=green)](https://pypi.org/project/taxodist) &nbsp; [![JuliaHub version](https://juliahub.com/docs/Taxodist/version.svg)](https://platform.juliahub.com/ui/Packages/General/Taxodist/)
+::: {.release-meta}
+**Current coordinated release: 0.8.0**
 
-`taxodist` retrieves ordered taxonomic lineages from [The Taxonomicon](http://taxonomicon.taxonomy.nl) and compares hierarchy nodes through the depth of their most recent common ancestor (MRCA). The R, Python, and Julia packages implement the same distance definition and lineage semantics.
-
-[Usage guide](getting-started.qmd) · [Web application](https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/) · [Function reference](reference.qmd)
+[![CRAN status](https://img.shields.io/cran/v/taxodist?color=2f855a)](https://cran.r-project.org/package=taxodist) [![PyPI version](https://img.shields.io/pypi/v/taxodist?color=2f855a)](https://pypi.org/project/taxodist) [![JuliaHub version](https://juliahub.com/docs/Taxodist/version.svg)](https://platform.juliahub.com/ui/Packages/General/Taxodist/)
+:::
 
 ## What does taxodist measure?
 
-For two ordered lineages, `taxodist` finds their continuous common prefix. The final node in that prefix is their MRCA. Distance is then defined as
+For two ordered lineages, `taxodist` finds their continuous common prefix. Its final node is their most recent common ancestor (MRCA):
 
 $$
 d(A,B)=
 \begin{cases}
-0, & \text{if the complete lineages of } A \text{ and } B \text{ are identical}, \\
+0, & \text{if the complete lineages are identical}, \\
 \dfrac{1}{\operatorname{depth}(\operatorname{MRCA}(A,B))}, & \text{otherwise}.
 \end{cases}
 $$
 
-A deeper shared ancestor produces a smaller distance. Zero is reserved for identical hierarchy nodes; distinct nodes always have a positive distance, including when one taxon is an ancestor of the other.
+A deeper shared ancestor produces a smaller distance. Zero is reserved for identical hierarchy nodes; distinct ancestor--descendant nodes retain a positive distance.
 
 ::: {.callout-important title="Classification distance, not evolutionary distance"}
-The values describe separation in a taxonomic classification. They are **not** evolutionary time, genetic distance, morphological divergence, or phylogenetic branch length. Dendrograms produced from the matrix summarize these classification distances and must not be interpreted as inferred phylogenetic trees.
+These values describe separation within a recorded classification. They are **not** evolutionary time, genetic distance, morphological divergence, phylogenetic branch length, or evidence that a particular phylogeny is correct.
 :::
 
-Within the Taxonomicon hierarchy, depth begins at 1 for `Biota`, so distinct valid nodes have distances in $(0,1]$. The definition is an ultrametric. Taxa whose lineages cannot be retrieved produce missing values in multi-taxon results; infinite distance is retained only as a defensive result for disconnected input lineages.
+[Detailed definition and assumptions](methodology.qmd)
 
-[Methodology](methodology.qmd)
+## Version 0.8.0
 
-::: {.callout-note title="Release 0.7.0"}
-Version 0.7.0 optimizes cached matrix construction while preserving the public API and distance semantics. All implementations use streamlined numeric pairwise paths and reuse resolved lineages more efficiently; R now fills compact `dist` storage directly, Python reuses HTTP connections, and Julia more completely parses intermediate hierarchy nodes. Cross-language validation confirmed matching resolved identifiers, lineage audits, and matrix values.
-:::
+Version 0.8.0 extends the reproducibility layer while preserving the distance definition and established interfaces.
 
-## Software interfaces
+- `taxo_resolve()` records queried names, candidate matches, selected identifiers, statuses, lineage depths, and retrieved lineages before matrix construction.
+- `taxo_from_lineages()` creates the same structured resolution from curated or unpublished lineages without network access.
+- `taxo_bundle()` stores the resolution record, labeled matrix, metric definition, software metadata, and source provenance in a shared JSON format.
+- R, Python, and Julia read and validate the same bundle schema while returning native language-specific objects.
 
-| Interface | Distribution | Principal output |
-|---|---|---|
-| R | [CRAN](https://cran.r-project.org/package=taxodist) and [source code](https://github.com/rodrigosqrt3/taxodist) | Base R `dist` objects and S3 analysis methods |
-| Python | [PyPI](https://pypi.org/project/taxodist) and [source code](https://github.com/rodrigosqrt3/taxodist-py) | Labeled `pandas` objects and analysis dictionaries |
-| Julia | [JuliaHub](https://platform.juliahub.com/ui/Packages/General/Taxodist/) and [source code](https://github.com/rodrigosqrt3/taxodist-jl) | Labeled `TaxonomicDistanceMatrix` objects and native named tuples |
-| Web application | [Interactive interface](https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/) | Browser-based lineage and distance exploration |
+The four resolution statuses are `resolved`, `ambiguous`, `unresolved`, and `retrieval_error`. This distinction separates a missing name from a failed request or malformed response.
 
-## Basic workflow
+## One workflow, three languages
 
 ::: {.panel-tabset}
 
@@ -65,28 +67,16 @@ Version 0.7.0 optimizes cached matrix construction while preserving the public A
 ```r
 library(taxodist)
 
-taxa <- c(
-  "Tyrannosaurus",
-  "Velociraptor",
-  "Triceratops",
-  "Homo sapiens"
+resolution <- taxo_resolve(
+  c("Tyrannosaurus", "Nereis", "50841"),
+  ambiguity = "warn"
 )
 
-# Retrieve an ordered lineage
-lineage <- get_lineage("Tyrannosaurus")
+resolution[, c("input", "id", "status", "lineage_depth")]
+matrix <- distance_matrix(resolution)
 
-# Compare two hierarchy nodes
-result <- taxo_distance("Tyrannosaurus", "Velociraptor")
-result$mrca
-result$distance
-
-# Build and analyze a community matrix
-mat <- distance_matrix(taxa)
-cluster <- taxo_cluster(mat)
-ordination <- taxo_ordinate(mat)
-
-plot(cluster)
-plot(ordination)
+bundle <- taxo_bundle(resolution)
+write_taxodist_bundle(bundle, "analysis.taxodist.json")
 ```
 
 ### Python
@@ -94,25 +84,16 @@ plot(ordination)
 ```python
 import taxodist as td
 
-taxa = [
-    "Tyrannosaurus",
-    "Velociraptor",
-    "Triceratops",
-    "Homo sapiens",
-]
+resolution = td.taxo_resolve(
+    ["Tyrannosaurus", "Nereis", "50841"],
+    ambiguity="warn",
+)
 
-# Retrieve an ordered lineage
-lineage = td.get_lineage("Tyrannosaurus")
+resolution[["input", "id", "status", "lineage_depth"]]
+matrix = td.distance_matrix(resolution)
 
-# Compare two hierarchy nodes
-result = td.taxo_distance("Tyrannosaurus", "Velociraptor")
-result["mrca"]
-result["distance"]
-
-# Build and analyze a community matrix
-matrix = td.distance_matrix(taxa)
-cluster = td.taxo_cluster(matrix)
-ordination = td.taxo_ordinate(matrix)
+bundle = td.taxo_bundle(resolution)
+td.write_taxodist_bundle(bundle, "analysis.taxodist.json")
 ```
 
 ### Julia
@@ -120,51 +101,46 @@ ordination = td.taxo_ordinate(matrix)
 ```julia
 using Taxodist
 
-taxa = [
-    "Tyrannosaurus",
-    "Velociraptor",
-    "Triceratops",
-    "Homo sapiens",
-]
+resolution = taxo_resolve(
+    ["Tyrannosaurus", "Nereis", "50841"];
+    ambiguity="warn",
+)
 
-# Retrieve an ordered lineage
-lineage = get_lineage("Tyrannosaurus")
+resolution[:, [:input, :id, :status, :lineage_depth]]
+matrix = distance_matrix(resolution)
 
-# Compare two hierarchy nodes
-result = taxo_distance("Tyrannosaurus", "Velociraptor")
-result.mrca
-result.distance
-
-# Build and analyze a community matrix
-matrix = distance_matrix(taxa)
-cluster = taxo_cluster(matrix)
-ordination = taxo_ordinate(matrix)
+bundle = taxo_bundle(resolution; progress=false)
+write_taxodist_bundle(bundle, "analysis.taxodist.json")
 ```
 
 :::
 
-## Core API
+## Core capabilities
 
-| Task | Functions |
+| Goal | Main functions |
 |---|---|
-| Retrieve and resolve taxa | `get_lineage()`, `get_lineage_by_id()`, `get_taxonomicon_id()`, `taxo_search()` |
-| Compare two lineages | `taxo_distance()`, `mrca()`, `shared_clades()`, `compare_lineages()`, `taxo_path()` |
-| Work with communities | `distance_matrix()`, `focal_distances()`, `closest_relative()`, `check_coverage()` |
-| Test clade membership | `is_member()`, `filter_clade()` |
+| Retrieve or search live taxonomy | `get_lineage()`, `get_lineage_by_id()`, `get_taxonomicon_id()`, `taxo_search()` |
+| Create an auditable resolution | `taxo_resolve()`, `taxo_from_lineages()` |
+| Compare hierarchy nodes | `taxo_distance()`, `mrca()`, `shared_clades()`, `taxo_path()` |
+| Build community distances | `distance_matrix()`, `focal_distances()`, `closest_relative()` |
+| Test membership | `is_member()`, `filter_clade()` |
 | Analyze and visualize | `taxo_cluster()`, `taxo_ordinate()`, `taxo_heatmap()` |
-| Manage retrieval caches | `cache_info()`, `save_cache()`, `load_cache()`, `clear_cache()` |
-| Load the offline reference object | `load_taxobase()` |
+| Preserve a complete analysis | `taxo_bundle()`, `write_taxodist_bundle()`, `read_taxodist_bundle()` |
+| Work reproducibly offline | `taxo_from_lineages()`, `load_taxobase()` |
 
-## Reproducible reference data
+## Software interfaces
 
-R provides the `taxobase` data object, while Python and Julia provide `load_taxobase()`. Release 0.7.0 preserves the same component structure, taxon order, matrices, examples, and provenance metadata across the three implementations, using native containers in each language.
-
-This object is useful for demonstrations, tests, and reproducible examples that should not depend on live network access. Live Taxonomicon queries may change as the underlying classification is updated.
+| Interface | Distribution | Principal output |
+|---|---|---|
+| R | [CRAN](https://cran.r-project.org/package=taxodist) · [source](https://github.com/rodrigosqrt3/taxodist) | Base R `dist`, `taxodist_resolution`, and `taxodist_bundle` objects |
+| Python | [PyPI](https://pypi.org/project/taxodist/) · [source](https://github.com/rodrigosqrt3/taxodist-py) | Labeled `pandas` objects, `TaxodistResolution`, and `TaxodistBundle` |
+| Julia | [JuliaHub](https://platform.juliahub.com/ui/Packages/General/Taxodist/) · [source](https://github.com/rodrigosqrt3/Taxodist.jl) | `TaxonomicDistanceMatrix`, `TaxodistResolution`, and `TaxodistBundle` |
+| Web application | [Interactive interface](https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/) | Browser-based lineage and distance exploration |
 
 ## Data source and citation
 
-All retrieved lineage data originate from **The Taxonomicon**, based on *Systema Naturae 2000*. Published analyses should cite both the `taxodist` software and the underlying classification source:
+Live lineages originate from **The Taxonomicon**, based on *Systema Naturae 2000*. Empirical work should record the package version, implementation, retrieval date, selected numeric identifiers, unresolved taxa, and lineage source.
 
 > Brands, S.J. (1989 onwards). *Systema Naturae 2000*. Amsterdam, The Netherlands. Retrieved from The Taxonomicon, <http://taxonomicon.taxonomy.nl>.
 
-[Introduction and usage](getting-started.qmd)
+[Introduction and usage](getting-started.qmd) · [Cross-language compatibility](cross-language-compatibility.qmd)

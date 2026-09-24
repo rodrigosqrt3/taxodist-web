@@ -1,6 +1,6 @@
 ---
 title: "Changelog"
-subtitle: "Release history for taxodist, from version 0.1.0 through the coordinated 0.7.0 implementations."
+subtitle: "Release history for taxodist, from version 0.1.0 through the coordinated 0.8.0 implementations."
 ---
 
 ## taxodist 0.1.0 — Initial release
@@ -106,7 +106,7 @@ Analyses that relied on version 0.5.0 or earlier should be recomputed when ances
 
 The R, Python, and Julia implementations follow the same distance semantics. Their native containers differ: R uses `dist`, S3 objects, and `.rds` cache files; Python uses labeled `pandas` objects, dictionaries, and `.pkl` cache files; Julia uses `TaxonomicDistanceMatrix`, named tuples, `DataFrame` objects, and `.json` cache files.
 
-## taxodist 0.7.0 [Latest]{.badge .bg-primary}
+## taxodist 0.7.0
 
 ### Performance
 
@@ -121,3 +121,32 @@ The R, Python, and Julia implementations follow the same distance semantics. The
 - Julia now reads intermediate hierarchy nodes rendered as plain text and aligns ambiguous-name matching with the whole-word behavior used by R and Python.
 - Expanded deterministic and regression coverage; each implementation reports complete coverage under its language-specific coverage measure.
 - Improved cache inspection and clearing in the R implementation by addressing the private cache environment explicitly.
+
+## taxodist 0.8.0 [Latest]{.badge .bg-primary}
+
+### Auditable name resolution
+
+- Added `taxo_resolve()` for batch resolution with explicit `resolved`, `ambiguous`, `unresolved`, and `retrieval_error` statuses.
+- Preserved all candidate matches, selected identifiers, resolved names, lineage depths, and root-to-tip lineages for every input.
+- Added explicit ambiguity policies: warn and select the first candidate, select silently, or stop and require review.
+- Repeated names are retrieved only once while their original order and repetition remain in the audit table.
+- `distance_matrix()` accepts resolution objects directly and reuses stored lineages without further network requests.
+
+### Offline classifications
+
+- Added `taxo_from_lineages()` for curated, frozen, unpublished, or fully offline classifications.
+- Added deterministic custom identifiers and optional user-supplied identifiers.
+- Offline resolutions use the same distance, validation, and bundle APIs as live Taxonomicon resolutions.
+
+### Portable analysis bundles
+
+- Added `taxo_bundle()` to combine the resolution audit, labeled matrix, metric definition, software metadata, and source provenance.
+- Added `write_taxodist_bundle()` and `read_taxodist_bundle()` using a shared JSON schema across R, Python, and Julia.
+- Missing distances use JSON `null`; disconnected infinities use `"Infinity"` and `"-Infinity"`.
+- Bundle validation checks required fields, statuses, candidate counts, selected IDs, lineage depths, matrix labels, symmetry, and agreement between stored lineages and distances.
+
+### Robustness and compatibility
+
+- Preserved the continuous-prefix MRCA distance definition and established public workflows.
+- Improved retrieval-error reporting, structured lineage parsing, name-resolution caching, and source provenance.
+- Expanded deterministic regression tests to complete source coverage in all three implementations.

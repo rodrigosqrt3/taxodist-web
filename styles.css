@@ -32,6 +32,11 @@ body {
   line-height: 1.65;
 }
 
+#quarto-content main.content {
+  max-width: 1180px;
+  margin-inline: auto;
+}
+
 p,
 li {
   max-width: 78ch;
@@ -67,11 +72,17 @@ h3 {
 .navbar {
   background-color: var(--nav-bg) !important;
   border-bottom: 1px solid var(--nav-border);
+  box-shadow: 0 5px 18px rgba(27, 18, 10, 0.12);
 }
 
 .navbar-brand,
 .navbar .nav-link {
   color: #faf6ee !important;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .navbar .nav-link:hover,
@@ -219,6 +230,45 @@ td {
   border-color: var(--accent);
 }
 
+.btn {
+  border-radius: 0.5rem;
+  font-weight: 600;
+  padding-inline: 1rem;
+  text-decoration: none;
+}
+
+/* ── Homepage header ─────────────────────────────────────────── */
+.homepage-header {
+  margin: 0.5rem 0 1.2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.homepage-header h1 {
+  margin: 0 0 0.4rem;
+  font-size: clamp(2.5rem, 5vw, 3.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.homepage-header p {
+  max-width: 70ch;
+}
+
+.release-meta {
+  margin: 0 0 2rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.release-meta p {
+  margin-bottom: 0.35rem;
+}
+
+.release-meta img {
+  margin-right: 0.18rem;
+}
+
 /* ── Theme-sensitive homepage logo ───────────────────────────── */
 .homepage-logo {
   display: block;
@@ -237,6 +287,10 @@ td {
 
 /* ── Small screens ───────────────────────────────────────────── */
 @media (max-width: 767.98px) {
+  .homepage-header h1 {
+    font-size: 2.45rem;
+  }
+
   .homepage-logo {
     max-width: 125px;
     margin-top: 0.5rem;

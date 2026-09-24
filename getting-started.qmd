@@ -104,7 +104,7 @@ Install the development version from GitHub:
 
 ```julia
 using Pkg
-Pkg.add(url="https://github.com/rodrigosqrt3/taxodist-jl")
+Pkg.add(url="https://github.com/rodrigosqrt3/Taxodist.jl")
 ```
 
 :::
@@ -528,6 +528,148 @@ get_taxonomicon_id("Tyrannosaurus")
 
 When reproducibility matters, record the resolved numeric ID and the retrieval date. This helps distinguish homonyms and documents which external classification was queried.
 
+## Resolve a complete input list before analysis
+
+Release 0.8.0 adds an auditable resolution layer. Instead of discovering ambiguous or missing names while a distance matrix is being assembled, `taxo_resolve()` records the decision for every input first.
+
+Each row retains the original input, selected name and identifier, status, candidate count, lineage depth, lineage, and candidate table. Status is one of `resolved`, `ambiguous`, `unresolved`, or `retrieval_error`.
+
+::: {.panel-tabset}
+
+### R
+
+```r
+resolution <- taxo_resolve(
+  c("Tyrannosaurus", "Nereis", "Unknown taxon", "50841"),
+  ambiguity = "warn",
+  progress = FALSE
+)
+
+resolution[, c("input", "resolved_name", "id", "status", "n_candidates")]
+distance_matrix(resolution, progress = FALSE)
+```
+
+### Python
+
+```python
+resolution = td.taxo_resolve(
+    ["Tyrannosaurus", "Nereis", "Unknown taxon", "50841"],
+    ambiguity="warn",
+    progress=False,
+)
+
+resolution[["input", "resolved_name", "id", "status", "n_candidates"]]
+td.distance_matrix(resolution, progress=False)
+```
+
+### Julia
+
+```julia
+resolution = taxo_resolve(
+    ["Tyrannosaurus", "Nereis", "Unknown taxon", "50841"];
+    ambiguity="warn",
+    progress=false,
+)
+
+resolution[:, [:input, :resolved_name, :id, :status, :n_candidates]]
+distance_matrix(resolution; progress=false)
+```
+
+:::
+
+The ambiguity policy can warn and select the first valid candidate (`"warn"`), select it silently (`"first"`), or stop after auditing the inputs (`"error"`). Numeric Taxonomicon IDs bypass name search.
+
+::: {.callout-tip title="Why resolve first?"}
+The resolution object separates absent names from retrieval failures, makes homonym choices inspectable, and reuses stored lineages in downstream matrix construction.
+:::
+
+## Work completely offline with curated lineages
+
+`taxo_from_lineages()` creates the same auditable object without contacting an online service. This is useful for frozen classifications, unpublished taxonomies, manually reviewed lineages, and reproducible teaching examples.
+
+::: {.panel-tabset}
+
+### R
+
+```r
+local <- taxo_from_lineages(
+  list(
+    Alpha = c("Biota", "Animalia", "Alpha"),
+    Beta = c("Biota", "Animalia", "Beta")
+  ),
+  source = "Curated study"
+)
+
+distance_matrix(local, progress = FALSE)
+```
+
+### Python
+
+```python
+local = td.taxo_from_lineages(
+    {
+        "Alpha": ["Biota", "Animalia", "Alpha"],
+        "Beta": ["Biota", "Animalia", "Beta"],
+    },
+    source="Curated study",
+)
+
+td.distance_matrix(local, progress=False)
+```
+
+### Julia
+
+```julia
+local = taxo_from_lineages(
+    Dict(
+        "Alpha" => ["Biota", "Animalia", "Alpha"],
+        "Beta" => ["Biota", "Animalia", "Beta"],
+    );
+    source="Curated study",
+)
+
+distance_matrix(local; progress=false)
+```
+
+:::
+
+## Save a portable analysis bundle
+
+A bundle preserves the resolution audit, matrix, metric definition, software metadata, and source provenance together. The JSON schema is shared by the R, Python, and Julia implementations.
+
+::: {.panel-tabset}
+
+### R
+
+```r
+bundle <- taxo_bundle(resolution, progress = FALSE)
+write_taxodist_bundle(bundle, "analysis.taxodist.json")
+restored <- read_taxodist_bundle("analysis.taxodist.json")
+distance_matrix(restored)
+```
+
+### Python
+
+```python
+bundle = td.taxo_bundle(resolution, progress=False)
+td.write_taxodist_bundle(bundle, "analysis.taxodist.json")
+restored = td.read_taxodist_bundle("analysis.taxodist.json")
+td.distance_matrix(restored)
+```
+
+### Julia
+
+```julia
+bundle = taxo_bundle(resolution; progress=false)
+write_taxodist_bundle(bundle, "analysis.taxodist.json")
+restored = read_taxodist_bundle("analysis.taxodist.json")
+distance_matrix(restored)
+```
+
+:::
+
+Unlike cache files, bundle files are designed for cross-language exchange. Missing distances are stored as JSON `null`; disconnected positive or negative infinity uses the explicit strings `"Infinity"` and `"-Infinity"`.
+
 ## Save and restore the cache
 
 Retrieved identifiers and lineages are cached in memory. Saving the cache avoids repeating those network requests in a later session.
@@ -600,7 +742,7 @@ taxobase.metadata
 
 :::
 
-Release 0.7.0 distributes equivalent reference content in all three packages, preserving component names, taxon order, matrices, examples, and provenance metadata. The native package objects remain language-specific.
+Release 0.8.0 preserves equivalent reference content in all three packages, including component names, taxon order, matrices, examples, and provenance metadata. The native package objects remain language-specific.
 
 ## Data source and citation
 
