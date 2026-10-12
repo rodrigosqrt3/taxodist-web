@@ -67,10 +67,10 @@ ul.task-list li input[type="checkbox"] {
 
 <link rel="stylesheet" href="styles.css">
 <meta property="og:title" content="taxodist - Changelog">
-<meta property="og:description" content="Release history for taxodist, from version 0.1.0 through the coordinated 0.8.0 implementations.">
+<meta property="og:description" content="Release history for taxodist, from version 0.1.0 through the coordinated 0.9.0 implementations.">
 <meta property="og:site-name" content="taxodist">
 <meta name="twitter:title" content="taxodist - Changelog">
-<meta name="twitter:description" content="Release history for taxodist, from version 0.1.0 through the coordinated 0.8.0 implementations.">
+<meta name="twitter:description" content="Release history for taxodist, from version 0.1.0 through the coordinated 0.9.0 implementations.">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -208,12 +208,20 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#performance" id="toc-performance" class="nav-link" data-scroll-target="#performance">Performance</a></li>
   <li><a href="#compatibility-and-validation" id="toc-compatibility-and-validation" class="nav-link" data-scroll-target="#compatibility-and-validation">Compatibility and validation</a></li>
   </ul></li>
-  <li><a href="#taxodist-0.8.0-latest" id="toc-taxodist-0.8.0-latest" class="nav-link" data-scroll-target="#taxodist-0.8.0-latest">taxodist 0.8.0 <span class="badge bg-primary">Latest</span></a>
+  <li><a href="#taxodist-0.8.0" id="toc-taxodist-0.8.0" class="nav-link" data-scroll-target="#taxodist-0.8.0">taxodist 0.8.0</a>
   <ul class="collapse">
   <li><a href="#auditable-name-resolution" id="toc-auditable-name-resolution" class="nav-link" data-scroll-target="#auditable-name-resolution">Auditable name resolution</a></li>
   <li><a href="#offline-classifications" id="toc-offline-classifications" class="nav-link" data-scroll-target="#offline-classifications">Offline classifications</a></li>
   <li><a href="#portable-analysis-bundles" id="toc-portable-analysis-bundles" class="nav-link" data-scroll-target="#portable-analysis-bundles">Portable analysis bundles</a></li>
   <li><a href="#robustness-and-compatibility" id="toc-robustness-and-compatibility" class="nav-link" data-scroll-target="#robustness-and-compatibility">Robustness and compatibility</a></li>
+  </ul></li>
+  <li><a href="#taxodist-0.9.0-latest" id="toc-taxodist-0.9.0-latest" class="nav-link" data-scroll-target="#taxodist-0.9.0-latest">taxodist 0.9.0 <span class="badge bg-primary">Latest</span></a>
+  <ul class="collapse">
+  <li><a href="#corrections-2" id="toc-corrections-2" class="nav-link" data-scroll-target="#corrections-2">Corrections</a></li>
+  <li><a href="#behavior-changes" id="toc-behavior-changes" class="nav-link" data-scroll-target="#behavior-changes">Behavior changes</a></li>
+  <li><a href="#new-functions-and-arguments" id="toc-new-functions-and-arguments" class="nav-link" data-scroll-target="#new-functions-and-arguments">New functions and arguments</a></li>
+  <li><a href="#performance-and-network-handling" id="toc-performance-and-network-handling" class="nav-link" data-scroll-target="#performance-and-network-handling">Performance and network handling</a></li>
+  <li><a href="#web-application" id="toc-web-application" class="nav-link" data-scroll-target="#web-application">Web application</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -224,7 +232,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Changelog</h1>
-<p class="subtitle lead">Release history for taxodist, from version 0.1.0 through the coordinated 0.8.0 implementations.</p>
+<p class="subtitle lead">Release history for taxodist, from version 0.1.0 through the coordinated 0.9.0 implementations.</p>
 </div>
 
 
@@ -403,8 +411,8 @@ Behavioral change
 </ul>
 </section>
 </section>
-<section id="taxodist-0.8.0-latest" class="level2">
-<h2 class="anchored" data-anchor-id="taxodist-0.8.0-latest">taxodist 0.8.0 <span class="badge bg-primary">Latest</span></h2>
+<section id="taxodist-0.8.0" class="level2">
+<h2 class="anchored" data-anchor-id="taxodist-0.8.0">taxodist 0.8.0</h2>
 <section id="auditable-name-resolution" class="level3">
 <h3 class="anchored" data-anchor-id="auditable-name-resolution">Auditable name resolution</h3>
 <ul>
@@ -438,6 +446,66 @@ Behavioral change
 <li>Preserved the continuous-prefix MRCA distance definition and established public workflows.</li>
 <li>Improved retrieval-error reporting, structured lineage parsing, name-resolution caching, and source provenance.</li>
 <li>Expanded deterministic regression tests to complete source coverage in all three implementations.</li>
+</ul>
+</section>
+</section>
+<section id="taxodist-0.9.0-latest" class="level2">
+<h2 class="anchored" data-anchor-id="taxodist-0.9.0-latest">taxodist 0.9.0 <span class="badge bg-primary">Latest</span></h2>
+<p>Version 0.9.0 was released simultaneously for R, Python, and Julia. The distance definition and the bundle schema (version 1.0) are unchanged; bundles written by any of the three implementations are read by the other two without differences.</p>
+<section id="corrections-2" class="level3">
+<h3 class="anchored" data-anchor-id="corrections-2">Corrections</h3>
+<ul>
+<li><code>taxo_resolve()</code> now truncates each selected lineage at the queried taxon exactly as <code>get_lineage()</code> does. Previously it stored the lineage of the retrieved page unchanged; for genera whose page does not list the genus itself (for example <em>Periplaneta</em>), the lineage ended at the family, <code>resolved_name</code> reported the family, and <code>distance_matrix(taxo_resolve(x))</code> could differ from <code>distance_matrix(x)</code>. Bundles built from such resolutions inherited the difference.</li>
+<li>Cleaned and uncleaned lineages are cached separately. A call with <code>clean = FALSE</code> previously replaced the cleaned entry, so later calls returned nodes above <code>Biota</code> for the rest of the session.</li>
+<li>Queried names are normalized (surrounding and repeated whitespace) and located in the lineage without regard to letter case. Previously <code>"tyrannosaurus"</code> or <code>"Tyrannosaurus "</code> added a spurious terminal node, increasing lineage depth.</li>
+<li><code>taxo_heatmap()</code> passes plotting arguments only to the plotting function (R and Julia previously forwarded them to <code>distance_matrix()</code>; Python rejected <code>cmap</code> and <code>annot</code>). <code>verbose</code> and <code>progress</code> are explicit arguments.</li>
+<li><code>cache_info()</code> reports the names of cached taxa together with their identifiers (<code>ids</code>); it previously listed identifiers only.</li>
+<li><code>get_lineage_by_id()</code> accepts numeric identifiers and reports an informative error for several identifiers.</li>
+<li>Python: the User-Agent header and bundle metadata report the installed version, <code>distance_matrix()</code> rejects a single string, and each candidate lineage is retrieved once during disambiguation.</li>
+</ul>
+</section>
+<section id="behavior-changes" class="level3">
+<h3 class="anchored" data-anchor-id="behavior-changes">Behavior changes</h3>
+<div class="callout callout-style-default callout-important callout-titled" title="Changed return values">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Changed return values
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><code>check_coverage()</code> reports an unknown result (<code>NA</code> in R, <code>pd.NA</code> in Python, <code>missing</code> in Julia) when The Taxonomicon could not be reached. Such names were previously reported as absent.</li>
+<li><code>save_cache()</code> returns the path of the written file.</li>
+<li>Using a bundle in <code>distance_matrix()</code> or printing it validates its structure only. The complete recomputation of every stored distance is performed when a bundle is written or read.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="new-functions-and-arguments" class="level3">
+<h3 class="anchored" data-anchor-id="new-functions-and-arguments">New functions and arguments</h3>
+<ul>
+<li><code>taxo_tree()</code> builds a tree directly from lineages. Internal nodes are the named clades at which the supplied taxa diverge; clades with a single descendant are collapsed. Branch lengths place a clade at depth <span class="math inline">\(h\)</span> at height <span class="math inline">\(1/(2h)\)</span>, so the tree is ultrametric and its patristic distances equal <code>distance_matrix()</code>. R returns an <code>ape</code>-compatible <code>phylo</code> object; Python and Julia return a <code>TaxodistTree</code> with Newick export.</li>
+<li><code>cross_distances(x, y)</code> computes the rectangular matrix between two sets of taxa.</li>
+<li><code>compare_bundles(old, new)</code> classifies every input as unchanged, added, removed, or changed in status, identifier, or lineage, and lists the pairwise distances that changed. Bundle files can be passed by path.</li>
+<li><code>taxo_resolve()</code> and <code>taxo_bundle()</code> gain <code>within</code>, which restricts candidates to those whose lineage contains a given clade.</li>
+<li><code>save_cache()</code> and <code>load_cache()</code> default to a persistent per-user cache file.</li>
+</ul>
+</section>
+<section id="performance-and-network-handling" class="level3">
+<h3 class="anchored" data-anchor-id="performance-and-network-handling">Performance and network handling</h3>
+<ul>
+<li>Distance matrices are computed from integer prefix identifiers: each node is mapped to an integer identifying its complete path from the root, so the MRCA depth of two taxa is the number of depths at which the identifiers agree.</li>
+<li>Requests are retried with exponential backoff after network errors and server errors (5xx); the number of attempts is configurable.</li>
+</ul>
+</section>
+<section id="web-application" class="level3">
+<h3 class="anchored" data-anchor-id="web-application">Web application</h3>
+<ul>
+<li>The application uses the 0.9.0 packages, adds a between-groups tab and classification trees, reports names that were not found and the entry chosen for ambiguous names, offers CSV, PNG, Newick, and bundle downloads, and supports links that reopen a query.</li>
+<li>Its bundled lineage cache was rebuilt; a cache produced by an earlier parser is no longer loaded.</li>
 </ul>
 
 
@@ -796,7 +864,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left">taxodist 0.8.0</div>   
+    <div class="nav-footer-left">taxodist 0.9.0</div>   
     <div class="nav-footer-center">
       &nbsp;
     </div>

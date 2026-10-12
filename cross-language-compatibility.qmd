@@ -5,7 +5,7 @@ subtitle: "Shared semantics, native return types, and reproducible workflows in 
 
 ## Compatibility contract
 
-The R, Python, and Julia packages are separate implementations of the same taxonomic hierarchy distance. Version 0.8.0 extends their shared behavioral contract:
+The R, Python, and Julia packages are separate implementations of the same taxonomic hierarchy distance. Version 0.9.0 is released simultaneously in all three, and their shared behavioral contract states that:
 
 - ordered lineages are compared through their continuous common prefix;
 - identical complete lineages receive distance zero;
@@ -16,7 +16,10 @@ The R, Python, and Julia packages are separate implementations of the same taxon
 - clade membership uses exact, case-insensitive matching;
 - the packaged reference data preserve the same component structure, taxa, order, values, and provenance;
 - resolution audits use the same fields and status vocabulary;
-- portable bundles use the same schema version 1.0 and matrix encoding.
+- resolution records and name-based retrieval truncate lineages by the same rule, after the same whitespace normalization and case-insensitive location of the queried name;
+- coverage checks distinguish found, absent, and unknown (server unreachable);
+- portable bundles use the same schema version 1.0 and matrix encoding;
+- classification trees use the same topology rules and branch lengths, so their patristic distances equal the distance matrix in every implementation.
 
 Compatibility means equivalent scientific semantics and labeled results. It does not mean that every object has the same internal representation or printed appearance.
 
@@ -101,7 +104,8 @@ For lineages retrieved from the same Taxonomicon record and processed under the 
 | Audit a batch resolution | `taxo_resolve()` |
 | Supply offline lineages | `taxo_from_lineages()` |
 | Compare two nodes | `taxo_distance()`, `mrca()` |
-| Construct a matrix | `distance_matrix()` |
+| Construct a matrix | `distance_matrix()`, `cross_distances()` |
+| Represent the hierarchy as a tree | `taxo_tree()` |
 | Compare a focal taxon | `focal_distances()`, `closest_relative()` |
 | Inspect lineages | `compare_lineages()`, `shared_clades()`, `taxo_path()` |
 | Test membership | `is_member()`, `filter_clade()` |
@@ -109,6 +113,7 @@ For lineages retrieved from the same Taxonomicon record and processed under the 
 | Analyze a matrix | `taxo_cluster()`, `taxo_ordinate()`, `taxo_heatmap()` |
 | Manage the cache | `cache_info()`, `save_cache()`, `load_cache()`, `clear_cache()` |
 | Preserve or exchange an analysis | `taxo_bundle()`, `write_taxodist_bundle()`, `read_taxodist_bundle()` |
+| Compare two analyses | `compare_bundles()` |
 | Load reference data | R: `data(taxobase)`; Python and Julia: `load_taxobase()` |
 
 Argument names and defaults are matched where language conventions permit. All three implementations support `verbose`; progress reporting is available for matrix operations, with minor interface differences documented in the API reference.
@@ -122,7 +127,10 @@ Argument names and defaults are matched where language conventions permit. All t
 | Resolution audit | `taxodist_resolution` data frame | `TaxodistResolution` | `TaxodistResolution` with a `DataFrame` |
 | Portable bundle | `taxodist_bundle` list | `TaxodistBundle` | `TaxodistBundle` |
 | Distance matrix | Base R `dist` | Labeled `pandas.DataFrame` | `TaxonomicDistanceMatrix` |
-| Coverage | Named logical vector | Boolean `pandas.Series` | `DataFrame` |
+| Distances between two sets | Numeric matrix with dimnames | Labeled `pandas.DataFrame` | `TaxonomicCrossDistances` |
+| Classification tree | `ape`-compatible `phylo` | `TaxodistTree` | `TaxodistTree` |
+| Bundle comparison | `taxodist_bundle_comparison` list | `TaxodistBundleComparison` | `TaxodistBundleComparison` |
+| Coverage | Named logical vector (`NA` if unknown) | Nullable Boolean `pandas.Series` | `DataFrame` (`missing` if unknown) |
 | Closest/focal results | Data frame, with S3 class for focal results | `pandas.DataFrame` with attributes | `DataFrame` or named tuple containing one |
 | Taxonomic path | Data frame, class `taxodist_path` | `pandas.DataFrame` with attributes | `DataFrame` |
 | Clustering | `hclust` inside `taxodist_cluster` | SciPy linkage matrix inside a dictionary | Clustering result inside a named tuple |
@@ -176,7 +184,7 @@ matrix = distance_matrix(resolution; progress=false)
 
 ## Portable bundle interoperability
 
-Version 0.8.0 introduces a neutral JSON record for transferring complete analyses rather than language-specific cache internals. A bundle contains:
+Bundles (introduced in version 0.8.0) are a neutral JSON record for transferring complete analyses rather than language-specific cache internals. A bundle contains:
 
 - schema and creation timestamps;
 - source name, URL, and retrieval timestamp;
@@ -187,7 +195,7 @@ Version 0.8.0 introduces a neutral JSON record for transferring complete analyse
 
 The shared encoding uses JSON `null` for missing distances and the strings `"Infinity"` and `"-Infinity"` for disconnected infinities. Each reader validates imported data before constructing native objects.
 
-This enables a resolution performed in one implementation to be inspected and analyzed in another without repeating live taxonomy requests.
+This enables a resolution performed in one implementation to be inspected and analyzed in another without repeating live taxonomy requests. `compare_bundles()` accepts bundles written by any implementation, so an analysis performed in one language can be compared with a later repetition in another.
 
 ## Pairwise result fields
 
@@ -268,7 +276,7 @@ Typography, plotting backends, colors, dendrogram orientation, and console forma
 
 ## Reference data parity
 
-Release 0.8.0 preserves equivalent `taxobase` content in all three packages. Python and Julia load the neutral JSON reference into their native labeled containers.
+The three packages distribute equivalent `taxobase` content. Python and Julia load the neutral JSON reference into their native labeled containers.
 
 ::: {.panel-tabset}
 
@@ -367,6 +375,23 @@ from_julia = load_taxobase().statistical_matrix
 
 This checks labels, order, and numerical values without depending on language-specific serialization.
 
+## Version 0.9.0 validation and performance
+
+### Bundle interoperability
+
+Release 0.9.0 was checked with a common set of user-supplied lineages that included an ancestor–descendant pair, two inputs with identical lineages, and a lineage with a different root (infinite distances). Each implementation built a bundle with `taxo_from_lineages()` and `taxo_bundle()`, wrote it to JSON, and read the bundles written by the other two. In all six reader–writer combinations, `compare_bundles()` reported no changed taxa and no changed distances, and every matrix agreed with the R matrix to within $10^{-12}$.
+
+### Matrix construction
+
+Matrices are now computed from integer identifiers of each node's complete path from the root. The table reports the time to build a matrix from lineages already in memory (no network access) for synthetic lineages of 31 nodes generated by random three-way branching, on a single Windows system. Each implementation is compared with its own 0.8.0 algorithm.
+
+| Taxa | R 0.8.0 | R 0.9.0 | Python 0.8.0 | Python 0.9.0 | Julia 0.8.0 | Julia 0.9.0 |
+|---:|---:|---:|---:|---:|---:|---:|
+| 800 | 4.86 s | 0.27 s | 0.18 s | 0.09 s | 0.01 s | 0.01 s |
+| 2000 | — | 1.64 s | 1.20 s | 0.46 s | 0.12 s | 0.05 s |
+
+In R, the default progress bar of 0.8.0 updated once per pair and roughly tripled these times (14.3 s for 800 taxa); in 0.9.0 it updates once per column. These are single measurements on one system and one synthetic design; relative values are more informative than absolute ones, and the times of different languages should not be read as general language benchmarks.
+
 ## Version 0.7.0 validation and performance
 
 Release 0.7.0 was revalidated with the same 52-taxon reference set in three order-rotated runs. Across languages, all 468 lineage audit records, resolved identifiers, finite-pair counts, and matrix checksums agreed.
@@ -390,6 +415,8 @@ Cache contents have the same conceptual keys—resolved IDs and lineages—but t
 - Julia uses JSON and `.json` files.
 
 Do not rename one format to imitate another. For a cross-language archival record, use the portable bundle format introduced in version 0.8.0.
+
+In all three implementations, cleaned and uncleaned lineages are cached under separate keys (`lin_<id>` and `rawlin_<id>`), and `save_cache()` and `load_cache()` default to a persistent per-user location when no file is given.
 
 ::: {.callout-warning title="Untrusted Python cache files"}
 Only load `.pkl` files from trusted sources. Python's pickle format can execute code during deserialization.

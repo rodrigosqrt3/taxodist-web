@@ -22,20 +22,20 @@ toc: false
 :::
 
 ::: {.release-meta}
-**Current coordinated release: 0.8.0**
+**Current coordinated release: 0.9.0** (R, Python, and Julia)
 
-[![CRAN status](https://img.shields.io/cran/v/taxodist?color=2f855a)](https://cran.r-project.org/package=taxodist) [![PyPI version](https://img.shields.io/pypi/v/taxodist?color=2f855a)](https://pypi.org/project/taxodist) [![JuliaHub version](https://juliahub.com/docs/Taxodist/version.svg)](https://platform.juliahub.com/ui/Packages/General/Taxodist/)
+[![CRAN status](https://img.shields.io/cran/v/taxodist?color=2f855a)](https://cran.r-project.org/package=taxodist) [![PyPI version](https://img.shields.io/pypi/v/taxodist?color=2f855a)](https://pypi.org/project/taxodist) [![Julia version](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2Frodrigosqrt3%2FTaxodist.jl%2Fmain%2FProject.toml&query=%24.version&prefix=v&label=julia&color=2f855a)](https://platform.juliahub.com/ui/Packages/General/Taxodist/)
 :::
 
 ## What does taxodist measure?
 
-For two ordered lineages, `taxodist` finds their continuous common prefix. Its final node is their most recent common ancestor (MRCA):
+For two ordered lineages $L_A$ and $L_B$, `taxodist` finds their continuous common prefix. Its final node is their most recent common ancestor (MRCA):
 
 $$
 d(A,B)=
 \begin{cases}
-0, & \text{if the complete lineages are identical}, \\
-\dfrac{1}{\operatorname{depth}(\operatorname{MRCA}(A,B))}, & \text{otherwise}.
+0, & L_A = L_B, \\
+\dfrac{1}{\operatorname{depth}(\operatorname{MRCA})}, & L_A \neq L_B.
 \end{cases}
 $$
 
@@ -47,16 +47,18 @@ These values describe separation within a recorded classification. They are **no
 
 [Detailed definition and assumptions](methodology.qmd)
 
-## Version 0.8.0
+## Version 0.9.0
 
-Version 0.8.0 extends the reproducibility layer while preserving the distance definition and established interfaces.
+Version 0.9.0 is released simultaneously for R, Python, and Julia. The distance definition is unchanged; the release corrects several retrieval and caching errors and adds tools for trees, set comparisons, and repeated analyses.
 
-- `taxo_resolve()` records queried names, candidate matches, selected identifiers, statuses, lineage depths, and retrieved lineages before matrix construction.
-- `taxo_from_lineages()` creates the same structured resolution from curated or unpublished lineages without network access.
-- `taxo_bundle()` stores the resolution record, labeled matrix, metric definition, software metadata, and source provenance in a shared JSON format.
-- R, Python, and Julia read and validate the same bundle schema while returning native language-specific objects.
+- **Consistent resolution.** `taxo_resolve()` now truncates each lineage exactly as `get_lineage()` does, so matrices computed from names and from their resolution record are identical.
+- **Classification trees.** `taxo_tree()` builds a tree directly from the lineages, with named clades as internal nodes and branch lengths whose patristic distances reproduce `distance_matrix()`.
+- **Distances between two sets.** `cross_distances()` returns the rectangular matrix between, for example, community members and reference taxa.
+- **Comparison of analyses.** `compare_bundles()` reports which taxa changed identifier, status, or lineage between two bundles, and which distances changed.
+- **Name handling.** Whitespace and letter case in queried names are normalized, and the new `within` argument restricts homonym candidates to a clade.
+- **Robustness and speed.** Requests are retried after transient failures, coverage checks report an unknown status when the server cannot be reached, and matrix construction is vectorized.
 
-The four resolution statuses are `resolved`, `ambiguous`, `unresolved`, and `retrieval_error`. This distinction separates a missing name from a failed request or malformed response.
+See the [changelog](news.qmd) for the complete list, including behavior changes.
 
 ## One workflow, three languages
 
@@ -122,10 +124,11 @@ write_taxodist_bundle(bundle, "analysis.taxodist.json")
 | Retrieve or search live taxonomy | `get_lineage()`, `get_lineage_by_id()`, `get_taxonomicon_id()`, `taxo_search()` |
 | Create an auditable resolution | `taxo_resolve()`, `taxo_from_lineages()` |
 | Compare hierarchy nodes | `taxo_distance()`, `mrca()`, `shared_clades()`, `taxo_path()` |
-| Build community distances | `distance_matrix()`, `focal_distances()`, `closest_relative()` |
+| Build community distances | `distance_matrix()`, `cross_distances()`, `focal_distances()`, `closest_relative()` |
+| Represent the hierarchy as a tree | `taxo_tree()` |
 | Test membership | `is_member()`, `filter_clade()` |
 | Analyze and visualize | `taxo_cluster()`, `taxo_ordinate()`, `taxo_heatmap()` |
-| Preserve a complete analysis | `taxo_bundle()`, `write_taxodist_bundle()`, `read_taxodist_bundle()` |
+| Preserve and compare analyses | `taxo_bundle()`, `write_taxodist_bundle()`, `read_taxodist_bundle()`, `compare_bundles()` |
 | Work reproducibly offline | `taxo_from_lineages()`, `load_taxobase()` |
 
 ## Software interfaces
@@ -135,7 +138,7 @@ write_taxodist_bundle(bundle, "analysis.taxodist.json")
 | R | [CRAN](https://cran.r-project.org/package=taxodist) · [source](https://github.com/rodrigosqrt3/taxodist) | Base R `dist`, `taxodist_resolution`, and `taxodist_bundle` objects |
 | Python | [PyPI](https://pypi.org/project/taxodist/) · [source](https://github.com/rodrigosqrt3/taxodist-py) | Labeled `pandas` objects, `TaxodistResolution`, and `TaxodistBundle` |
 | Julia | [JuliaHub](https://platform.juliahub.com/ui/Packages/General/Taxodist/) · [source](https://github.com/rodrigosqrt3/Taxodist.jl) | `TaxonomicDistanceMatrix`, `TaxodistResolution`, and `TaxodistBundle` |
-| Web application | [Interactive interface](https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/) | Browser-based lineage and distance exploration |
+| Web application | [Interactive interface](https://3w6g1b-rodrigo-villa.shinyapps.io/taxodist_app/) | Browser-based lineage, distance, and classification-tree exploration in five languages, with downloadable results |
 
 ## Data source and citation
 

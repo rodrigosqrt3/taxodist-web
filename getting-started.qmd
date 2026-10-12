@@ -25,13 +25,13 @@ Throughout this site, **distance** means distance between nodes in a taxonomic h
 
 ## The distance definition
 
-For two ordered lineages, the MRCA is the final node in their continuous common prefix. The metric is
+For two ordered lineages $L_A$ and $L_B$, the MRCA is the final node in their continuous common prefix. The metric is
 
 $$
 d(A,B)=
 \begin{cases}
-0, & \text{if the complete lineages of } A \text{ and } B \text{ are identical}, \\
-\dfrac{1}{\operatorname{depth}(\operatorname{MRCA}(A,B))}, & \text{otherwise}.
+0, & L_A = L_B, \\
+\dfrac{1}{\operatorname{depth}(\operatorname{MRCA})}, & L_A \neq L_B.
 \end{cases}
 $$
 
@@ -140,6 +140,8 @@ length(lineage)
 :::
 
 The returned character vector, Python list, or Julia vector is ordered from the root to the queried node. Retrieval results are cached automatically during the session.
+
+Names are matched after removing surrounding whitespace and collapsing repeated spaces, and the queried name is located in the lineage without regard to letter case: `"tyrannosaurus"` and `" Tyrannosaurus "` resolve to the same node as `"Tyrannosaurus"`.
 
 You can also query a known numeric Taxonomicon ID directly:
 
@@ -407,6 +409,43 @@ closest_relative("Tyrannosaurus", community)
 
 :::
 
+### Distances between two sets of taxa
+
+When only the comparisons between two groups are needed, for example between the members of a community and a set of reference taxa, `cross_distances()` returns the rectangular matrix directly instead of the full square matrix of the combined set.
+
+::: {.panel-tabset}
+
+#### R
+
+```r
+community <- c("Tyrannosaurus", "Triceratops", "Homo sapiens")
+reference <- c("Velociraptor", "Gallus", "Quercus")
+
+cross_distances(community, reference)
+```
+
+#### Python
+
+```python
+community = ["Tyrannosaurus", "Triceratops", "Homo sapiens"]
+reference = ["Velociraptor", "Gallus", "Quercus"]
+
+td.cross_distances(community, reference)
+```
+
+#### Julia
+
+```julia
+community = ["Tyrannosaurus", "Triceratops", "Homo sapiens"]
+reference = ["Velociraptor", "Gallus", "Quercus"]
+
+cross_distances(community, reference)
+```
+
+:::
+
+Rows correspond to the first set and columns to the second. Resolutions and bundles are accepted in place of names.
+
 ## Test and filter clade membership
 
 Clade matching is exact, case-insensitive, and ignores surrounding whitespace. A partial string such as `"Dino"` does not match `"Dinosauria"`.
@@ -494,6 +533,45 @@ Clustering, ordination, and heatmaps require at least two taxa and a finite, com
 
 The clustering dendrogram is a visualization of taxonomic hierarchy distances. It is not a phylogeny inferred from characters, sequences, or branch lengths.
 
+## Classification trees
+
+`taxo_tree()` represents the classification itself as a tree, without a clustering step. Internal nodes are the named clades at which the supplied taxa diverge, and clades with a single descendant are collapsed. Branch lengths are chosen so that patristic distances in the tree equal the values returned by `distance_matrix()`.
+
+::: {.panel-tabset}
+
+### R
+
+```r
+tree <- taxo_tree(taxa)          # an ape-compatible "phylo" object
+tree$node.label
+
+library(ape)
+plot(tree, show.node.label = TRUE)
+write.tree(tree)                 # Newick
+```
+
+### Python
+
+```python
+tree = td.taxo_tree(taxa)        # a TaxodistTree
+tree.node_label
+tree.to_newick()                 # for Bio.Phylo, ete3, DendroPy, ...
+tree.cophenetic()                # equals td.distance_matrix(taxa)
+```
+
+### Julia
+
+```julia
+tree = taxo_tree(taxa)           # a TaxodistTree
+tree.node_label
+newick(tree)
+cophenetic(tree)                 # equals distance_matrix(taxa)
+```
+
+:::
+
+Unlike a clustering dendrogram, the tree keeps polytomies where the classification records several clades at the same node, and labels every split with its clade name. It remains a representation of the classification, not an inferred phylogeny. All lineages must share the same root; taxa without a lineage are dropped with a warning.
+
 ## Coverage, search, and homonyms
 
 Use `check_coverage()` before a large calculation to identify names that cannot be resolved. Use `taxo_search()` to inspect possible Taxonomicon matches when a name is ambiguous or unexpected.
@@ -528,9 +606,11 @@ get_taxonomicon_id("Tyrannosaurus")
 
 When reproducibility matters, record the resolved numeric ID and the retrieval date. This helps distinguish homonyms and documents which external classification was queried.
 
+`check_coverage()` distinguishes three outcomes: found, absent from The Taxonomicon, and unknown because the server could not be reached (`NA` in R, `pd.NA` in Python, `missing` in Julia). A temporary network failure is therefore not reported as missing coverage.
+
 ## Resolve a complete input list before analysis
 
-Release 0.8.0 adds an auditable resolution layer. Instead of discovering ambiguous or missing names while a distance matrix is being assembled, `taxo_resolve()` records the decision for every input first.
+`taxo_resolve()` provides an auditable resolution layer. Instead of discovering ambiguous or missing names while a distance matrix is being assembled, it records the decision for every input first.
 
 Each row retains the original input, selected name and identifier, status, candidate count, lineage depth, lineage, and candidate table. Status is one of `resolved`, `ambiguous`, `unresolved`, or `retrieval_error`.
 
@@ -578,6 +658,32 @@ distance_matrix(resolution; progress=false)
 :::
 
 The ambiguity policy can warn and select the first valid candidate (`"warn"`), select it silently (`"first"`), or stop after auditing the inputs (`"error"`). Numeric Taxonomicon IDs bypass name search.
+
+Homonyms in different parts of the classification can often be resolved automatically with `within`, which keeps only candidates whose lineage contains the given clade. Names without such a candidate are reported as `unresolved`.
+
+::: {.panel-tabset}
+
+### R
+
+```r
+taxo_resolve(c("Nereis", "Tyrannosaurus"), within = "Animalia")
+```
+
+### Python
+
+```python
+td.taxo_resolve(["Nereis", "Tyrannosaurus"], within="Animalia")
+```
+
+### Julia
+
+```julia
+taxo_resolve(["Nereis", "Tyrannosaurus"]; within="Animalia")
+```
+
+:::
+
+Each stored lineage is truncated at the queried taxon exactly as in `get_lineage()`, so a matrix computed from a resolution equals the matrix computed from the same names.
 
 ::: {.callout-tip title="Why resolve first?"}
 The resolution object separates absent names from retrieval failures, makes homonym choices inspectable, and reuses stored lineages in downstream matrix construction.
@@ -670,6 +776,38 @@ distance_matrix(restored)
 
 Unlike cache files, bundle files are designed for cross-language exchange. Missing distances are stored as JSON `null`; disconnected positive or negative infinity uses the explicit strings `"Infinity"` and `"-Infinity"`.
 
+### Compare an analysis with a later repetition
+
+Live classifications change. When an analysis is repeated, `compare_bundles()` reports which inputs changed status, identifier, or lineage, which were added or removed, and which pairwise distances changed as a consequence. Bundle files can be passed by path.
+
+::: {.panel-tabset}
+
+#### R
+
+```r
+before <- read_taxodist_bundle("analysis.taxodist.json")
+after <- taxo_bundle(before$resolution$input)
+compare_bundles(before, after)
+```
+
+#### Python
+
+```python
+before = td.read_taxodist_bundle("analysis.taxodist.json")
+after = td.taxo_bundle(list(before.resolution["input"]))
+print(td.compare_bundles(before, after))
+```
+
+#### Julia
+
+```julia
+before = read_taxodist_bundle("analysis.taxodist.json")
+after = taxo_bundle(before.resolution.input)
+compare_bundles(before, after)
+```
+
+:::
+
 ## Save and restore the cache
 
 Retrieved identifiers and lineages are cached in memory. Saving the cache avoids repeating those network requests in a later session.
@@ -710,6 +848,10 @@ load_cache("taxodist-cache.json")
 
 The three implementations use language-specific cache formats: `.rds` in R, `.pkl` in Python, and `.json` in Julia. These cache files are not interchangeable. Python cache files use `pickle`; only load them from sources you trust.
 
+Called without a file, `save_cache()` and `load_cache()` use a persistent per-user cache location: `tools::R_user_dir("taxodist", "cache")` in R and the platform's user cache directory in Python and Julia (overridable with the `TAXODIST_CACHE_DIR` environment variable).
+
+Requests to The Taxonomicon are retried with exponential backoff after network errors and server errors. The number of attempts (default 3) is set with `options(taxodist.max_tries = 5)` in R, `taxodist.fetch.MAX_TRIES = 5` in Python, and `Taxodist.MAX_TRIES[] = 5` in Julia.
+
 ## Use the offline reference data
 
 The packaged `taxobase` object provides a fixed, offline dataset for examples, tests, and comparisons that must not depend on the availability or current state of The Taxonomicon.
@@ -742,7 +884,7 @@ taxobase.metadata
 
 :::
 
-Release 0.8.0 preserves equivalent reference content in all three packages, including component names, taxon order, matrices, examples, and provenance metadata. The native package objects remain language-specific.
+The three packages distribute equivalent reference content, including component names, taxon order, matrices, examples, and provenance metadata. The object records the date and package version with which it was generated; it is a dated snapshot and may differ slightly from current live lineages. The native package objects remain language-specific.
 
 ## Data source and citation
 

@@ -66,6 +66,26 @@ ape::write.tree(tree_like, file = "taxonomic-distance-dendrogram.nwk")
 
 The filename and accompanying metadata should retain the distinction between classification-based clustering and phylogenetic inference.
 
+### Tree built directly from the lineages
+
+When the lineages themselves are available, `taxo_tree()` (version 0.9.0) builds the tree from the classification without a clustering step. Internal nodes carry clade names, polytomies are retained, and patristic distances equal the taxonomic distances exactly. The fixed `taxobase` object stores matrices rather than lineages, so this example retrieves live lineages:
+
+```r
+library(ape)
+
+classification_tree <- taxo_tree(taxa_brazil)
+plot(classification_tree, show.node.label = TRUE, cex = 0.8)
+
+# Patristic distances reproduce the hierarchy distances
+all.equal(
+  cophenetic(classification_tree)[labels(mat), labels(mat)],
+  as.matrix(distance_matrix(taxa_brazil, progress = FALSE)),
+  check.attributes = FALSE
+)
+```
+
+Because the matrix is ultrametric, average-linkage clustering recovers the same distance levels; `hclust()` differs only in resolving tied levels into binary merges and in not naming the merges. The same interpretive limits apply to both trees.
+
 ## Principal coordinates analysis
 
 `taxo_ordinate()` applies classical multidimensional scaling (PCoA) to the distance matrix.

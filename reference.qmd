@@ -1,6 +1,6 @@
 ---
 title: "Function Reference"
-subtitle: "Public API for taxodist 0.8.0 in R, Python, and Julia."
+subtitle: "Public API for taxodist 0.9.0 in R, Python, and Julia."
 ---
 
 The R, Python, and Julia implementations share the same distance semantics and principal function names. Native return types follow the conventions of each language.
@@ -12,7 +12,9 @@ The R, Python, and Julia implementations share the same distance semantics and p
 | Structured result | S3 list or data frame | `dict` or `pandas.DataFrame` | Named tuple or `DataFrame` |
 | Cache file | `.rds` | `.pkl` | `.json` |
 
-Unless stated otherwise, retrieval functions accept `verbose = FALSE` in R and `verbose=false` in Python and Julia.
+Unless stated otherwise, retrieval functions accept `verbose = FALSE` in R and `verbose=false` in Python and Julia. Queried names are normalized (surrounding and repeated whitespace) before lookup.
+
+Requests to The Taxonomicon are retried with exponential backoff after network errors and server errors (5xx). The number of attempts (default 3) is set with `options(taxodist.max_tries = n)` in R, `taxodist.fetch.MAX_TRIES = n` in Python, and `Taxodist.MAX_TRIES[] = n` in Julia.
 
 ## Taxon retrieval and search
 
@@ -26,7 +28,7 @@ Julia:  get_taxonomicon_id(taxon; verbose=false)
 
 Resolves a taxon name to a numeric Taxonomicon identifier. Astronomical entries are excluded. When several valid biological entries remain, the function warns before returning the first candidate.
 
-**Returns:** a character string in R or `str` in Python; `NULL`/`None` if no valid identifier is found.
+**Returns:** a character string in R, `str` in Python, or `String` in Julia; `NULL`/`None`/`nothing` if no valid identifier is found or the server cannot be reached.
 
 ### `get_lineage_by_id()`
 
@@ -36,9 +38,9 @@ Python: get_lineage_by_id(taxon_id, clean=True, verbose=False)
 Julia:  get_lineage_by_id(taxon_id; clean=true, verbose=false)
 ```
 
-Retrieves an ordered lineage for a numeric Taxonomicon ID. With `clean` enabled, formatting markers and nodes preceding `Biota` are removed when applicable.
+Retrieves an ordered lineage for one numeric Taxonomicon ID, supplied as a string or a number. Formatting markers are always removed; with `clean` enabled, nodes preceding `Biota` are also removed. Cleaned and uncleaned lineages are cached separately, and supplying several IDs is an error.
 
-**Returns:** a character vector in R or list of strings in Python, ordered from root to queried node; `NULL`/`None` for an invalid or unresolved ID.
+**Returns:** a character vector in R, list of strings in Python, or `Vector{String}` in Julia, ordered from root to queried node; `NULL`/`None`/`nothing` for an invalid or unresolved ID.
 
 ### `get_lineage()`
 
@@ -48,9 +50,9 @@ Python: get_lineage(taxon, clean=True, verbose=False)
 Julia:  get_lineage(taxon; clean=true, verbose=false)
 ```
 
-Convenience wrapper combining name resolution and lineage retrieval. A numeric ID supplied as a string bypasses name search.
+Convenience wrapper combining name resolution and lineage retrieval. A numeric ID bypasses name search. For names, the lineage is truncated at the queried taxon, which is located exactly and, failing that, without regard to letter case.
 
-**Returns:** a character vector in R or list of strings in Python; `NULL`/`None` if unresolved.
+**Returns:** a character vector in R, list of strings in Python, or `Vector{String}` in Julia; `NULL`/`None`/`nothing` if unresolved.
 
 ### `taxo_search()`
 
@@ -73,14 +75,17 @@ For ambiguous names, inspect `taxo_search()` and record the selected numeric ID 
 ### `taxo_resolve()`
 
 ```text
-R:      taxo_resolve(taxa, ambiguity = "warn", verbose = FALSE, progress = TRUE)
-Python: taxo_resolve(taxa, ambiguity="warn", verbose=False, progress=True)
-Julia:  taxo_resolve(taxa; ambiguity="warn", verbose=false, progress=true)
+R:      taxo_resolve(taxa, ambiguity = "warn", verbose = FALSE,
+                     progress = TRUE, within = NULL)
+Python: taxo_resolve(taxa, ambiguity="warn", verbose=False,
+                     progress=True, within=None)
+Julia:  taxo_resolve(taxa; ambiguity="warn", verbose=false,
+                     progress=true, within=nothing)
 ```
 
-Resolves a complete input vector before analysis. Repeated names retain their original positions but are retrieved only once. Numeric identifiers bypass name search.
+Resolves a complete input vector before analysis. Repeated names, including spellings that differ only in whitespace, retain their original positions but are retrieved only once. Numeric identifiers bypass name search. Selected lineages are truncated exactly as in `get_lineage()`.
 
-`ambiguity` accepts `"warn"`, `"first"`, or `"error"`. Ambiguous rows retain `status = "ambiguous"` even when the first candidate is selected.
+`ambiguity` accepts `"warn"`, `"first"`, or `"error"`. Ambiguous rows retain `status = "ambiguous"` even when the first candidate is selected. `within` optionally names a clade; only candidates whose lineage contains it (exact, case-insensitive match) are considered, and names without such a candidate are `unresolved`.
 
 **Returns:** a `taxodist_resolution` data frame in R, `TaxodistResolution` in Python, or `TaxodistResolution` wrapping a Julia `DataFrame`. Each input has:
 
@@ -110,12 +115,15 @@ Creates an auditable resolution from named, root-to-tip lineages without network
 ### `taxo_bundle()`
 
 ```text
-R:      taxo_bundle(taxa, ambiguity = "warn", verbose = FALSE, progress = TRUE)
-Python: taxo_bundle(taxa, ambiguity="warn", verbose=False, progress=True)
-Julia:  taxo_bundle(taxa; ambiguity="warn", verbose=false, progress=true)
+R:      taxo_bundle(taxa, ambiguity = "warn", verbose = FALSE,
+                    progress = TRUE, within = NULL)
+Python: taxo_bundle(taxa, ambiguity="warn", verbose=False,
+                    progress=True, within=None)
+Julia:  taxo_bundle(taxa; ambiguity="warn", verbose=false,
+                    progress=true, within=nothing)
 ```
 
-Combines a resolution object, its distance matrix, source metadata, software metadata, and the metric definition. `taxa` may be raw names or an existing resolution.
+Combines a resolution object, its distance matrix, source metadata, software metadata, and the metric definition. `taxa` may be raw names or an existing resolution; the remaining arguments are passed to `taxo_resolve()` for names.
 
 **Returns:** `taxodist_bundle` in R or `TaxodistBundle` in Python and Julia.
 
@@ -130,9 +138,21 @@ Julia:  write_taxodist_bundle(bundle, file; pretty=true)
         read_taxodist_bundle(file)
 ```
 
-Writes or reads the shared JSON bundle schema, currently version 1.0. Readers validate structure, statuses, candidate counts, lineage depths, labels, matrix symmetry, and agreement between distances and stored lineages.
+Writes or reads the shared JSON bundle schema, currently version 1.0. Readers and writers validate structure, statuses, candidate counts, lineage depths, labels, matrix symmetry, and agreement between distances and stored lineages. Using a bundle (printing it or passing it to `distance_matrix()`) checks its structure only and does not recompute the distances.
 
 Bundle JSON is cross-language; cache files are not. Missing distances use JSON `null`, while disconnected infinities use `"Infinity"` or `"-Infinity"`.
+
+### `compare_bundles()`
+
+```text
+R:      compare_bundles(old, new, tolerance = sqrt(.Machine$double.eps))
+Python: compare_bundles(old, new, tolerance=sqrt(eps))
+Julia:  compare_bundles(old, new; tolerance=sqrt(eps(Float64)))
+```
+
+Compares two bundles, or two bundle files, for example the same analysis repeated after the source classification was updated. Each input label is classified as `unchanged`, `added`, `removed`, `status_changed`, `id_changed`, or `lineage_changed`.
+
+**Returns:** a comparison object with a `taxa` table (input, change, statuses, identifiers, and lineage depths in both bundles), a `distances` table of pairs present in both bundles whose distance changed, and the two creation timestamps. Printing it summarizes the changes.
 
 ## Distance computation
 
@@ -149,10 +169,12 @@ Retrieves both ordered lineages and computes
 $$
 d(A,B)=
 \begin{cases}
-0, & \text{identical complete lineages}, \\
-1 / \operatorname{depth}(\operatorname{MRCA}(A,B)), & \text{otherwise}.
+0, & L_A = L_B, \\
+1 / \operatorname{depth}(\operatorname{MRCA}), & L_A \neq L_B,
 \end{cases}
 $$
+
+where $L_A$ and $L_B$ are the complete ordered lineages.
 
 MRCA detection uses only the continuous common prefix from the root. Distinct ancestor–descendant nodes therefore retain a positive distance. Root depth is 1, so distinct valid Taxonomicon nodes have distances in $(0,1]$. Infinite distance is retained as a defensive result for disconnected input lineages.
 
@@ -189,6 +211,20 @@ Julia:  distance_matrix(taxa; verbose=false, progress=true)
 Retrieves each lineage once and computes all pairwise distances. Input order and labels are preserved. Unresolved taxa receive missing off-diagonal comparisons; the diagonal is zero.
 
 **Returns:** a `dist` object in R, symmetric `pandas.DataFrame` in Python, or labeled `TaxonomicDistanceMatrix` in Julia. Empty input returns a correctly shaped empty object.
+
+`taxa` may also be a resolution, whose stored lineages are reused, or a bundle, whose stored matrix is returned. Distances are computed from integer identifiers of each node's complete path from the root, which gives the same values as `taxo_distance()` for every pair.
+
+### `cross_distances()`
+
+```text
+R:      cross_distances(x, y, verbose = FALSE, progress = TRUE)
+Python: cross_distances(x, y, verbose=False, progress=True)
+Julia:  cross_distances(x, y; verbose=false, progress=true)
+```
+
+Computes the distances from every taxon in `x` to every taxon in `y` without computing the full square matrix of the combined set. `x` and `y` may be names, resolutions, or bundles.
+
+**Returns:** a numeric matrix in R, `pandas.DataFrame` in Python, or labeled `TaxonomicCrossDistances` in Julia, with rows for `x` and columns for `y`. Unresolved taxa receive missing values; taxa without a common root receive infinite distance.
 
 ### `focal_distances()`
 
@@ -234,7 +270,7 @@ Julia:  check_coverage(taxa; verbose=false)
 
 Checks whether each input can be resolved to a Taxonomicon identifier.
 
-**Returns:** a named logical vector in R or Boolean `pandas.Series` in Python.
+**Returns:** a named logical vector in R, nullable Boolean `pandas.Series` in Python, or a `DataFrame` with columns `taxon` and `covered` in Julia. Values are true (found), false (absent), or unknown when the server could not be reached (`NA`, `pd.NA`, or `missing`).
 
 ## Lineage comparison and membership
 
@@ -315,7 +351,8 @@ Accepts taxon names or a previously computed distance object. The default is ave
 **Returns:**
 
 - R: a `taxodist_cluster` list with `hclust` and `dist`;
-- Python: a dictionary with `hclust` (SciPy linkage matrix) and `dist`.
+- Python: a dictionary with `hclust` (SciPy linkage matrix) and `dist`;
+- Julia: a named tuple with `hclust` (`Clustering.Hclust`), `dist`, and `method`.
 
 If the matrix contains missing or infinite values, or represents fewer than two taxa, clustering is skipped and `hclust` is `NULL`/`None`.
 
@@ -334,14 +371,27 @@ Performs classical multidimensional scaling (PCoA). The requested `k` must be a 
 ### `taxo_heatmap()`
 
 ```text
-R:      taxo_heatmap(taxa, ...)
-Python: taxo_heatmap(taxa, **kwargs)
-Julia:  taxo_heatmap(taxa; display_plot=true, kwargs...)
+R:      taxo_heatmap(taxa, ..., verbose = FALSE, progress = TRUE)
+Python: taxo_heatmap(taxa, verbose=False, progress=True, **kwargs)
+Julia:  taxo_heatmap(taxa; display_plot=true, verbose=false,
+                     progress=true, kwargs...)
 ```
 
-Plots the distance matrix with clustered rows and columns. R passes additional arguments to `stats::heatmap()`; Python passes them to `seaborn.clustermap()`.
+Plots the distance matrix with clustered rows and columns. Additional arguments are passed only to the plotting function: `stats::heatmap()` in R, `seaborn.clustermap()` in Python (overriding the defaults `cmap` and `annot`), and `Plots.heatmap()` in Julia. `verbose` and `progress` control lineage retrieval when names are supplied.
 
-**Returns:** the underlying `dist` object invisibly in R or the underlying `pandas.DataFrame` in Python. Plotting is skipped for incomplete, infinite, or undersized matrices.
+**Returns:** the underlying `dist` object invisibly in R, `pandas.DataFrame` in Python, or `TaxonomicDistanceMatrix` in Julia. Plotting is skipped for incomplete, infinite, or undersized matrices.
+
+### `taxo_tree()`
+
+```text
+R:      taxo_tree(taxa, verbose = FALSE, progress = TRUE)
+Python: taxo_tree(taxa, verbose=False, progress=True)
+Julia:  taxo_tree(taxa; verbose=false, progress=true)
+```
+
+Builds a tree directly from the lineages of names, a resolution, or a bundle. Internal nodes are the named clades at which the supplied taxa diverge; clades with a single descendant are collapsed, and polytomies are retained. A clade at depth $h$ is placed at height $1/(2h)$ and tips at height zero, so the tree is ultrametric and its patristic distances equal `distance_matrix()`. Taxa with identical lineages are joined by zero-length branches; a taxon that is an ancestor of another supplied taxon is attached to its clade node. All lineages must share the same root; taxa without a lineage are dropped with a warning.
+
+**Returns:** an `ape`-compatible `phylo` object in R; a `TaxodistTree` in Python (with `to_newick()` and `cophenetic()`) and in Julia (with `newick(tree)` and `cophenetic(tree)`). Tip labels are input labels and node labels are clade names.
 
 ::: {.callout-warning title="Interpretation of analysis output"}
 Clustering, PCoA, and heatmaps summarize the supplied classification-depth distances. They do not infer phylogenetic history or evolutionary branch lengths.
@@ -355,27 +405,27 @@ Clustering, PCoA, and heatmaps summarize the supplied classification-depth dista
 cache_info()
 ```
 
-Prints and returns counts of cached lineages and identifiers, stored lineage keys, and approximate memory use. The return fields are `n_lineages`, `n_ids`, `taxa`, and `size_bytes`.
+Prints and returns counts of cached lineages and identifiers, the names of the cached taxa with their identifiers, and approximate memory use. The return fields are `n_lineages`, `n_ids`, `taxa`, `ids`, and `size_bytes`.
 
 ### `save_cache()`
 
 ```text
-R:      save_cache(file)
-Python: save_cache(file)
-Julia:  save_cache(file)
+R:      save_cache(file = NULL)
+Python: save_cache(file=None)
+Julia:  save_cache(file=nothing)
 ```
 
-Serializes the current cache to an R `.rds` file or Python `.pkl` file. Returns invisibly `NULL` in R and `None` in Python.
+Serializes the current cache to an R `.rds`, Python `.pkl`, or Julia `.json` file. Without a file, a persistent per-user location is used: `tools::R_user_dir("taxodist", "cache")` in R and the platform's user cache directory in Python and Julia (overridable with `TAXODIST_CACHE_DIR`). Returns the path of the written file (invisibly in R).
 
 ### `load_cache()`
 
 ```text
-R:      load_cache(file)
-Python: load_cache(file)
-Julia:  load_cache(file)
+R:      load_cache(file = NULL)
+Python: load_cache(file=None)
+Julia:  load_cache(file=nothing)
 ```
 
-Validates and restores a previously saved cache. Validation occurs before the active cache is modified. The R, Python, and Julia cache files are not interchangeable.
+Validates and restores a previously saved cache, by default from the persistent per-user location. Validation occurs before the active cache is modified. The R, Python, and Julia cache files are not interchangeable.
 
 ::: {.callout-warning title="Python cache security"}
 Python cache files use `pickle`. Only load `.pkl` files from trusted sources, because unpickling untrusted data can execute arbitrary code.
@@ -387,7 +437,7 @@ Python cache files use `pickle`. Only load `.pkl` files from trusted sources, be
 clear_cache()
 ```
 
-Removes all identifiers and lineages cached in the current session. Returns invisibly `NULL` in R and `None` in Python.
+Removes all identifiers and lineages cached in the current session. Returns invisibly `NULL` in R, `None` in Python, and `nothing` in Julia.
 
 ## Packaged reference data
 
@@ -399,7 +449,7 @@ Python: taxobase = load_taxobase()
 Julia:  taxobase = load_taxobase()
 ```
 
-Loads the fixed reference object distributed with release 0.8.0. Components include taxa, coverage, lineages, pairwise examples, search results, general and statistical distance matrices, and provenance metadata.
+Loads the fixed reference object distributed with the packages. Its metadata record the generation date and package version. Components include taxa, coverage, lineages, pairwise examples, search results, general and statistical distance matrices, and provenance metadata.
 
 R stores distance components as `dist`; Python converts matrices to labeled `pandas.DataFrame` objects; Julia converts them to labeled `TaxonomicDistanceMatrix` objects.
 

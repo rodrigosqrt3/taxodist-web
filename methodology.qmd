@@ -11,15 +11,7 @@ The distance is defined from the position of the most recent common ancestor (MR
 
 ## Formal definition
 
-Let
-
-$$
-L_A = (a_1, a_2, \ldots, a_m)
-\qquad\text{and}\qquad
-L_B = (b_1, b_2, \ldots, b_n)
-$$
-
-be the ordered lineages of nodes $A$ and $B$. Define the common-prefix depth as
+Let $L_A = (a_1, a_2, \ldots, a_m)$ and $L_B = (b_1, b_2, \ldots, b_n)$ be the ordered lineages of nodes $A$ and $B$. Define the common-prefix depth as
 
 $$
 h(A,B) = \max\left\{k : a_i=b_i \text{ for every } i \leq k\right\}.
@@ -86,11 +78,11 @@ $$
 For distinct nodes, taking positive reciprocals reverses the inequality:
 
 $$
+\begin{aligned}
 \frac{1}{h(A,C)}
-\leq
-\frac{1}{\min\{h(A,B),h(B,C)\}}
-=
-\max\left\{\frac{1}{h(A,B)},\frac{1}{h(B,C)}\right\}.
+&\leq \frac{1}{\min\{h(A,B),h(B,C)\}} \\
+&= \max\left\{\frac{1}{h(A,B)},\frac{1}{h(B,C)}\right\}.
+\end{aligned}
 $$
 
 Cases involving identical nodes follow immediately because their distance is zero. Thus the strong triangle inequality holds.
@@ -208,7 +200,7 @@ If a lineage cannot be retrieved, pairwise matrices retain the taxon label and u
 
 Valid biological lineages retrieved and cleaned from The Taxonomicon retain `Biota` as their shared root. An infinite distance is therefore not expected during ordinary Taxonomicon use. It remains a defensive result for supplied or malformed lineages with no common initial node; this differs from a missing lineage because both inputs exist but are disconnected under the retained representation.
 
-Clustering, ordination, and heatmap methods require a finite, complete matrix. Version 0.8.0 checks these conditions and returns an informative fallback object when they are not satisfied.
+Clustering, ordination, and heatmap methods require a finite, complete matrix. The implementations check these conditions and return an informative fallback object when they are not satisfied.
 
 ## Interpretation
 
@@ -223,6 +215,20 @@ A smaller finite value indicates a deeper shared node in the selected classifica
 
 A clustering dendrogram constructed from these values summarizes the classification-depth matrix. Conversion to class `phylo` changes the data representation, not the evidential basis of the tree.
 
+## Tree representation of the classification
+
+Because the distance is an ultrametric, the supplied taxa can be represented exactly by a rooted tree in which every pairwise distance equals the patristic distance between the corresponding tips. `taxo_tree()` constructs this tree directly from the lineages rather than by clustering.
+
+Internal nodes correspond to clades at which the supplied taxa diverge; clades with a single descendant among the supplied taxa are omitted. A clade at depth $h$ is placed at height $1/(2h)$ and tips at height zero. For two taxa whose MRCA has depth $h$, the path between them therefore has length
+
+$$
+\frac{1}{2h} + \frac{1}{2h} = \frac{1}{h} = d(A,B).
+$$
+
+A taxon that is an ancestor of another supplied taxon is attached to its clade node by a branch of length $1/(2h)$, and taxa with identical lineages are joined at height zero, which preserves distances of $1/h$ and $0$ respectively.
+
+Average-linkage clustering of an ultrametric matrix recovers the same hierarchy of distance levels, but `stats::hclust()` and comparable routines resolve tied levels into a sequence of binary merges. The tree built from the lineages instead keeps polytomies and labels each split with its clade name. Both are representations of the classification; neither is a phylogenetic estimate, and branch lengths are not evolutionary times.
+
 ## Reproducibility
 
 Live lineages may change when The Taxonomicon is updated. For empirical work, record:
@@ -236,13 +242,13 @@ Live lineages may change when The Taxonomicon is updated. For empirical work, re
 7. the distance definition;
 8. downstream clustering, ordination, or permutation settings.
 
-Use `save_cache()` when the exact retrieved lineages must be reused. Cache files are language-specific (`.rds`, `.pkl`, and `.json`). Use `taxobase` or `load_taxobase()` when a fixed, packaged example is preferable to a live query.
+Use `save_cache()` when the exact retrieved lineages must be reused. Cache files are language-specific (`.rds`, `.pkl`, and `.json`). Use `taxobase` or `load_taxobase()` when a fixed, packaged example is preferable to a live query. When an analysis is repeated, `compare_bundles()` identifies which lineages, identifiers, and distances changed between the two retrievals.
 
 ## Recommended methods statement
 
 A concise description may be adapted as follows:
 
-> Ordered taxonomic lineages were resolved from The Taxonomicon using `taxodist` version 0.8.0. Candidate matches, selected identifiers, resolution statuses, and retrieval dates were retained in an auditable resolution record. For distinct nodes, distance was defined as the reciprocal of the depth of their most recent common ancestor in the continuous common lineage prefix; identical complete lineages received distance zero. The resulting values represent classification depth rather than evolutionary time or phylogenetic branch length.
+> Ordered taxonomic lineages were resolved from The Taxonomicon using `taxodist` version 0.9.0. Candidate matches, selected identifiers, resolution statuses, and retrieval dates were retained in an auditable resolution record. For distinct nodes, distance was defined as the reciprocal of the depth of their most recent common ancestor in the continuous common lineage prefix; identical complete lineages received distance zero. The resulting values represent classification depth rather than evolutionary time or phylogenetic branch length.
 
 Report retrieval dates, unresolved taxa, and downstream analysis details separately.
 

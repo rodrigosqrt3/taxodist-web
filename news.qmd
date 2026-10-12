@@ -1,6 +1,6 @@
 ---
 title: "Changelog"
-subtitle: "Release history for taxodist, from version 0.1.0 through the coordinated 0.8.0 implementations."
+subtitle: "Release history for taxodist, from version 0.1.0 through the coordinated 0.9.0 implementations."
 ---
 
 ## taxodist 0.1.0 — Initial release
@@ -122,7 +122,7 @@ The R, Python, and Julia implementations follow the same distance semantics. The
 - Expanded deterministic and regression coverage; each implementation reports complete coverage under its language-specific coverage measure.
 - Improved cache inspection and clearing in the R implementation by addressing the private cache environment explicitly.
 
-## taxodist 0.8.0 [Latest]{.badge .bg-primary}
+## taxodist 0.8.0
 
 ### Auditable name resolution
 
@@ -150,3 +150,43 @@ The R, Python, and Julia implementations follow the same distance semantics. The
 - Preserved the continuous-prefix MRCA distance definition and established public workflows.
 - Improved retrieval-error reporting, structured lineage parsing, name-resolution caching, and source provenance.
 - Expanded deterministic regression tests to complete source coverage in all three implementations.
+
+## taxodist 0.9.0 [Latest]{.badge .bg-primary}
+
+Version 0.9.0 was released simultaneously for R, Python, and Julia. The distance definition and the bundle schema (version 1.0) are unchanged; bundles written by any of the three implementations are read by the other two without differences.
+
+### Corrections
+
+- `taxo_resolve()` now truncates each selected lineage at the queried taxon exactly as `get_lineage()` does. Previously it stored the lineage of the retrieved page unchanged; for genera whose page does not list the genus itself (for example *Periplaneta*), the lineage ended at the family, `resolved_name` reported the family, and `distance_matrix(taxo_resolve(x))` could differ from `distance_matrix(x)`. Bundles built from such resolutions inherited the difference.
+- Cleaned and uncleaned lineages are cached separately. A call with `clean = FALSE` previously replaced the cleaned entry, so later calls returned nodes above `Biota` for the rest of the session.
+- Queried names are normalized (surrounding and repeated whitespace) and located in the lineage without regard to letter case. Previously `"tyrannosaurus"` or `"Tyrannosaurus "` added a spurious terminal node, increasing lineage depth.
+- `taxo_heatmap()` passes plotting arguments only to the plotting function (R and Julia previously forwarded them to `distance_matrix()`; Python rejected `cmap` and `annot`). `verbose` and `progress` are explicit arguments.
+- `cache_info()` reports the names of cached taxa together with their identifiers (`ids`); it previously listed identifiers only.
+- `get_lineage_by_id()` accepts numeric identifiers and reports an informative error for several identifiers.
+- Python: the User-Agent header and bundle metadata report the installed version, `distance_matrix()` rejects a single string, and each candidate lineage is retrieved once during disambiguation.
+
+### Behavior changes
+
+::: {.callout-important title="Changed return values"}
+- `check_coverage()` reports an unknown result (`NA` in R, `pd.NA` in Python, `missing` in Julia) when The Taxonomicon could not be reached. Such names were previously reported as absent.
+- `save_cache()` returns the path of the written file.
+- Using a bundle in `distance_matrix()` or printing it validates its structure only. The complete recomputation of every stored distance is performed when a bundle is written or read.
+:::
+
+### New functions and arguments
+
+- `taxo_tree()` builds a tree directly from lineages. Internal nodes are the named clades at which the supplied taxa diverge; clades with a single descendant are collapsed. Branch lengths place a clade at depth $h$ at height $1/(2h)$, so the tree is ultrametric and its patristic distances equal `distance_matrix()`. R returns an `ape`-compatible `phylo` object; Python and Julia return a `TaxodistTree` with Newick export.
+- `cross_distances(x, y)` computes the rectangular matrix between two sets of taxa.
+- `compare_bundles(old, new)` classifies every input as unchanged, added, removed, or changed in status, identifier, or lineage, and lists the pairwise distances that changed. Bundle files can be passed by path.
+- `taxo_resolve()` and `taxo_bundle()` gain `within`, which restricts candidates to those whose lineage contains a given clade.
+- `save_cache()` and `load_cache()` default to a persistent per-user cache file.
+
+### Performance and network handling
+
+- Distance matrices are computed from integer prefix identifiers: each node is mapped to an integer identifying its complete path from the root, so the MRCA depth of two taxa is the number of depths at which the identifiers agree.
+- Requests are retried with exponential backoff after network errors and server errors (5xx); the number of attempts is configurable.
+
+### Web application
+
+- The application uses the 0.9.0 packages, adds a between-groups tab and classification trees, reports names that were not found and the entry chosen for ambiguous names, offers CSV, PNG, Newick, and bundle downloads, and supports links that reopen a query.
+- Its bundled lineage cache was rebuilt; a cache produced by an earlier parser is no longer loaded.

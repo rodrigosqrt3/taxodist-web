@@ -32,14 +32,36 @@ body {
   line-height: 1.65;
 }
 
+/* The content column must never be wider than the viewport. Quarto places it
+   in a CSS grid; a grid item defaults to `min-width: auto`, so one wide table,
+   equation, or unbreakable URL would otherwise widen the whole page on small
+   screens. (An auto inline margin made the column size to its content.) */
 #quarto-content main.content {
   max-width: 1180px;
-  margin-inline: auto;
+  min-width: 0;
 }
 
 p,
 li {
   max-width: 78ch;
+}
+
+/* Allow long identifiers and URLs to wrap instead of forcing page width. */
+main.content p,
+main.content li,
+main.content blockquote,
+main.content td,
+main.content th {
+  overflow-wrap: anywhere;
+}
+
+/* Wide display equations scroll inside their own box. */
+mjx-container[display="true"],
+.math.display {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .quarto-title .subtitle,
@@ -168,6 +190,13 @@ th,
 td {
   border-color: var(--rule) !important;
   vertical-align: top;
+}
+
+/* Function names in table cells may wrap at any character on small screens. */
+td code,
+th code {
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 /* ── Callouts ────────────────────────────────────────────────── */
@@ -302,5 +331,16 @@ td {
 
   .btn {
     margin-bottom: 0.35rem;
+  }
+
+  /* Tables that still do not fit scroll horizontally within themselves. */
+  main.content table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .panel-tabset .nav-tabs {
+    flex-wrap: wrap;
   }
 }
